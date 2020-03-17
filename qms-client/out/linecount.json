@@ -1,0 +1,373 @@
+{
+    "extension": "linecount",
+    "version": "0.1.7",
+    "workspace": "/Users/smid/AS/qms-client",
+    "linecount": [
+        {
+            "version": "0.1.7",
+            "counttime": "2019-05-02 14:15:16",
+            "filesum": 58,
+            "codesum": 22026,
+            "commentsum": 814,
+            "blanksum": 289,
+            "filelist": [
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": ".env"
+                },
+                {
+                    "blank": 4,
+                    "code": 7,
+                    "comment": 0,
+                    "filename": ".flowconfig"
+                },
+                {
+                    "blank": 5,
+                    "code": 18,
+                    "comment": 1,
+                    "filename": ".gitignore"
+                },
+                {
+                    "blank": 0,
+                    "code": 16,
+                    "comment": 0,
+                    "filename": "build/asset-manifest.json"
+                },
+                {
+                    "filename": "build/favicon.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "build/index.html"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "build/keycloak.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "build/manifest.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 34,
+                    "comment": 0,
+                    "filename": "build/precache-manifest.c7956ed694950e3069f2481f5621fec8.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 10,
+                    "comment": 17,
+                    "filename": "build/service-worker.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 1,
+                    "filename": "build/static/css/2.58ce9b7c.chunk.css"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "build/static/css/2.58ce9b7c.chunk.css.map"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 2,
+                    "filename": "build/static/js/2.1579a6d6.chunk.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "build/static/js/2.1579a6d6.chunk.js.map"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 1,
+                    "filename": "build/static/js/main.8615ae5b.chunk.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "build/static/js/main.8615ae5b.chunk.js.map"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 1,
+                    "filename": "build/static/js/runtime~main.a8a9905a.js"
+                },
+                {
+                    "blank": 0,
+                    "code": 1,
+                    "comment": 0,
+                    "filename": "build/static/js/runtime~main.a8a9905a.js.map"
+                },
+                {
+                    "filename": "build/static/media/category.b86b8033.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "build/static/media/languages.9b3259d5.jpeg",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "build/static/media/question.3005f7b1.jpg",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 18073,
+                    "comment": 0,
+                    "filename": "package-lock.json"
+                },
+                {
+                    "blank": 1,
+                    "code": 41,
+                    "comment": 0,
+                    "filename": "package.json"
+                },
+                {
+                    "filename": "public/favicon.ico",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 0,
+                    "code": 18,
+                    "comment": 23,
+                    "filename": "public/index.html"
+                },
+                {
+                    "blank": 0,
+                    "code": 8,
+                    "comment": 0,
+                    "filename": "public/keycloak.json"
+                },
+                {
+                    "blank": 0,
+                    "code": 15,
+                    "comment": 0,
+                    "filename": "public/manifest.json"
+                },
+                {
+                    "blank": 23,
+                    "code": 959,
+                    "comment": 700,
+                    "filename": "qms_ui.ai"
+                },
+                {
+                    "blank": 39,
+                    "code": 74,
+                    "comment": 7,
+                    "filename": "README.md"
+                },
+                {
+                    "blank": 3,
+                    "code": 3,
+                    "comment": 1,
+                    "filename": "src/api.js"
+                },
+                {
+                    "blank": 2,
+                    "code": 5,
+                    "comment": 1,
+                    "filename": "src/configuration.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 228,
+                    "comment": 1,
+                    "filename": "src/containers/appWrap/index.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 14,
+                    "comment": 1,
+                    "filename": "src/containers/category/api.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 114,
+                    "comment": 1,
+                    "filename": "src/containers/category/components/CategoryDetail.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 53,
+                    "comment": 1,
+                    "filename": "src/containers/category/components/CategoryList.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 259,
+                    "comment": 1,
+                    "filename": "src/containers/category/index.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 47,
+                    "comment": 1,
+                    "filename": "src/containers/home/HomeTile.js"
+                },
+                {
+                    "blank": 5,
+                    "code": 36,
+                    "comment": 0,
+                    "filename": "src/containers/home/HomeTile.spec.js"
+                },
+                {
+                    "blank": 7,
+                    "code": 63,
+                    "comment": 1,
+                    "filename": "src/containers/home/index.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 14,
+                    "comment": 1,
+                    "filename": "src/containers/language/api.js"
+                },
+                {
+                    "blank": 5,
+                    "code": 98,
+                    "comment": 1,
+                    "filename": "src/containers/language/components/LangDetail.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 36,
+                    "comment": 1,
+                    "filename": "src/containers/language/components/LangList.js"
+                },
+                {
+                    "blank": 15,
+                    "code": 251,
+                    "comment": 1,
+                    "filename": "src/containers/language/index.js"
+                },
+                {
+                    "blank": 6,
+                    "code": 62,
+                    "comment": 1,
+                    "filename": "src/containers/question/index.js"
+                },
+                {
+                    "blank": 4,
+                    "code": 23,
+                    "comment": 1,
+                    "filename": "src/containers/questionEdit/api.js"
+                },
+                {
+                    "blank": 34,
+                    "code": 588,
+                    "comment": 1,
+                    "filename": "src/containers/questionEdit/index.js"
+                },
+                {
+                    "blank": 19,
+                    "code": 285,
+                    "comment": 1,
+                    "filename": "src/containers/questionSimple/index.js"
+                },
+                {
+                    "blank": 11,
+                    "code": 123,
+                    "comment": 2,
+                    "filename": "src/containers/questionTable/index.js"
+                },
+                {
+                    "blank": 6,
+                    "code": 91,
+                    "comment": 3,
+                    "filename": "src/containers/security/index.js"
+                },
+                {
+                    "blank": 17,
+                    "code": 187,
+                    "comment": 4,
+                    "filename": "src/containers/TopLevelContainer.js"
+                },
+                {
+                    "blank": 3,
+                    "code": 29,
+                    "comment": 0,
+                    "filename": "src/containers/types.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 13,
+                    "comment": 0,
+                    "filename": "src/index.css"
+                },
+                {
+                    "blank": 3,
+                    "code": 6,
+                    "comment": 3,
+                    "filename": "src/index.js"
+                },
+                {
+                    "filename": "src/resources/category.png",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src/resources/languages.jpeg",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "filename": "src/resources/question.jpg",
+                    "isbinaryfile": true,
+                    "blank": 0,
+                    "code": 0,
+                    "comment": 0
+                },
+                {
+                    "blank": 15,
+                    "code": 89,
+                    "comment": 31,
+                    "filename": "src/serviceWorker.js"
+                },
+                {
+                    "blank": 1,
+                    "code": 3,
+                    "comment": 1,
+                    "filename": "src/setupTests.js"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,77 @@
+spring:
+
+  datasource:
+    hikari:
+      connectionTimeout: 20000
+      maximumPoolSize: 5
+    platform: 'postgres'
+    url: 'jdbc:postgresql://postgres:5432/cms'
+    username: 'pguser'
+    password: 'pgpass'
+  jpa:
+    hibernate:
+      ddl-auto: update
+  main:
+    allow-bean-definition-overriding: true
+
+server:
+  port: 9081
+  servlet:
+    contextPath: /cms
+
+## default connection pool
+
+hibernate.temp:
+  use_jdbc_metadata_defaults: false
+
+qms:
+  ip: 'http://qms:12345/qms/'
+  categoryinfo: 'categoryinfo'
+  configuration: 'configuration'
+
+ems:
+  ip: 'http://ems:9001/ems/'
+  exam: 'exam'
+
+ums:
+  ip: 'http://ums:10001/ums/'
+  id: 'email'
+  email: 'userinfo/emailInUse/'
+
+
+keycloak:
+  auth-server-url: http://tcs.ecs.baylor.edu/auth
+  resource: cms-backend
+  realm: UserManagement
+  public-client: false
+  principal-attribute: preferred_username
+  cors: true
+  #cors-allowed-headers: '*'
+  #cors-allowed-methods: 'GET,PUT,POST,DELETE'
+  #cors-exposed-headers: '*'
+  #cors-max-age: 3600
+  use-resource-role-mappings: false
+  ssl-required: 'none'
+  credentials:
+    secret: '8692de40-5258-4fed-93a7-41f5f29b5732'
+
+issuer-uri: http://tcs.ecs.baylor.edu/auth/realms/UserManagement
+
+#security:
+# oauth2:
+#   resource:
+#     id: cms-backend
+#     token-info-uri: ${issuer-uri}/protocol/openid-connect/token/introspect
+#     user-info-uri: ${issuer-uri}/protocol/openid-connect/userinfo
+#     jwt:
+#       key-value: '-----BEGIN PUBLIC KEY-----
+#       MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAncB16NqcuR2zHrG3h5F+DjY1+rbPps+tyUIJ4+af6zBXuZww9QCXESC8nx3f/KoeRkKuzbDpkHWpxLcW/tzHxlFvyVXD2kKnVtT3UFMGqYTKAjOAYtBa9E9R3kiPW/cSydwhDBUpht2JwvSBijr8+TASQxtgVn5vuSGQ4ZBK5oBL4fwEDe3fhSAkBCG9I68GPDfdH1HnJV4jXf5GTnz0ozLZ1Y5o1zHhGasZXBsn1LRSdJWuXb/qqaEWFVuFSG38/JjXw1N+MI9CnIoN+j+ogdFdLdcO4UV6MSNd8wkOUtfbzFId97M4STmVf0RYBppvtCTwe9ZfJNwN3rYeYyK7/wIDAQAB
+#       -----END PUBLIC KEY-----'
+#   #    Use if this service must call another service
+#   client:
+#     client-id: cms-backend
+#     client-secret: 1fd32e30-e0f4-4cb8-9e7b-f5ed406e8887
+#     user-authorization-uri: ${issuer-uri}/protocol/openid-connect/auth
+#     access-token-uri: ${issuer-uri}/protocol/openid-connect/token
+#     scope: openid
+#     grant-type: client_credentials

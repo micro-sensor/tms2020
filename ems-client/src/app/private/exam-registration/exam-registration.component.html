@@ -1,0 +1,39 @@
+<div [hidden]="archiveMode">
+  <h2>My registrations</h2>
+  <p>
+    Welcome! When you are assigned an exam, it will appear below. If you have already started an exam, you can finish it under the Active Exams section.
+    If you have not yet started an exam, you can start it under the Ready to Take section.
+  </p>
+  <p>
+    After you finish an exam, you can review your scores and the correct answers.
+  </p>
+  <h3>Active Exams</h3>
+  <div *ngFor="let er of examsInProgress">
+    <app-exam-card [examreg]="er"></app-exam-card>
+  </div>
+  <p *ngIf="examsInProgress.length === 0">
+    You have no in progress exams.
+  </p>
+  <hr>
+  <h3>Ready to Take</h3>
+  <div *ngFor="let er of examsReady">
+    <app-exam-card [examreg]="er"></app-exam-card>
+  </div>
+  <p *ngIf="examsReady.length === 0">
+    You have no exams scheduled.
+  </p>
+  <hr>
+  <h3>Last Exam</h3>
+  <div *ngFor="let er of examsPast.slice(0,1)">
+    <app-exam-card [examreg]="er"></app-exam-card>
+  </div>
+  <p *ngIf="examsPast.length === 0">
+    You have no past exams.
+  </p>
+</div>
+<br>
+<button (click)="archiveMode = !archiveMode;" onclick="window.scrollTo(0,0);" class="button">
+  <span *ngIf="!archiveMode">View all your past exams</span>
+  <span *ngIf="archiveMode">View current exams</span>
+</button>
+<app-exam-archive [exams]="examsPast" [hidden]="!archiveMode"></app-exam-archive>

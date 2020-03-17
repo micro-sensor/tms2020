@@ -1,0 +1,11 @@
+<div class="box">
+    <div class="content">
+        <div *ngFor="let q of questionList; index as i;">
+            <button [ngClass]="{'current-question': currentQIndex === i}" class="button is-text" (click)="jumpTo(i)">
+                Question {{i+1}}&nbsp;
+                <span *ngIf="q.flagged" class="fas fa-flag"></span>
+                <span *ngIf="!q.flagged && hasAnswers(q)" class="fas fa-check"></span>
+            </button>
+        </div>
+    </div>
+</div>

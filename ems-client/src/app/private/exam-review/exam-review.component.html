@@ -1,0 +1,37 @@
+<h2>Results</h2>
+<p>Score: {{(examReview.correct / examReview.sum ) * 100}}%</p>
+<p>Total questions: {{examReview.sum}}</p>
+<p>Correct: {{examReview.correct}}</p>
+<p>Incorrect / Not Answered: {{examReview.sum - examReview.correct}}</p>
+
+<h2>Questions:</h2>
+
+<div class="box" *ngFor="let question of examReview.questions">
+    <article class="media">
+      <div class="media-content">
+        <div class="content">
+          <p>
+            {{question.body}}
+          </p>
+          <div class="content" style="white-space: pre-line;">
+            <code>{{question.code}}</code>
+          </div>
+          <form #heroForm="ngForm" novalidate>
+            <div>
+              <div *ngFor="let ch of question.choices; index as i;" style="margin-bottom:20px">
+                  <div [ngClass]="{'has-background-success': ch.chosen && ch.correct, 'has-background-warning':!ch.chosen && ch.correct, 'has-background-danger':ch.chosen && !ch.correct }" class="control">
+                    <p style="margin-bottom:0px" *ngIf="ch.chosen && ch.correct"><i>You chose a correct answer:</i></p>
+                    <p style="margin-bottom:0px" *ngIf="ch.chosen && !ch.correct"><i>You chose an incorrect answer:</i></p>
+                    <p style="margin-bottom:0px" *ngIf="!ch.chosen && ch.correct"><i>Correct answer:</i></p>
+                    <label class="radio">
+                      <input disabled type="checkbox" [checked]="ch.chosen">
+                      {{ ch.body }}
+                    </label>
+                  </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </article>
+  </div>

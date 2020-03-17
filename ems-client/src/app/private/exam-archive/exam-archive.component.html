@@ -1,0 +1,39 @@
+<div class="columns">
+    <div class="column is-two-thirds">
+        <div *ngFor="let e of exams">
+            <app-exam-card [examreg]="e"></app-exam-card>
+        </div>
+        <p *ngIf="exams.length === 0">
+            You have no past exams.
+        </p>
+    </div>
+    <div class="column">
+        <div class="box">
+            <div class="content">
+                Find all your attempts at a specific configuration:
+                <div class="select">
+                    <select #configSelect (change)='updateConfig(configSelect.value)'>
+                      <option value="">All configurations</option>
+                      <option *ngFor="let c of getAllConfigs()" [value]="c">{{c}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Review Exam</p>
+        <button class="delete" aria-label="close"></button>
+      </header>
+      <section class="modal-card-body">
+        <app-exam-review [examId]="reviewId"></app-exam-review>>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button">Close</button>
+      </footer>
+    </div>
+  </div>
+

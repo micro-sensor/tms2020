@@ -1,0 +1,43 @@
+<h2>Exam results</h2>
+
+<div class="box">
+  <h5>Filters</h5>
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <label class="label">First Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="First name" [(ngModel)]="first">
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <div class="field">
+        <label class="label">Last Name</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Last name" [(ngModel)]="last">
+        </div>
+      </div>
+    </div>
+    <div class="column">
+      <label class="label">Date From</label>
+        <input placeholder="Date From"
+               [(ngModel)]="dateTimeFrom"
+               [owlDateTimeTrigger]="dtF" [owlDateTime]="dtF" class="input">
+        <owl-date-time #dtF></owl-date-time>
+    </div>
+    <div class="column">
+      <label class="label">Date To</label>
+        <div class="control">
+          <input placeholder="Date To"
+                 [(ngModel)]="dateTimeTo"
+                 [owlDateTimeTrigger]="dtT" [owlDateTime]="dtT" class="input">
+          <owl-date-time #dtT></owl-date-time>
+        </div>
+    </div>
+  </div>
+  <button class="button is-info" (click)="filter()">Filter</button>
+
+</div>
+
+<app-exam-list [type]="'done'" [predicate]="predicate" [exams]="assignments" (deleted)="onDeleted($event)" [delete]="false" [detail]="true" [configurations]="configurations" [users]="users"></app-exam-list>

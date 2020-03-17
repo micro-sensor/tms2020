@@ -1,0 +1,184 @@
+version: '3.7'
+
+services:
+
+  cms:
+    image: cloudhubs2/tms-cms
+    build:
+      context: cms
+      dockerfile: Dockerfile
+    expose:
+      - "9081"
+    restart: always
+    depends_on:
+      - keycloak
+      - postgres
+    networks:
+      - app-internal
+    extra_hosts:
+      - "tcs.ecs.baylor.edu:192.168.0.11"
+  
+  ems:
+    image: cloudhubs2/tms-ems
+    build:
+      context: ems
+      dockerfile: Dockerfile
+    expose:
+      - "9001"
+    restart: always
+    depends_on:
+      - keycloak
+      - postgres
+    networks:
+      - app-internal
+    extra_hosts:
+      - "tcs.ecs.baylor.edu:192.168.0.11"
+  
+  qms:
+    image: cloudhubs2/tms-qms
+    build:
+      context: qms
+      dockerfile: Dockerfile
+    expose:
+      - "12345"
+    restart: always
+    depends_on:
+      - keycloak
+      - postgres
+    networks:
+      - app-internal
+    extra_hosts:
+      - "tcs.ecs.baylor.edu:192.168.0.11"
+
+  ums:
+    image: cloudhubs2/tms-ums
+    build:
+      context: ums
+      dockerfile: Dockerfile
+    expose:
+      - "10001"
+    restart: always
+    depends_on:
+      - keycloak
+      - postgres
+    networks:
+      - app-internal
+    extra_hosts:
+      - "tcs.ecs.baylor.edu:192.168.0.11"
+
+  cms-client:
+    image: cloudhubs2/tms-cms-client
+    build:
+      context: cms-client
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    restart: always
+    depends_on:
+      - keycloak
+    networks:
+      - app-internal
+
+  ems-client:
+    image: cloudhubs2/tms-ems-client
+    build:
+      context: ems-client
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    restart: always
+    depends_on:
+      - keycloak
+    networks:
+      - app-internal
+    
+  qms-client:
+    image: cloudhubs2/tms-qms-client
+    build:
+      context: qms-client
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    restart: always
+    depends_on:
+      - keycloak
+    networks:
+      - app-internal
+  
+  ums-client:
+    image: cloudhubs2/tms-ums-client
+    build:
+      context: ums-client
+      dockerfile: Dockerfile
+    expose:
+      - "80"
+    restart: always
+    depends_on:
+      - keycloak
+    networks:
+      - app-internal
+      
+  nginx:
+    image: cloudhubs2/tms-nginx
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    restart: always
+    networks:
+      - app-internal
+    depends_on:
+      - cms
+      - ems
+      - qms
+      - ums
+      - cms-client
+      - ems-client
+      - keycloak
+  
+  postgres:
+      image: cloudhubs2/tms-postgres
+      # image: postgres
+      build: 
+        context: postgres
+        dockerfile: Dockerfile
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      expose:
+        - "5432"
+      environment:
+        POSTGRES_MULTIPLE_DATABASES: keycloak,cms,ems,qms
+        POSTGRES_USER: pguser
+        POSTGRES_PASSWORD: pgpass
+      networks:
+        - app-internal
+  
+  keycloak:
+      image: cloudhubs2/tms-keycloak
+      # image: quay.io/keycloak/keycloak:latest
+      # command: -Dkeycloak.profile.feature.upload_scripts=enabled
+      build: 
+        context: keycloak
+        dockerfile: Dockerfile
+      environment:
+        DB_VENDOR: POSTGRES
+        DB_ADDR: postgres
+        DB_DATABASE: keycloak
+        DB_USER: pguser
+        DB_SCHEMA: public
+        DB_PASSWORD: pgpass
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: password
+      expose:
+        - "8080"
+      depends_on:
+        - postgres
+      networks:
+        - app-internal
+  
+volumes:
+  postgres_data:
+
+networks:
+  app-internal:

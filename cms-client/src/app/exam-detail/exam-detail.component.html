@@ -1,0 +1,58 @@
+<div *ngFor="let e of assignments">
+  <div *ngIf="e.id == id">
+    <app-exam-card [type]="'done-detail'" [exam]="e" [users]="users" [configurations]="configurations" [detail]="true" ></app-exam-card>
+  </div>
+
+</div>
+
+<div *ngFor="let q of questions">
+  <div class="card" style="margin-top: 2em;" [ngStyle]="{'background-color':q.questionCorrect == true ? '#ecffea' : '#ffe0d9' }">
+    <div class="card-content">
+      <div class="content">
+        <p>Correct: {{q.questionCorrect}}</p>
+        <p>{{q.body}}</p>
+        <div class="box">
+          <div style="white-space: pre-line;">
+            {{q.code}}
+          </div>
+
+        </div>
+        <table>
+          <tr>
+            <th>
+              Text
+            </th>
+            <th>
+              Correct
+            </th>
+            <th>
+              Chosen
+            </th>
+            <th>
+              Match
+            </th>
+          </tr>
+          <tr *ngFor="let ch of q.choices">
+            <td>{{ch.body}}</td>
+            <td>
+              <div *ngIf="ch.correct == false">F</div>
+              <div *ngIf="ch.correct == true">T</div>
+            </td>
+            <td>
+              <div *ngIf="ch.chosen == false">F</div>
+              <div *ngIf="ch.chosen == true">T</div>
+            </td>
+            <td>
+              <div *ngIf="ch.correct == ch.chosen; else elseBlock">
+                <i class="fas fa-check-square"></i>
+              </div>
+              <ng-template #elseBlock><i class="fas fa-ban"></i></ng-template>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+

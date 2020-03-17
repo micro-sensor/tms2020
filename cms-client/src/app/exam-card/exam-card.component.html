@@ -1,0 +1,68 @@
+<div class="card" style="margin-top: 2em;" *ngIf="exam.status != 'INIT' && type == 'done' && exam && show">
+  <div class="card-content">
+    <div class="content">
+      <a class="delete is-pulled-right" (click)="deleteAssignment(exam.id)" *ngIf="delete"></a>
+      <button class="button is-small is-info is-outlined is-pulled-right" *ngIf="detail" [routerLink]="['/results/' + exam.id]">Detail</button>
+
+        <div>
+          <div *ngFor="let c of users">
+            <div *ngIf="c.id == exam.examinee">
+              <p>Examinee: {{c.firstName}} {{c.lastName}}, email: {{c.email}}</p>
+            </div>
+          </div>
+          <div *ngFor="let c of configurations">
+            <div *ngIf="c.id == exam.configurationId">
+              <p>Configuration: {{c.name}}, {{c.description}}</p>
+            </div>
+          </div>
+          <div *ngIf="detail">Date: {{exam.examDate | date: 'medium'}}</div>
+          <div *ngIf="detail">Correct: {{exam.correct}}</div>
+          <div *ngIf="detail">Sum: {{exam.sum}}</div>
+          <div *ngIf="detail">Success ratio: {{(exam.correct / exam.sum) * 100}} %</div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top: 2em;" *ngIf="exam.status != 'INIT' && type == 'done-detail' && exam && show">
+  <div class="card-content">
+    <div class="content">
+      <div>
+        <div *ngFor="let c of users">
+          <div *ngIf="c.id == exam.examinee">
+            <p>Examinee: {{c.firstName}} {{c.lastName}}, email: {{c.email}}</p>
+          </div>
+        </div>
+        <div *ngFor="let c of configurations">
+          <div *ngIf="c.id == exam.configurationId">
+            <p>Configuration: {{c.name}}, {{c.description}}</p>
+          </div>
+        </div>
+        <div *ngIf="detail">Date: {{exam.examDate | date: 'medium'}}</div>
+        <div *ngIf="detail">Correct: {{exam.correct}}</div>
+        <div *ngIf="detail">Sum: {{exam.sum}}</div>
+        <div *ngIf="detail">Success ratio: {{(exam.correct / exam.sum) * 100}} %</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top: 2em;" *ngIf="type == 'new' && exam.status == 'INIT' && exam && show">
+  <div class="card-content">
+    <div class="content">
+      <a class="delete is-pulled-right" (click)="deleteAssignment(exam.id)"></a>
+      <div>
+        <div *ngFor="let c of users">
+          <div *ngIf="c.id == exam.examinee">
+            <p>Examinee: {{c.firstName}} {{c.lastName}}, email: {{c.email}}</p>
+          </div>
+        </div>
+        <div *ngFor="let c of configurations">
+          <div *ngIf="c.id == exam.configurationId">
+            <p>Configuration: {{c.name}}, {{c.description}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

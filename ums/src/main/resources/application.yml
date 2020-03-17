@@ -1,0 +1,38 @@
+server:
+  port: 10001
+  servlet:
+    contextPath: /ums
+
+keycloak:
+  auth-server-url: http://tcs.ecs.baylor.edu/auth
+  resource: ums-backend
+  realm: UserManagement
+  public-client: false
+  principal-attribute: preferred_username
+  cors: true
+  use-resource-role-mappings: false
+  ssl-required: 'none'
+  credentials:
+    secret: '8d6081b8-8228-476c-8c21-0c27045bceb3'
+
+issuer-uri: http://tcs.ecs.baylor.edu/auth/realms/UserManagement
+
+security:
+  oauth2:
+    resource:
+      id: ums-backend
+      token-info-uri: ${issuer-uri}/protocol/openid-connect/token/introspect
+      user-info-uri: ${issuer-uri}/protocol/openid-connect/userinfo
+      jwt:
+        key-value: '-----BEGIN PUBLIC KEY-----
+        MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAv7rmoWDOgz63agbGypIOAMkvzW/OlqlTnlp+XzbF7K3FpkvjjZfpgD8ECkUPsixsVyxJ4I1KH6FpOD3DPpsluqMg36X7Z7QBVbUxwZbNHY3ndp5P1WcRplE10nO2FFvUrT7satxo94w9kqs9mD7qtYYjKKBIqObaOGbBjkYvdmxwzFVy7pSYnoOXqzCr5Z3w4EW9p87JPwlkA0hD1f26sXprytRRpZy9tSpu7gfWpHEDPBJDH1RcVTwVWgQYUSfK9lT4vyibQ9ijpRls1SJyQ6nW9J12xETyciBVLKMfBRiA7EpTq5TzUmvgg6DQm5aO99Kh041/b+Ql3YOTd0IwDQIDAQAB
+        -----END PUBLIC KEY-----'
+    # Use if this service must call another service
+    client:
+      client-id: ums-backend
+      client-secret: 8d6081b8-8228-476c-8c21-0c27045bceb3
+      user-authorization-uri: ${issuer-uri}/protocol/openid-connect/auth
+      access-token-uri: ${issuer-uri}/protocol/openid-connect/token
+      scope: openid
+      grant-type: client_credentials
+

@@ -1,0 +1,81 @@
+
+<div class="columns">
+  <div class="column">
+
+    <form [formGroup]="groupForm" (ngSubmit)="onSubmit()" novalidate>
+
+      <div class="field">
+        <label class="label">Category</label>
+        <div class="control">
+          <ng-select [items]="configInfo"
+                     bindLabel="name"
+                     autofocus
+                     bindValue="id"
+                     placeholder="Select Category"
+                     formControlName="category" (change)="groupSelected($event)">
+            <ng-template ng-option-tmp let-item="item" let-index="index" let-search="id">
+              <b>{{item.name}}</b> | {{item.id}}
+              <p>{{item.description}}</p>
+            </ng-template>
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="field" *ngIf="showLevel">
+        <label class="label">Level</label>
+        <div class="control">
+          <ng-select [items]="selectedLevels"
+                     bindLabel="name"
+                     autofocus
+                     bindValue="id"
+                     placeholder="Select Level"
+                     formControlName="level" (change)="levelSelected($event)">
+          </ng-select>
+        </div>
+      </div>
+
+
+      <div class="field" *ngIf="showLanguage">
+        <label class="label">Language</label>
+        <div class="control">
+          <ng-select [items]="selectedLanguages"
+                     bindLabel="language"
+                     autofocus
+                     bindValue="language"
+                     placeholder="Select Language"
+                     formControlName="language" (change)="languageSelected($event)">
+            <ng-template ng-option-tmp let-item="item">
+              <div *ngIf="item.language == ''; else elseBlock">Without language</div>
+              <ng-template #elseBlock>{{item.language}}</ng-template>
+            </ng-template>
+          </ng-select>
+
+        </div>
+      </div>
+
+
+      <div class="field" *ngIf="showCount">
+        <label class="label">Count</label>
+        <div class="control">
+          <ng-select [items]="selectedCount"
+                     bindLabel="id"
+                     autofocus
+                     bindValue="name"
+                     placeholder="Select Count"
+                     formControlName="count">
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-link" type="submit">Add group</button>
+        </div>
+        <div class="control">
+          <button class="button is-text" type="reset" (click)="revert()">Revert</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

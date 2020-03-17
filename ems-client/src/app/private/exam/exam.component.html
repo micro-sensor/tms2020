@@ -1,0 +1,64 @@
+<div class="columns">
+  <div class="column is-three-quarters">
+    <div class="box">
+      <div class="content">
+        <div *ngIf="counter$ | async as counter">
+          <p>{{diff}} minutes remaining</p>
+          <p>Deadline: {{exam.examDate | date:'medium'}}</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Question #{{qIndex + 1}}</h2>
+    
+    <div class="box">
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <p>
+              {{questions[qIndex].body}}
+            </p>
+            <form #heroForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+              <div class="control">
+                <div *ngFor="let ch of questions[qIndex].choices; index as i;">
+                  <label class="radio">
+                    <input type="checkbox" (click)="choose(i)" [checked]="questions[qIndex].choices[i].chosen">
+                    {{ ch.body }}
+                  </label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </article>
+    </div>
+    
+    
+    <div class="box">
+      <p>Code: </p>
+      <div class="media-content">
+        <div class="content" style="white-space: pre-line;">
+          <pre>{{questions[qIndex].code}}</pre>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Controls -->
+    <div class="buttons is-grouped is-centered">
+      <button class="button" [disabled]="qIndex <= 0" (click)="prev()"><span class="fas fa-chevron-circle-left"></span>&nbsp;Previous</button>
+      <button class="button" (click)="toggleFlag()" [class.is-dark]="isFlagged()">
+        <span class="fas fa-flag"></span>&nbsp;
+        <span *ngIf="!isFlagged()">Flag for review</span>
+        <span *ngIf="isFlagged()">Remove flag</span>
+      </button>
+      <button class="button" *ngIf="qIndex !== questions.length - 1" (click)="next()">Next&nbsp;<span class="fas fa-chevron-circle-right"></span></button>
+      <button class="button is-primary tooltip" [disabled]="hasFlags()" (click)="submit()" *ngIf="qIndex === questions.length -1">
+        Submit the test <span class="far fa-check-square"></span>
+        <span *ngIf="hasFlags()" class="tooltiptext">You still have flagged questions!</span>
+      </button>
+    </div>
+  </div>
+  <div class="column">
+    <app-exam-navigation [currentQIndex]="qIndex" [questionList]="questions" [markedQuestions]="markedQuestions" (qIndexUpdater)="jumpTo($event)"></app-exam-navigation>
+  </div>
+</div>

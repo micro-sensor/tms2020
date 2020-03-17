@@ -1,0 +1,44 @@
+
+<div class="card" style="margin-top: 2em;" *ngFor="let e of configurations">
+  <div class="card-content">
+    <div class="content">
+      <p>Name: {{e.name}}</p>
+      <p>Description: {{e.description}}</p>
+      <hr>
+      <table>
+        <tr>
+          <th>
+            Category
+          </th>
+          <th>
+            Level
+          </th>
+          <th>
+            Number of questions
+          </th>
+          <th>
+            Language
+          </th>
+        </tr>
+        <tr *ngFor="let g of e.groups">
+          <td>
+            <div *ngFor="let ci of configInfo">
+              <div *ngIf="ci.id == g.category">
+                {{ci.name}}
+              </div>
+            </div>
+          </td>
+          <td>{{g.level}}</td>
+          <td>{{g.count}}</td>
+          <td>
+            <div *ngFor="let lang of languages">
+              <div *ngIf="lang.id == g.languageId">
+                {{lang.name}}
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

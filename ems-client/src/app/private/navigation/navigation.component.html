@@ -1,0 +1,56 @@
+<nav class="navbar is-link" role="navigation" aria-label="main navigation" >
+  <!-- style="margin-right: 1em; margin-left: 1em;" -->
+  <div class="navbar-brand">
+    <span class="navbar-item">
+      Texas Teacher Training Certification Practice
+    </span>
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" [routerLink]="['/']">
+        My Exams
+      </a>
+
+    </div>
+
+    <div class="navbar-end">
+
+      <div class="navbar-item">
+        <div class="dropdown is-right" [ngClass]="{'is-active': active == true}" (click)="toggleActive()">
+          <div class="dropdown-trigger">
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+              <span>{{name}}</span>
+              <span class="icon is-small">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-menu" role="menu">
+            <div class="dropdown-content">
+              <a href="#" class="dropdown-item" href="http://tcs.ecs.baylor.edu/questions" *ngIf="isAdmin">
+                Question Management
+              </a>
+              <a class="dropdown-item" href="http://tcs.ecs.baylor.edu/config" *ngIf="isAdmin">
+                Configuration Management
+              </a>
+              <a class="dropdown-item" href="http://tcs.ecs.baylor.edu/users/profile">
+                Profile
+              </a>
+              <hr class="dropdown-divider">
+              <a class="dropdown-item" (click)="signOut()">
+                Sign out
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,44 @@
+<div class="card" style="margin-top: 2em;">
+    <header class="card-header">
+        <p class="card-header-title">
+            Exam: {{examreg.configurationName}}
+        </p>
+    </header>
+    <div class="card-content">
+      <div class="content" *ngIf="examreg.status === 'INIT'">
+        <p>Assigned: <time datetime="2016-1-1">{{examreg.examDate | date:'medium'}}</time></p>
+      </div>
+      <div class="content" *ngIf="examreg.status === 'PROGRESS'">
+        <p>Exam in progress</p>
+        <p>Deadline: <time datetime="2016-1-1">{{examreg.examDate | date:'medium'}}</time></p>
+      </div>
+      <div class="content" *ngIf="examreg.status === 'DONE'">
+        <p>Submitted: <time datetime="2016-1-1">{{examreg.submissionDate | date:'medium'}}</time></p>
+        <p>Correct: {{examreg.correct}}</p>
+        <p>Wrong / Not Answered: {{examreg.sum - examreg.correct}}</p>
+        <p>Total questions: {{examreg.sum}}</p>
+        <p>Success rate: {{(examreg.correct / examreg.sum ) * 100}} %</p>
+      </div>
+    </div>
+    <footer class="card-footer">
+        <a class="card-footer-item" (click)="startExam()" *ngIf="examreg.status !== 'DONE'">{{examreg.status === 'INIT' ? "Start" : "Continue"}}</a>
+        <!-- <a class="card-footer-item" [routerLink]="['/review',examreg.id]" *ngIf="examreg.status === 'DONE'">Review Answers</a> -->
+        <button class="button is-primary" *ngIf="examreg.status === 'DONE'" (click)="showReview=true;" style="margin:5px;">Review answers</button>
+    </footer>
+</div>
+
+<div *ngIf="examreg.status === 'DONE'" class="modal" [class.is-active]="showReview">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Exam review: {{examreg.configurationName}}</p>
+      <button class="delete" aria-label="close" (click)="showReview=false"></button>
+    </header>
+    <section class="modal-card-body">
+      <app-exam-review [examId]="examreg.id"></app-exam-review>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="button" (click)="showReview=false">Cancel</button>
+    </footer>
+  </div>
+</div>

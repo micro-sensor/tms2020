@@ -1,0 +1,12 @@
+<div *ngFor="let e of exams">
+  <app-exam-card (toBeDelete)="deleteAssignment($event)"
+                 [type]="type"
+                 [predicate]="predicate"
+                 [exam]="e"
+                 [users]="users"
+                 [configurations]="configurations"
+                 [detail]="detail">
+
+  </app-exam-card>
+</div>
+

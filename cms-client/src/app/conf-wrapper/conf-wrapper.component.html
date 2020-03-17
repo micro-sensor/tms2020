@@ -1,0 +1,66 @@
+<div class="container" style="padding: 10px;">
+
+  <h3>Create Configuration</h3>
+
+  <p>
+    In order to create a configuration, insert an unique configuration name.
+    Then select a category, difficulty level and number of questions.
+    You can add multiple categories and specify difficulty levels and number of questions for each of them.
+  </p>
+
+  <div class="columns">
+    <div class="column">
+      <h4>Add Description</h4>
+
+
+      <form [formGroup]="configForm" novalidate>
+
+        <div class="field">
+          <label class="label">Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Name" formControlName="name">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="label">Description</label>
+          <div class="control">
+            <textarea class="textarea" placeholder="Description" formControlName="description"></textarea>
+          </div>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div class="column">
+      <h4>Add Groups</h4>
+      <app-conf-creator [configInfo]="configInfo" (group)="passGroup($event)"></app-conf-creator>
+    </div>
+  </div>
+
+  <div class="columns">
+    <div class="column">
+
+      <app-conf-group [groups]="groups"></app-conf-group>
+
+
+      <hr>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-success" type="submit" (click)="onSubmit()">Save Configuration</button>
+        </div>
+        <div class="control">
+          <button class="button is-text" type="reset" (click)="revert()">Revert</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+</div>

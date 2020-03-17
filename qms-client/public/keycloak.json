@@ -1,0 +1,8 @@
+{
+  "realm": "UserManagement",
+  "auth-server-url": "http://tcs.ecs.baylor.edu/auth/",
+  "ssl-required": "none",
+  "resource": "qms-frontend",
+  "public-client": true,
+  "confidential-port": 0
+}
