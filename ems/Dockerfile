@@ -1,10 +1,5 @@
-FROM maven:3-jdk-8 AS build
-WORKDIR /app
-COPY . .
-RUN mvn clean package -DskipTests
-
 FROM openjdk:8
-COPY --from=build /app/target/ems-0.1.0.jar app.jar
+COPY /target/ems-0.1.0.jar app.jar
 ENTRYPOINT ["java","-jar","app.jar"]
 
 # FROM openjdk:8
