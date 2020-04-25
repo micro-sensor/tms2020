@@ -1,4 +1,3 @@
-
 FROM node:13.8.0-alpine as builder
 COPY package.json package-lock.json ./
 RUN apk update && apk add python g++ make
@@ -9,7 +8,7 @@ RUN npm run build
 
 
 FROM nginx:1.13.3-alpine
-COPY nginx.conf /etc/nginx/nginx.conf
+#COPY nginx/default.conf /etc/nginx/conf.d/
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/build /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]
