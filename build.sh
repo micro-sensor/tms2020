@@ -21,9 +21,4 @@ pushd ums
 mvn clean package -DskipTests
 popd
 
-# clean up docker compose
-docker-compose down --remove-orphans
-# docker volume rm tms2020_postgres_data || true
-
-# build and run docker compose
-docker-compose up --build
+docker-compose build

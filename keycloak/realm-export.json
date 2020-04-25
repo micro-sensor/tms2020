@@ -821,7 +821,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "8692de40-5258-4fed-93a7-41f5f29b5732",
       "redirectUris": [
         "http://tcs.ecs.baylor.edu/*"
       ],
@@ -1529,7 +1529,7 @@
       "enabled": true,
       "alwaysDisplayInConsole": false,
       "clientAuthenticatorType": "client-secret",
-      "secret": "**********",
+      "secret": "8d6081b8-8228-476c-8c21-0c27045bceb3",
       "redirectUris": [
         "http://tcs.ecs.baylor.edu/*",
         "*"

@@ -36,7 +36,7 @@ class UserInfo extends Component {
 
     componentDidMount() {
         const http = new XMLHttpRequest();
-        http.open('GET', 'http://ums-backend.myicpc.live:80/userinfo/userByUsername/' + this.props.nameToGet);
+        http.open('GET', 'http://tcs.ecs.baylor.edu/ums/userinfo/userByUsername/' + this.props.nameToGet);
         http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http.onload = (event) => {
             if (http.response == null) return;
@@ -61,7 +61,7 @@ class UserInfo extends Component {
         http.send();
         const http2 = new XMLHttpRequest();
         console.log(http2.response);
-        http2.open('GET', 'http://ums-backend.myicpc.live:80/userinfo/userRoles/' + this.props.nameToGet);
+        http2.open('GET', 'http://tcs.ecs.baylor.edu/ums/userinfo/userRoles/' + this.props.nameToGet);
         http2.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http2.onload = (event) => {
             if (http.response == null) return;
