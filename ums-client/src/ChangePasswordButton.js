@@ -36,7 +36,7 @@ class ChangePasswordButton extends Component {
             alert('Error! Password must be at least 6 characters long!');
             return;
         }
-        fetch('http://ums-backend.myicpc.live:80/userinfo/changePassword/' + this.props.id, {
+        fetch('http://tcs.ecs.baylor.edu/ums/userinfo/changePassword/' + this.props.id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

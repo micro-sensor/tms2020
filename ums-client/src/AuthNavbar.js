@@ -41,8 +41,8 @@ class AuthNavbar extends Component {
             return (
                 <>
                     <Nav.Link href='/users'>Edit Users</Nav.Link>
-                    <Nav.Link href='http://cms-demo.myicpc.live:80'>Manage Content</Nav.Link>
-                    <Nav.Link href='http://qms-demo.myicpc.live:80'>Manage Questions</Nav.Link>
+                    <Nav.Link href='http://tcs.ecs.baylor.edu/cms'>Manage Content</Nav.Link>
+                    <Nav.Link href='http://tcs.ecs.baylor.edu/questions'>Manage Questions</Nav.Link>
                 </>
             )
         }

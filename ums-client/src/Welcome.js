@@ -25,7 +25,7 @@ class Welcome extends Component {
                                 <Card.Text>
                                     Placeholder text explaining exam-management service
                                 </Card.Text>
-                                <Card.Link href="http://ems-demo.myicpc.live:80">Take a Test</Card.Link>
+                                <Card.Link href="http://tcs.ecs.baylor.edu/exams">Take a Test</Card.Link>
                             </Card.Body>
                         </Card>
                     </Row>

@@ -65,7 +65,7 @@ class EditUsers extends Component {
             [name]: value,
         });
         const http = new XMLHttpRequest();
-        http.open('GET', 'http://ums-backend.myicpc.live:80/userinfo/usernamesLike?username=' + value);
+        http.open('GET', 'http://tcs.ecs.baylor.edu/ums/userinfo/usernamesLike?username=' + value);
         http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http.onload = (event) => {
             const resp = JSON.parse(http.response);
