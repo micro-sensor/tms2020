@@ -52,7 +52,7 @@ class Secured extends Component {
      * @returns {*}
      */
     renderPage() {
-        if (history.location.pathname === "/profile") {
+        if (history.location.pathname === "/profile" || history.location.pathname === "/profile/") {
             return (
                 <>
                     <AppNavbar keycloak={this.state.keycloak} authenticated={this.state.authenticated} />

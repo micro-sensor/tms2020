@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import {BrowserRouter, Route} from 'react-router-dom'
 import Logout from "./Logout";
 
 /**
@@ -41,8 +42,8 @@ class AuthNavbar extends Component {
             return (
                 <>
                     <Nav.Link href='/users'>Edit Users</Nav.Link>
-                    <Nav.Link href='http://cms-demo.myicpc.live:80'>Manage Content</Nav.Link>
-                    <Nav.Link href='http://qms-demo.myicpc.live:80'>Manage Questions</Nav.Link>
+                    <Nav.Link href='http://tcs.ecs.baylor.edu/config'>Manage Content</Nav.Link>
+                    <Nav.Link href='http://tcs.ecs.baylor.edu/questions'>Manage Questions</Nav.Link>
                 </>
             )
         }
