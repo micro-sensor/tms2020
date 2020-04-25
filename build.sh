@@ -22,4 +22,3 @@ mvn clean package -DskipTests
 popd
 
 docker-compose build
-docker-compose push
