@@ -38,7 +38,7 @@ class Secured extends Component {
   }
 
   componentDidMount() {
-    const keycloak = Keycloak("/keycloak.json");
+    const keycloak = Keycloak(process.env.PUBLIC_URL + "/keycloak.json");
     keycloak.init({ onLoad: "login-required" }).success(authenticated => {
       this.setState({ keycloak: keycloak, authenticated: authenticated });
       if (authenticated) {

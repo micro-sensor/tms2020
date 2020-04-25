@@ -16,6 +16,7 @@ import blue from "@material-ui/core/colors/blue";
 import pink from "@material-ui/core/colors/pink";
 import red from "@material-ui/core/colors/red";
 import Report from "containers/report";
+import config from "configuration";
 
 type Props = {};
 type State = { ...type.topState };
@@ -144,7 +145,7 @@ class App extends React.Component<Props, State> {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-        <Router>
+        <Router basename={config.routerBase}>
           <AppWrap
             {...this.state}
             closeSnack={this.closeSnack}
