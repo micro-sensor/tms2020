@@ -36,7 +36,7 @@ public class UserAccessService {
     private static final String keycloakBaseURL = "http://tcs.ecs.baylor.edu/auth";
     private static final String keycloakRealm = "UserManagement";
     private static final String keycloakClient = "ums-backend";
-    private static final String keycloakClientSecret = "fbba8c2e-2486-4cc7-89dc-c2ecfa4894f0";
+    private static final String keycloakClientSecret = "8d6081b8-8228-476c-8c21-0c27045bceb3";
 
     @Autowired
     private OAuth2RestTemplate restTemplate;
