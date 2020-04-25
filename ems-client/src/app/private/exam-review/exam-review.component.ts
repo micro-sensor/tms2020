@@ -25,6 +25,7 @@ export class ExamReviewComponent implements OnInit {
   getReview(id: number) {
     if (id === -1) {
       this.examReview = new ExamReview();
+      this.examReview.questions = [];
       return;
     }
     this.examManager.getExamReview(id).subscribe(er => {

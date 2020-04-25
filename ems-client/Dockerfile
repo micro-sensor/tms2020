@@ -1,4 +1,4 @@
-FROM node:13.8.0-alpine as builder
+FROM node:12.16.2-alpine3.10 as builder
 RUN apk update && apk add python g++ make
 RUN npm install -g @angular/cli
 WORKDIR /app
