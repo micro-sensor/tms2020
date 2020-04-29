@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Keycloak from 'keycloak-js';
 import LoggedInUserInfo from "./LoggedInUserInfo";
 import AppNavbar from "./AppNavbar";
 import history from './History';
@@ -14,33 +13,16 @@ import EditUsers from "./EditUsers";
  * @version 0.1
  */
 class Secured extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            keycloak: null,
-            authenticated: false,
-        };
+    componentDidMount() {
+        if (this.props.authFinished && !this.props.authenticated) {
+            this.props.login();
+        }
     }
 
-    /**
-     * When the component loads, initialize keycloak.
-     *
-     * @author J.R. Diehl
-     * @version 0.1
-     */
-    componentDidMount() {
-        const keycloak = Keycloak('keycloak.json');
-        keycloak.init({onLoad: 'login-required'}).success((authenticated) => {
-            this.setState({
-                keycloak: keycloak,
-                authenticated: authenticated,
-            })
-        }).error(() => {
-            this.setState({
-                keycloak: null,
-                authenticated: false,
-            });
-        });
+    componentDidUpdate(prevProps) {
+        if (this.props.authFinished && !this.props.authenticated) {
+            this.props.login();
+        }
     }
 
     /**
@@ -52,21 +34,21 @@ class Secured extends Component {
      * @returns {*}
      */
     renderPage() {
-        if (history.location.pathname === "/profile" || history.location.pathname === "/profile/") {
+        if (this.props.match.path === "/profile" || history.location.pathname === "/profile" || history.location.pathname === "/profile/") {
             return (
                 <>
-                    <AppNavbar keycloak={this.state.keycloak} authenticated={this.state.authenticated} />
+                    <AppNavbar keycloak={this.props.keycloak} authenticated={this.props.authenticated} login={this.props.login} />
                     <div className='App-header'>
-                        <LoggedInUserInfo keycloak={this.state.keycloak} />
+                        <LoggedInUserInfo keycloak={this.props.keycloak} />
                     </div>
                 </>
             );
-        } else if (history.location.pathname === "/users") {
+        } else if (this.props.match.path === "/users" || history.location.pathname === "/users" || history.location.pathname === "/users/") {
             return (
                 <>
-                    <AppNavbar keycloak={this.state.keycloak} authenticated={this.state.authenticated} />
+                    <AppNavbar keycloak={this.props.keycloak} authenticated={this.props.authenticated} login={this.props.login} />
                     <div className='App-header'>
-                        <EditUsers keycloak={this.state.keycloak} authenticated={this.state.authenticated} />
+                        <EditUsers keycloak={this.props.keycloak} authenticated={this.props.authenticated} />
                     </div>
                 </>
             )
@@ -75,8 +57,8 @@ class Secured extends Component {
     }
 
     render() {
-        if (this.state.keycloak) {
-            if (this.state.authenticated) {
+        if (this.props.keycloak && this.props.authFinished) {
+            if (this.props.authenticated) {
                 return (
                     <div>
                         {this.renderPage()}

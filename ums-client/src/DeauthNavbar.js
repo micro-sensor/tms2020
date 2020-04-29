@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
+import {LinkContainer} from 'react-router-bootstrap'
 
 /**
  * This is the navbar for unauthenticated users.
@@ -13,10 +14,21 @@ class DeauthNavbar extends Component {
     render() {
         return (
             <Navbar bg='dark' variant='dark' static='top'>
-                <Navbar.Brand href='/'>User Management</Navbar.Brand>
+                <LinkContainer exact to="/">
+                    <Navbar.Brand href="#">Texas Teacher Training</Navbar.Brand>
+                </LinkContainer>
                 <Nav className='mr-auto'>
-                    <Nav.Link href='/'>Home</Nav.Link>
-                    <Nav.Link href='profile'>Profile</Nav.Link>
+                    <LinkContainer exact to="/">
+                        <Nav.Link href='#'>Home</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/profile">
+                        <Nav.Link href='#'>Profile</Nav.Link>
+                    </LinkContainer>
+                </Nav>
+                <Nav>
+                    <Nav.Item as='button' onClick={this.props.login}>
+                        Login
+                    </Nav.Item>
                 </Nav>
             </Navbar>
         );

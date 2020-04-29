@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
-import {BrowserRouter, Route} from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap';
 import Logout from "./Logout";
 
 /**
@@ -22,7 +22,12 @@ class AuthNavbar extends Component {
         if (this.props.keycloak.tokenParsed.realm_access.roles.includes("user")) {
             return (
                 <>
-                    <Nav.Link href='/'>Home</Nav.Link>
+                    <LinkContainer exact to="/">
+                        <Nav.Link href='#'>Home</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to="/profile">
+                        <Nav.Link href='#'>Profile</Nav.Link>
+                    </LinkContainer>
                 </>
             );
         }
@@ -41,7 +46,7 @@ class AuthNavbar extends Component {
                 || this.props.keycloak.tokenParsed.realm_access.roles.includes("superadmin")) {
             return (
                 <>
-                    <Nav.Link href='/users'>Edit Users</Nav.Link>
+                    {/* <Nav.Link href='/users'>Edit Users</Nav.Link> */}
                     <Nav.Link href='http://tcs.ecs.baylor.edu/config'>Manage Content</Nav.Link>
                     <Nav.Link href='http://tcs.ecs.baylor.edu/questions'>Manage Questions</Nav.Link>
                 </>
@@ -53,14 +58,18 @@ class AuthNavbar extends Component {
     render() {
         return (
             <Navbar bg='dark' variant='dark' static='top'>
-                <Navbar.Brand href='/'>User Management</Navbar.Brand>
+                <LinkContainer exact to="/">
+                    <Navbar.Brand href='#'>Texas Teacher Training</Navbar.Brand>
+                </LinkContainer>
                 <Nav className='mr-auto'>
                     {this.renderUserNav()}
                     {this.renderAdminNav()}
                 </Nav>
                 <Nav>
                     <NavDropdown title={this.props.keycloak.tokenParsed.name.toUpperCase()} id="basic-nav-dropdown">
-                        <NavDropdown.Item href="profile">Profile</NavDropdown.Item>
+                        <LinkContainer exact to="/profile">
+                            <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                        </LinkContainer>
                         <NavDropdown.Divider />
                         <Logout keycloak={this.props.keycloak} />
                     </NavDropdown>

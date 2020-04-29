@@ -11,10 +11,10 @@ import AuthNavbar from './AuthNavbar';
  */
 class AppNavbar extends Component {
     render() {
-        if (this.props.keycloak && this.props.authenticated) {
+        if (this.props.authenticated && this.props.keycloak) {
             return <AuthNavbar keycloak={this.props.keycloak}/>;
         } else {
-            return <DeauthNavbar/>;
+            return <DeauthNavbar login={this.props.login}/>;
         }
     }
 }

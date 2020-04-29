@@ -2,33 +2,98 @@ import React, { Component } from 'react';
 import './App.css';
 import AppNavbar from "./AppNavbar";
 import {Row, Card} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
-/**
- * This is the welcome page. It is entirely unremarkable. Someone should make it better probably. Not me.
- *
- * @author J.R. Diehl
- * @version 0.1
- */
 class Welcome extends Component {
-    render() {
-        return (
-            <div className="Welcome">
-                <AppNavbar keycloak={this.props.keycloak} authenticated={this.props.authenticated} />
-                <div className='App-header'>
+    renderLinks() {
+        if (this.props.authenticated) {
+            return (
+                <Row>
+                    <Card style={{ width: '18rem' }}>
+                        <Card.Body>
+                            <Card.Link href="http://tcs.ecs.baylor.edu/exams">Exam Area</Card.Link>
+                            <Card.Text>
+                                Take an exam or view your previous results here.
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                    <Card style={{ width: '18rem' }}>
+                        <Card.Body>
+                            <LinkContainer to="/profile">
+                                <Card.Link href="#">My Profile</Card.Link>
+                            </LinkContainer>
+                            <Card.Text>
+                                View your profile information.
+                            </Card.Text>
+                        </Card.Body>
+                    </Card>
+                </Row>
+            )
+        } else {
+            return (
+                <Row>
+                    <Card style={{ width: '18rem' }}>
+                        <Card.Body>
+                            <Card.Link href="#" onClick={this.props.login}>Login</Card.Link>
+                            <Card.Text>
+                                Login to your account to get started!
+                            </Card.Text>
+                        </Card.Body>
+                    </Card> 
+                </Row>
+            )
+        }
+    }
+
+    renderAdminLinks() {
+        const { keycloak, authenticated } = this.props;
+        if (authenticated &&
+            (keycloak.tokenParsed.realm_access.roles.includes("admin")
+                || keycloak.tokenParsed.realm_access.roles.includes("superadmin"))) {
+            return (
+                <>
                     <Row>
-                        <p>Welcome to User Management!</p>
+                        <h2>Administration tools</h2>
                     </Row>
+                    <br/>
                     <Row>
                         <Card style={{ width: '18rem' }}>
                             <Card.Body>
-                                <Card.Title>Take a Test</Card.Title>
+                                <Card.Link href="http://tcs.ecs.baylor.edu/questions">Questions and Categories</Card.Link>
                                 <Card.Text>
-                                    Placeholder text explaining exam-management service
+                                    Create and manage exam questions and categories here.
                                 </Card.Text>
-                                <Card.Link href="http://tcs.ecs.baylor.edu/exams">Take a Test</Card.Link>
+                            </Card.Body>
+                        </Card>
+                        <Card style={{ width: '18rem' }}>
+                            <Card.Body>
+                                <Card.Link href="http://tcs.ecs.baylor.edu/config">Exam Configurations and Assignments</Card.Link>
+                                <Card.Text>
+                                    Configure and assign exams here.
+                                </Card.Text>
                             </Card.Body>
                         </Card>
                     </Row>
+                </>
+            )
+        }
+        return null;
+    }
+
+    render() {
+        console.log(this.props.keycloak);
+        return (
+            <div className="Welcome">
+                <AppNavbar keycloak={this.props.keycloak} authenticated={this.props.authenticated} login={this.props.login}/>
+                <div className='App-header'>
+                    <br/>
+                    <Row>
+                        <h1>Welcome to the Texas Teacher Training System!</h1>
+                    </Row>
+                    <br/>
+                    {this.renderLinks()}
+                    <br/>
+                    {this.renderAdminLinks()}
                 </div>
             </div>
         );

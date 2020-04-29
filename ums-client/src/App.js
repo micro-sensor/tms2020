@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Helmet } from 'react-helmet';
 import { BrowserRouter, Route } from 'react-router-dom';
+import Keycloak from 'keycloak-js';
 import Secured from './Secured';
 import './App.css';
 import Welcome from "./Welcome";
@@ -15,6 +16,61 @@ const TITLE = 'UMS';
  * @version 0.1
  */
 class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            keycloak: null,
+            authenticated: false,
+            authFinished: false
+        };
+    }
+
+    componentDidMount() {
+        this.setState({
+            keycloak: null,
+            authenticated: false,
+            authFinished: false
+        });
+        const keycloakInstance = Keycloak('keycloak.json');
+        keycloakInstance.init({onLoad: 'check-sso'}).success((authenticated) => {
+            this.setState({
+                keycloak: keycloakInstance,
+                authenticated: authenticated,
+                authFinished: true
+            });
+            console.log(authenticated);
+        }).error(() => {
+            this.setState({
+                keycloak: null,
+                authenticated: false,
+                authFinished: true
+            });
+        });
+    }
+
+    login = () => {
+        this.setState({
+            keycloak: null,
+            authenticated: false,
+            authFinished: false
+        });
+        const keycloakInstance = Keycloak('keycloak.json');
+        keycloakInstance.init({onLoad: 'login-required'}).success((authenticated) => {
+            this.setState({
+                keycloak: keycloakInstance,
+                authenticated: authenticated,
+                authFinished: true
+            });
+            console.log(authenticated);
+        }).error(() => {
+            this.setState({
+                keycloak: null,
+                authenticated: false,
+                authFinished: true
+            });
+        });
+    }
+
     render() {
         return (
             <>
@@ -24,13 +80,13 @@ class App extends Component {
                 <BrowserRouter basename={process.env.PUBLIC_URL}>
                   <div>
                     <Route exact path="/" render={(props) =>
-                        <Welcome />
+                        <Welcome {...props} keycloak={this.state.keycloak} authenticated={this.state.authenticated} login={this.login} />
                     } />
                     <Route path='/profile' render={(props) =>
-                        <Secured />
+                        <Secured {...props} keycloak={this.state.keycloak} authenticated={this.state.authenticated} authFinished={this.state.authFinished} login={this.login} />
                     } />
                     <Route path='/users' render={(props) =>
-                        <Secured />
+                        <Secured {...props} keycloak={this.state.keycloak} authenticated={this.state.authenticated} authFinished={this.state.authFinished} login={this.login} />
                     } />
                   </div>
                 </BrowserRouter>
