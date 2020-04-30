@@ -1,6 +1,6 @@
 {
   "realm": "UserManagement",
-  "auth-server-url": "http://tcs.ecs.baylor.edu/auth/",
+  "auth-server-url": "https://tcs.ecs.baylor.edu/auth/",
   "ssl-required": "none",
   "resource": "ums-frontend",
   "public-client": true,

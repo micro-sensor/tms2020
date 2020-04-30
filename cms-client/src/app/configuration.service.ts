@@ -7,9 +7,9 @@ import {KeycloakService} from 'keycloak-angular';
 })
 export class ConfigurationService {
 
-  private CMS_URL: string = "http://tcs.ecs.baylor.edu/cms/";
-  private EMS_URL: string = "http://tcs.ecs.baylor.edu/ems/";
-  private QMS_URL: string = "http://tcs.ecs.baylor.edu/qms/language";
+  private CMS_URL: string = "https://tcs.ecs.baylor.edu/cms/";
+  private EMS_URL: string = "https://tcs.ecs.baylor.edu/ems/";
+  private QMS_URL: string = "https://tcs.ecs.baylor.edu/qms/language";
   private headers: any;
 
   constructor(private http: HttpClient, private keycloakService: KeycloakService) {

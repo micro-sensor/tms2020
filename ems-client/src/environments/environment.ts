@@ -6,7 +6,7 @@ import { KeycloakConfig } from 'keycloak-angular';
 
 let keycloakConfig: KeycloakConfig = {
   //url: 'http://ec2-3-87-186-137.compute-1.amazonaws.com:8080/auth',
-  url: 'http://tcs.ecs.baylor.edu/auth/',
+  url: 'https://tcs.ecs.baylor.edu/auth/',
   realm: 'UserManagement',
   clientId: 'ems-frontend'
 };
@@ -14,8 +14,8 @@ let keycloakConfig: KeycloakConfig = {
 export const environment = {
   production: false,
   keycloak: keycloakConfig,
-  umsFrontEndUrl: "http://tcs.ecs.baylor.edu/",
-  cmsBackEndUrl: "http://tcs.ecs.baylor.edu/cms"
+  umsFrontEndUrl: "https://tcs.ecs.baylor.edu/",
+  cmsBackEndUrl: "https://tcs.ecs.baylor.edu/cms"
 };
 
 /*

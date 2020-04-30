@@ -21,8 +21,8 @@ export class ExamManagerService {
 
   questions: any;
 
-  private BASE_URL: string = "http://tcs.ecs.baylor.edu/ems";
-  private CMS_URL: string = "http://tcs.ecs.baylor.edu/cms";
+  private BASE_URL: string = "https://tcs.ecs.baylor.edu/ems";
+  private CMS_URL: string = "https://tcs.ecs.baylor.edu/cms";
   private EMS_URL: string = this.BASE_URL + "/exam";
   private TAKE_URL: string = this.BASE_URL + "/exam/take/";
   private CHOICE_URL: string = this.BASE_URL + "/choice";

@@ -4,7 +4,7 @@
 import {KeycloakConfig} from 'keycloak-angular';
 
 let keycloakConfig: KeycloakConfig = {
-  url: 'http://tcs.ecs.baylor.edu/auth',
+  url: 'https://tcs.ecs.baylor.edu/auth',
   realm: 'UserManagement',
   clientId: 'cms-frontend'
 };
