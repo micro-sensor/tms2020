@@ -823,10 +823,12 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "8692de40-5258-4fed-93a7-41f5f29b5732",
       "redirectUris": [
-        "http://tcs.ecs.baylor.edu/*"
+        "http://tcs.ecs.baylor.edu/*",
+        "https://tcs.ecs.baylor.edu/*"
       ],
       "webOrigins": [
-        "http://tcs.ecs.baylor.edu/*"
+        "http://tcs.ecs.baylor.edu/*",
+        "https://tcs.ecs.baylor.edu/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -985,9 +987,12 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://tcs.ecs.baylor.edu/*"
+        "http://tcs.ecs.baylor.edu/*",
+        "https://tcs.ecs.baylor.edu/*"
       ],
-      "webOrigins": [],
+      "webOrigins": [
+        "*"
+      ],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
@@ -1039,9 +1044,12 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://tcs.ecs.baylor.edu/*"
+        "http://tcs.ecs.baylor.edu/*",
+        "https://tcs.ecs.baylor.edu/*"
       ],
-      "webOrigins": [],
+      "webOrigins": [
+        "*"
+      ],
       "notBefore": 0,
       "bearerOnly": false,
       "consentRequired": false,
@@ -1202,7 +1210,8 @@
         "ems-frontend"
       ],
       "redirectUris": [
-        "http://tcs.ecs.baylor.edu/*"
+        "http://tcs.ecs.baylor.edu/*",
+        "https://tcs.ecs.baylor.edu/*"
       ],
       "webOrigins": [
         "http://tcs.ecs.baylor.edu"
@@ -1373,10 +1382,12 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://tcs.ecs.baylor.edu/*"
+        "http://tcs.ecs.baylor.edu/*",
+        "https://tcs.ecs.baylor.edu/*"
       ],
       "webOrigins": [
-        "http://tcs.ecs.baylor.edu"
+        "http://tcs.ecs.baylor.edu",
+        "https://tcs.ecs.baylor.edu/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,
@@ -1532,6 +1543,7 @@
       "secret": "8d6081b8-8228-476c-8c21-0c27045bceb3",
       "redirectUris": [
         "http://tcs.ecs.baylor.edu/*",
+        "https://tcs.ecs.baylor.edu/*",
         "*"
       ],
       "webOrigins": [
@@ -1710,10 +1722,12 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
-        "http://tcs.ecs.baylor.edu/*"
+        "http://tcs.ecs.baylor.edu/*",
+        "https://tcs.ecs.baylor.edu/*"
       ],
       "webOrigins": [
-        "http://tcs.ecs.baylor.edu"
+        "http://tcs.ecs.baylor.edu",
+        "https://tcs.ecs.baylor.edu/*"
       ],
       "notBefore": 0,
       "bearerOnly": false,
