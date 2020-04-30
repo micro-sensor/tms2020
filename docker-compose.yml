@@ -16,7 +16,7 @@ services:
     networks:
       - app-internal
     extra_hosts:
-      - "tcs.ecs.baylor.edu:192.168.0.11"
+      - "tcs.ecs.baylor.edu:10.1.20.143"
   
   ems:
     image: cloudhubs2/tms-ems
@@ -32,7 +32,7 @@ services:
     networks:
       - app-internal
     extra_hosts:
-      - "tcs.ecs.baylor.edu:192.168.0.11"
+      - "tcs.ecs.baylor.edu:10.1.20.143"
   
   qms:
     image: cloudhubs2/tms-qms
@@ -48,7 +48,7 @@ services:
     networks:
       - app-internal
     extra_hosts:
-      - "tcs.ecs.baylor.edu:192.168.0.11"
+      - "tcs.ecs.baylor.edu:10.1.20.143"
 
   ums:
     image: cloudhubs2/tms-ums
@@ -64,7 +64,7 @@ services:
     networks:
       - app-internal
     extra_hosts:
-      - "tcs.ecs.baylor.edu:192.168.0.11"
+      - "tcs.ecs.baylor.edu:10.1.20.143"
 
   cms-client:
     image: cloudhubs2/tms-cms-client
@@ -125,7 +125,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+      - "443:443"
     restart: always
+    volumes:
+      - ./ssl:/etc/ssl
     networks:
       - app-internal
     depends_on:

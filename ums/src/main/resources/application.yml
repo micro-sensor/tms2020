@@ -4,7 +4,7 @@ server:
     contextPath: /ums
 
 keycloak:
-  auth-server-url: http://tcs.ecs.baylor.edu/auth
+  auth-server-url: https://tcs.ecs.baylor.edu/auth
   resource: ums-backend
   realm: UserManagement
   public-client: false
@@ -15,7 +15,7 @@ keycloak:
   credentials:
     secret: '8d6081b8-8228-476c-8c21-0c27045bceb3'
 
-issuer-uri: http://tcs.ecs.baylor.edu/auth/realms/UserManagement
+issuer-uri: https://tcs.ecs.baylor.edu/auth/realms/UserManagement
 
 security:
   oauth2:
