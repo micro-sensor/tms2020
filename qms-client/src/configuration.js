@@ -1,10 +1,10 @@
 // @flow
 
 const configuration = {
-  backend: "http://tcs.ecs.baylor.edu/qms",
-  keycloak: "http://tcs.ecs.baylor.edu/auth",
-  dashboard: "http://tcs.ecs.baylor.edu/",
-  profileUrl: "http://tcs.ecs.baylor.edu/profile",
+  backend: "https://tcs.ecs.baylor.edu/qms",
+  keycloak: "https://tcs.ecs.baylor.edu/auth",
+  dashboard: "https://tcs.ecs.baylor.edu/",
+  profileUrl: "https://tcs.ecs.baylor.edu/profile",
   routerBase: "/questions" // prod value
 };
 
