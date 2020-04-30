@@ -80,6 +80,11 @@ $ ssh -L 1234:127.0.0.1:80 das@tcs.ecs.baylor.edu
 ```
 
 ```
+$ sudo ssh -L 443:127.0.0.1:1234 das@fire.ecs.baylor.edu
+$ ssh -L 1234:127.0.0.1:443 das@tcs.ecs.baylor.edu
+```
+
+```
 $ cat /etc/hosts
 
 127.0.0.1 tcs.ecs.baylor.edu
