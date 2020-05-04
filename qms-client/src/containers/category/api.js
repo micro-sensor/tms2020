@@ -17,3 +17,13 @@ export const create = (category: any) => {
 export const deleteCategory = (id: number) => {
   return api.delete(configuration.backend + "/category/" + id);
 };
+
+export const deleteAll = () => {
+  return api.delete(configuration.backend + "/category");
+};
+
+export const exportAll = () => {
+  return api.get(configuration.backend + "/category/export");
+};
+
+export const importCategories = configuration.backend + "/category/import";

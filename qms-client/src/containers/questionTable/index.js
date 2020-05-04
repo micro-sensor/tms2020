@@ -1,10 +1,12 @@
 //@flow
 import React from "react";
 import ReactTable from "react-table";
-import * as api from "../questionEdit/api";
+import * as api from "../question/api";
 import "react-table/react-table.css";
-import { Button } from "@material-ui/core";
+import {Button, Grid} from "@material-ui/core";
 import "index.css";
+import DialogButton from "../../components/DialogButton";
+import FileUpload from "../FileUpload";
 
 type State = {
   questionList: Array<{
@@ -37,26 +39,71 @@ class QuestionTable<Props, State> extends React.Component {
 
   loadData = () => {
     api
-      .search(-1, "")
-      .then(msg => {
-        this.setState({
-          questionList: msg.data,
-          loaded: true,
-          err: false
+        .search(-1, "")
+        .then(msg => {
+          this.setState({
+            questionList: msg.data,
+            loaded: true,
+            err: false
+          });
+        })
+        .catch(e => {
+          this.setState({
+            loaded: true,
+            err: true
+          });
+          console.log(e);
+          this.props.showSnack("Could not load questions.", false);
         });
-      })
-      .catch(e => {
-        this.setState({
-          loaded: true,
-          err: true
-        });
-        console.log(e);
-        this.props.showSnack("Could not load questions.", false);
-      });
   };
   createNew = () => {
     this.props.history.push("/question/edit/0");
   };
+
+  exportAll = () => {
+    api
+        .exportAll()
+        .then(msg => {
+          var FileSaver = require('file-saver');
+          var blob = new Blob([msg.data], {type: "text/xml"});
+          FileSaver.saveAs(blob, "allQuestions");
+          this.props.showSnack("Success. All questions exported.", true);
+        })
+        .catch(e => {
+          this.props.showSnack("Error. Could not export all questions.", false);
+          console.log(e);
+        });
+  };
+
+  exportFiltered = () => {
+    const currentRecords = this.selectTable.getResolvedState().sortedData;
+    var formData = new FormData();
+    formData.append("questionIdList", currentRecords.map( q => q.id));
+    api
+        .exportFiltered(formData)
+        .then(msg => {
+          var FileSaver = require('file-saver');
+          var blob = new Blob([msg.data], {type: "text/xml"});
+          FileSaver.saveAs(blob, "filteredQuestions");
+          this.props.showSnack("Success. All filtered questions were exported.", true);
+        })
+        .catch(e => {
+          this.props.showSnack("Error. Could not export filtered questions.", false);
+          console.log(e);
+        });
+  };
+
+  removeAll = () => {
+    api
+        .deleteAll()
+        .then(msg => {
+          window.location.reload();
+        })
+        .catch(e => {
+          this.props.showSnack("Error. Could not delete all questions. Reason: " + e.response.data.message, false);
+          console.log(e.response.data.message);
+        });
+  }
 
   render() {
     if (!this.state.loaded) {
@@ -74,7 +121,7 @@ class QuestionTable<Props, State> extends React.Component {
         width: 64,
         resizable: false,
         Cell: props => (
-          <span style={{ verticalAlign: "middle" }}>{props.value}</span>
+            <span style={{ verticalAlign: "middle" }}>{props.value}</span>
         )
       },
       {
@@ -84,22 +131,22 @@ class QuestionTable<Props, State> extends React.Component {
           return row.name.toLowerCase().includes(filter.value.toLowerCase());
         },
         Cell: props => (
-          <span style={{ verticalAlign: "middle" }}>{props.value}</span>
+            <span style={{ verticalAlign: "middle" }}>{props.value}</span>
         )
       },
       {
         Header: "Categories",
         accessor: "categoriesNames",
         Cell: props => (
-          <span style={{ verticalAlign: "middle" }}>
+            <span style={{ verticalAlign: "middle" }}>
             {props.value.join(", ")}
           </span>
         ),
         filterMethod: (filter, row) => {
           return row.categoriesNames
-            .join(",")
-            .toLowerCase()
-            .includes(filter.value.toLowerCase());
+              .join(",")
+              .toLowerCase()
+              .includes(filter.value.toLowerCase());
         }
       },
       {
@@ -108,7 +155,7 @@ class QuestionTable<Props, State> extends React.Component {
         width: 64,
         resizable: false,
         Cell: props => (
-          <span style={{ verticalAlign: "middle" }}>{props.value}</span>
+            <span style={{ verticalAlign: "middle" }}>{props.value}</span>
         )
       },
 
@@ -116,14 +163,14 @@ class QuestionTable<Props, State> extends React.Component {
         Header: "action",
         accessor: "id",
         Cell: props => (
-          <Button
-            size="small"
-            color="primary"
-            onClick={() => this.edit(props.value)}
-            style={{ padding: "0px 8px" }}
-          >
-            edit
-          </Button>
+            <Button
+                size="small"
+                color="primary"
+                onClick={() => this.edit(props.value)}
+                style={{ padding: "0px 8px" }}
+            >
+              edit
+            </Button>
         ),
         width: 80,
         resizable: false
@@ -131,29 +178,74 @@ class QuestionTable<Props, State> extends React.Component {
     ];
 
     return (
-      <div>
-        <div style={{ paddingTop: 42 }}>
-          <ReactTable
-            data={this.state.questionList}
-            columns={columns}
-            defaultSorted={[
-              {
-                id: "id",
-                desc: false
-              }
-            ]}
-            filterable
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={this.createNew}
-            style={{ marginTop: 16 }}
-          >
-            Create new
-          </Button>
+        <div>
+          <div style={{ paddingTop: 42 }}>
+            <Grid container justify="center" style={{ margin: "10px 0px" }}>
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={this.createNew}
+              >
+                Create new
+              </Button>
+              <Button variant="contained"
+                      color="secondary"
+                      style={{ marginLeft: "5px" }}
+                      onClick={this.removeAll}>
+                Delete All
+              </Button>
+              <Button variant="contained"
+                      color="primary"
+                      style={{ marginLeft: "5px" }}
+                      onClick={this.exportAll}>
+                Export All
+              </Button>
+              <Button variant="contained"
+                      color="primary"
+                      style={{ marginLeft: "5px" }}
+                      onClick={this.exportFiltered}>
+                Export Filtered
+              </Button>
+              <DialogButton
+                  title="IMPORT QUESTIONS"
+                  buttonLabel="IMPORT QUESTIONS"
+                  variant="contained"
+                  style={{ marginLeft: "5px" }}
+                  history = {this.props.history}
+                  dialogContent={(close, open) => {
+                    return (
+                        <FileUpload
+                            postUrl={api.importQuestions}
+                            accept={["text/xml"]}
+                            // multiple={true}
+                            maxSize={1000000}
+                            showMessage={(message) => this.props.showSnack(message, false)}
+                            rejectMessage="File rejected. Files must be smaller than 1 MB"
+                            history = {this.props.history}
+                            onSuccess={() => {
+                              this.props.showSnack("File successfully processed.", true);
+                            }}
+                        />
+                    );
+                  }}
+              />
+            </Grid>
+            <ReactTable
+                data={this.state.questionList}
+                ref={(r) => {
+                  this.selectTable = r;
+                }}
+                columns={columns}
+                defaultSorted={[
+                  {
+                    id: "name",
+                    desc: false
+                  }
+                ]}
+                filterable
+            />
+          </div>
         </div>
-      </div>
     );
   }
 }
