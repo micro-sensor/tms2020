@@ -1,17 +1,36 @@
 package baylor.csi.questionManagement.controller;
 
-import baylor.csi.questionManagement.Exception.InstanceCreatingException;
+import baylor.csi.questionManagement.Exception.JPAException;
+import baylor.csi.questionManagement.Exception.ParsingException;
 import baylor.csi.questionManagement.Exception.ResourceNotFoundException;
 import baylor.csi.questionManagement.model.*;
 import baylor.csi.questionManagement.model.dto.QuestionDto;
+import baylor.csi.questionManagement.model.dto.QuestionListDto;
 import baylor.csi.questionManagement.repository.*;
+import baylor.csi.questionManagement.service.XmlParserService;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @RestController
 @RequestMapping("/question")
@@ -26,6 +45,8 @@ public class QuestionController {
     private CodeRepository codeRepository;
     @Autowired
     private LanguageRepository languageRepository;
+    @Autowired
+    private XmlParserService xmlParserService;
 
     @CrossOrigin
     @GetMapping("/all")
@@ -90,7 +111,7 @@ public class QuestionController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new InstanceCreatingException("Question created failed because of " + e.getMessage());
+            throw new JPAException("Question created failed because of " + e.getMessage());
         }
 
     }
@@ -228,7 +249,7 @@ public class QuestionController {
             throw e;
         } catch (Exception e) {
             e.printStackTrace();
-            throw new InstanceCreatingException("Question updating failed because of " + e.getMessage());
+            throw new JPAException("Question updating failed because of " + e.getMessage());
         }
 
     }
@@ -289,6 +310,110 @@ public class QuestionController {
                     questionRepository.delete(question);
                     return ResponseEntity.ok().build();
                 }).orElseThrow(() -> new ResourceNotFoundException("Question not found with id " + questionId));
+    }
+
+    @CrossOrigin
+    @DeleteMapping("")
+    public ResponseEntity<?> deleteAllQuestions() {
+        questionRepository.deleteAll();
+        return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin
+    @GetMapping("/export")
+    public String exportAllQuestions() throws IOException {
+
+        List<Question> questionsList = questionRepository.findAll();
+        QuestionListDto questions = new QuestionListDto(questionsList);
+
+        System.out.println("Exporting all questions ");
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+
+        if( questions != null)
+            return xmlMapper.writeValueAsString(questions);
+
+        return "Failed to export";
+    }
+
+    @CrossOrigin
+    @PostMapping("/exportFiltered")
+    public String exportFilteredQuestions(@RequestParam("questionIdList") List<Long> idList) throws IOException {
+
+        for(Long i : idList ) {
+            System.out.println(i);
+        }
+
+        List<Question> questionsList = questionRepository.findAllById(idList);
+        QuestionListDto questions = new QuestionListDto(questionsList);
+
+        System.out.println("Exporting filtered questions ");
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+
+        if( questions != null)
+            return xmlMapper.writeValueAsString(questions);
+
+        return "Failed to export";
+    }
+
+    @CrossOrigin
+    @GetMapping("/export/{questionId}")
+    public String exportQuestionById(@PathVariable Long questionId) throws IOException {
+        Question question = questionRepository.findById(questionId).orElse(null);
+
+        System.out.println("Exporting the question " + questionId);
+        XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        xmlMapper.writeValue(new File("question "+questionId+".xml"), question);
+        File file = new File("question "+questionId+".xml");
+        assertNotNull(file);
+
+        if( question != null)
+            return xmlMapper.writeValueAsString(question);
+
+        return "Failed to export";
+    }
+
+    @CrossOrigin
+    @PostMapping(value = "/import")
+//    public ResponseEntity<?> uploadQuestions(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<?> uploadQuestions(@RequestParam("file") MultipartFile file) throws IOException, ParserConfigurationException, SAXException {
+
+        if (file.isEmpty()) {
+            throw new ResourceNotFoundException("File upload fail when importing question(s)");
+        }
+
+        Set<Question> questionList = null;
+
+        byte[] bytes = file.getBytes();
+        InputStream myInputStream = new ByteArrayInputStream(bytes);
+        // create new DocumentBuilderFactory
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        // use the factory to create a documentbuilder
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        // create a new document from input stream
+        Document doc = builder.parse(myInputStream);
+        doc.getDocumentElement().normalize();
+        // get NodeList with "question" tag
+        NodeList questionNodeList = doc.getElementsByTagName("question");
+        if(questionNodeList.getLength() == 0) {
+            throw new ParsingException("XML document doesn't contain tags with name question");
+        }
+        questionList = xmlParserService.parseQuestionNodeList(questionNodeList);
+
+        if( questionList != null)
+        {
+            try {
+                questionRepository.saveAll(questionList);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new JPAException("Question import failed. Reason: " + e.getMessage());
+            }
+        }
+
+        return ResponseEntity.ok().build();
     }
 
 

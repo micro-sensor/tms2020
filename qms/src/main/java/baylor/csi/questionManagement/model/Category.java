@@ -30,7 +30,7 @@ public class Category extends UUIDHashedEntityObject {
     private Set<Question> questions = new HashSet<>();
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Size(max = 256, min = 3)
     public String getName() {
         return name;
@@ -42,7 +42,7 @@ public class Category extends UUIDHashedEntityObject {
 
     @NotNull
     @Column(nullable = false)
-    @Size(min = 3)
+    @Size(min = 3, max = 1024)
     public String getDescription() {
         return description;
     }

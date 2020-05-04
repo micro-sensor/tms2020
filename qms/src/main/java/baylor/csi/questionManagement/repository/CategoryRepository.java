@@ -14,4 +14,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     @Query(name = Category.FIND_QUESTION_COUNT_DTO_BY_ID)
     List<QuestionCountDto> getQuestionCountDtoById(Long id);
 
+    Category findByName(String name);
 }

@@ -17,7 +17,7 @@ public class Language extends UUIDHashedEntityObject {
 
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Size(max = 256, min = 3)
     public String getName() {
         return name;

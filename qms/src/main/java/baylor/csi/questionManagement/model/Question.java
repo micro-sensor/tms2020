@@ -1,6 +1,8 @@
 package baylor.csi.questionManagement.model;
 
 import baylor.csi.questionManagement.model.supermodel.UUIDHashedEntityObject;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -60,7 +62,7 @@ public class Question extends UUIDHashedEntityObject {
 
     @NotNull
     @Column(nullable = false)
-    @Size(min = 3)
+    @Size(min = 3, max = 1024)
     public String getBody() {
         return body;
     }
@@ -70,6 +72,8 @@ public class Question extends UUIDHashedEntityObject {
     }
 
     @OneToMany(mappedBy = "question", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JacksonXmlProperty(localName = "choice")
+    @JacksonXmlElementWrapper(useWrapping = false)
     public Set<Choice> getChoices() {
         return choices;
     }
@@ -79,6 +83,8 @@ public class Question extends UUIDHashedEntityObject {
     }
 
     @OneToMany(mappedBy = "question", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+    @JacksonXmlProperty(localName = "code")
+    @JacksonXmlElementWrapper(useWrapping = false)
     public Set<Code> getCodes() {
         return codes;
     }
@@ -90,6 +96,8 @@ public class Question extends UUIDHashedEntityObject {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable
+    @JacksonXmlProperty(localName = "category")
+    @JacksonXmlElementWrapper(useWrapping = false)
     public Set<Category> getCategories() {
         return categories;
     }
