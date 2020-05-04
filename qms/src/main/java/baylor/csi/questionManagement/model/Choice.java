@@ -15,6 +15,8 @@ public class Choice extends UUIDHashedEntityObject {
     private Boolean correct;
     private Question question;
 
+    @NotNull
+    @Column(nullable = false)
     public String getBody() {
         return body;
     }
@@ -23,6 +25,8 @@ public class Choice extends UUIDHashedEntityObject {
         this.body = body;
     }
 
+    @NotNull
+    @Column(nullable = false)
     public Boolean getCorrect() {
         return correct;
     }

@@ -1,6 +1,6 @@
 package baylor.csi.questionManagement.service;
 
-import baylor.csi.questionManagement.Exception.InstanceCreatingException;
+import baylor.csi.questionManagement.Exception.JPAException;
 import baylor.csi.questionManagement.model.*;
 import baylor.csi.questionManagement.model.dto.QuestionSingleCodeDto;
 import baylor.csi.questionManagement.repository.ChoiceRepository;
@@ -33,7 +33,7 @@ public class QuestionService {
         List<Question> tempQuestions = questionRepository.findByCategoryIdAndLevelAndLanguage(group.getCategory(), group.getLevel(), group.getLanguageId());
         Language language = languageRepository.findById(group.getLanguageId()).orElse(null);
         if (tempQuestions.size() < group.getCount()) {
-            throw new InstanceCreatingException("Questions for " + group.getCategory() + " " + group.getLevel() + " " + group.getLanguageId() + " are not enough, please check the configuration ");
+            throw new JPAException("Questions for " + group.getCategory() + " " + group.getLevel() + " " + group.getLanguageId() + " are not enough, please check the configuration ");
         } else if (tempQuestions.size() == group.getCount()) {
             for(int i=0;i<group.getCount();i++) {
                 indexs[i] = i;

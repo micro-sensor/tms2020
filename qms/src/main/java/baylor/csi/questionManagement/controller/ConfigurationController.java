@@ -1,12 +1,9 @@
 package baylor.csi.questionManagement.controller;
 
-import baylor.csi.questionManagement.Exception.InstanceCreatingException;
+import baylor.csi.questionManagement.Exception.JPAException;
 import baylor.csi.questionManagement.Exception.ResourceNotFoundException;
-import baylor.csi.questionManagement.model.Category;
 import baylor.csi.questionManagement.model.Configuration;
 import baylor.csi.questionManagement.model.ConfigurationGroup;
-import baylor.csi.questionManagement.model.Language;
-import baylor.csi.questionManagement.repository.CategoryRepository;
 import baylor.csi.questionManagement.repository.ConfigurationRepository;
 import baylor.csi.questionManagement.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +65,7 @@ public class ConfigurationController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new InstanceCreatingException("Question created failed because of " + e.getMessage());
+            throw new JPAException("Question created failed because of " + e.getMessage());
         }
 
     }

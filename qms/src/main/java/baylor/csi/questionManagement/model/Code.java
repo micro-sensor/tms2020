@@ -27,7 +27,7 @@ public class Code extends UUIDHashedEntityObject {
 
     @NotNull
     @Column(nullable = false)
-    @Size(min = 3)
+    @Size(min = 3, max = 1024)
     public String getBody() {
         return body;
     }
