@@ -148,7 +148,7 @@ class AppWrap extends React.Component<Props, State> {
                   onClick={() => this.redirectTo("")}
                 >
                   {/* {this.getTitleName()} */}
-                  Question Management System
+                  TMS: Question Management
                 </Typography>
               </div>
               <div

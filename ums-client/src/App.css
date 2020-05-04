@@ -1,5 +1,49 @@
-.App {
+/* Navbar stuff */
+
+.navbar,
+.navbar-default {
+background-color: #1e90ff !important;
+padding: 0;
+min-height: 3.25rem;
 }
+
+.navbar-brand {
+padding-left: 0.75rem
+}
+
+span.navbar-brand {
+  font-size: 1rem;
+}
+
+.navbar a {
+  font-weight: bold;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  background-color: #2366d1;
+}
+
+.navbar .dropdown-menu {
+  margin-top: 0;
+}
+
+.navbar .nav-item.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.navbar .dropdown-menu:hover {
+  display: block;
+}
+
+.navbar .dropdown-menu a {
+  font-size: 0.875rem;
+}
+
+/* Global styles */
 
 .App-header {
   min-height: 100vh;
@@ -13,12 +57,6 @@
 
 .App-header .card {
   margin: 0px 10px;
-}
-
-.navbar,
-.navbar-default {
-  background-color: #1e90ff !important;
-  box-shadow: 0px -2px 10px black;
 }
 
 .text-black {

@@ -2,16 +2,16 @@
   <!-- style="margin-right: 1em; margin-left: 1em;" -->
   <div class="navbar-brand">
     <span class="navbar-item">
-      Texas Teacher Training Certification Practice
+      TMS: Practice Exams
     </span>
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+    <a role="button" class="navbar-burger burger" (click)="toggleActive()" [ngClass]="{'is-active': active == true}" aria-label="menu" aria-expanded="false" data-target="mainNavbar">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
     </a>
   </div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
+  <div id="mainNavbar" class="navbar-menu" [ngClass]="{'is-active': active == true}">
     <div class="navbar-start">
       <a class="navbar-item" [routerLink]="['/']">
         My Exams
@@ -20,8 +20,34 @@
     </div>
 
     <div class="navbar-end">
-
-      <div class="navbar-item">
+      <div class="navbar-item has-dropdown is-hoverable" *ngIf="isAdmin">
+        <a class="navbar-link">
+          Administration
+        </a>
+        <div class="navbar-dropdown is-right">
+          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/questions">
+            Question Management
+          </a>
+          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/config">
+            Configuration Management
+          </a>
+        </div>
+      </div>
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          {{userData.firstName}} {{userData.lastName}}
+        </a>
+        <div class="navbar-dropdown is-right">
+          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/profile">
+            My Profile
+          </a>
+          <hr class="navbar-divider">
+          <a class="navbar-item" (click)="signOut()">
+            Sign out
+          </a>
+        </div>
+      </div>
+      <!-- <div class="navbar-item">
         <div class="dropdown is-right" [ngClass]="{'is-active': active == true}" (click)="toggleActive()">
           <div class="dropdown-trigger">
             <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -49,8 +75,7 @@
             </div>
           </div>
         </div>
-      </div>
-
+      </div> -->
     </div>
   </div>
 </nav>

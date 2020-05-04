@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown, Dropdown} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import Logout from "./Logout";
 
@@ -58,21 +58,43 @@ class AuthNavbar extends Component {
     render() {
         return (
             <Navbar bg='dark' variant='dark' static='top'>
-                <LinkContainer exact to="/">
+                <span class="navbar-brand">Texas Teacher Training</span>
+                {/* <LinkContainer exact to="/">
                     <Navbar.Brand href='#'>Texas Teacher Training</Navbar.Brand>
-                </LinkContainer>
+                </LinkContainer> */}
                 <Nav className='mr-auto'>
                     {this.renderUserNav()}
                     {this.renderAdminNav()}
                 </Nav>
                 <Nav>
-                    <NavDropdown title={this.props.keycloak.tokenParsed.name.toUpperCase()} id="basic-nav-dropdown">
+                    <Dropdown as={Nav.Item}>
+                        <Dropdown.Toggle as={Nav.Link}>Administration</Dropdown.Toggle>
+                        <Dropdown.Menu renderOnMount={true} alignRight={true}>
+                            <Dropdown.Item href="https://tcs.ecs.baylor.edu/questions">Question Management</Dropdown.Item>
+                            <Dropdown.Item href="https://tcs.ecs.baylor.edu/config">Configuration Management</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    <Dropdown as={Nav.Item}>
+                        <Dropdown.Toggle as={Nav.Link}>{this.props.keycloak.tokenParsed.name}</Dropdown.Toggle>
+                        <Dropdown.Menu renderOnMount={true} alignRight={true}>
+                            <LinkContainer exact to="/profile">
+                                <Dropdown.Item href="/profile">Profile</Dropdown.Item>
+                            </LinkContainer>
+                            <Dropdown.Divider></Dropdown.Divider>
+                            <Logout keycloak={this.props.keycloak} />
+                        </Dropdown.Menu>
+                    </Dropdown>
+                    {/* <NavDropdown title="Administration" id="basic-nav-dropdown" renderMenuOnMount={true}>
+                        <NavDropdown.Item href="tcs.ecs.baylor.edu/questions">Question Management</NavDropdown.Item>
+                        <NavDropdown.Item href="tcs.ecs.baylor.edu/config">Configuration Management</NavDropdown.Item>
+                    </NavDropdown> */}
+                    {/* <NavDropdown title={this.props.keycloak.tokenParsed.name} id="basic-nav-dropdown" renderMenuOnMount={true}>
                         <LinkContainer exact to="/profile">
                             <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
                         </LinkContainer>
                         <NavDropdown.Divider />
                         <Logout keycloak={this.props.keycloak} />
-                    </NavDropdown>
+                    </NavDropdown> */}
                 </Nav>
             </Navbar>
         );

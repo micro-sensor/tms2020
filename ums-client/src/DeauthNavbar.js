@@ -14,9 +14,10 @@ class DeauthNavbar extends Component {
     render() {
         return (
             <Navbar bg='dark' variant='dark' static='top'>
-                <LinkContainer exact to="/">
-                    <Navbar.Brand href="#">Texas Teacher Training</Navbar.Brand>
-                </LinkContainer>
+                <span class="navbar-brand">Texas Teacher Training</span>
+                {/* <LinkContainer exact to="/">
+                    <Navbar.Brand href='#'>Texas Teacher Training</Navbar.Brand>
+                </LinkContainer> */}
                 <Nav className='mr-auto'>
                     <LinkContainer exact to="/">
                         <Nav.Link href='#'>Home</Nav.Link>
