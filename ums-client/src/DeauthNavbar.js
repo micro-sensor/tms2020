@@ -27,9 +27,9 @@ class DeauthNavbar extends Component {
                     </LinkContainer>
                 </Nav>
                 <Nav>
-                    <Nav.Item as='button' onClick={this.props.login}>
-                        Login
-                    </Nav.Item>
+                    <Nav.Link onClick={this.props.login}>
+                        Login &nbsp;
+                    </Nav.Link>
                 </Nav>
             </Navbar>
         );

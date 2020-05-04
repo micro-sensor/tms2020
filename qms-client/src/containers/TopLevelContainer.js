@@ -34,7 +34,7 @@ const theme = createMuiTheme({
   overrides: {
     MuiToolbar: {
       regular: {
-        minHeight: "56px !important"
+        minHeight: "3.25rem !important"
       }
     }
   },

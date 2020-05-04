@@ -6,6 +6,7 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 
@@ -46,7 +47,9 @@ const styles = theme => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     flexGrow: 1,
-    backgroundColor: "#1e90ff!important"
+    backgroundColor: "#1e90ff!important",
+    minHeight: '3.25rem',
+    boxShadow: 'none'
   },
   grow: {
     flexGrow: 1,
@@ -75,18 +78,59 @@ const styles = theme => ({
   },
   toolbar: theme.mixins.toolbar,
   topNav: {
-    padding: "0 16px",
-    height: "56px",
+    padding: '.5rem',
     "&:hover": {
-      backgroundColor: "#2b8ae4",
+      backgroundColor: "#2366d1",
       cursor: "pointer"
     }
   },
   topNavText: {
-    color: "#fafafad1",
-    fontSize: 16,
+    color: "#fff",
+    fontSize: '1rem',
     position: "relative",
-    top: "16px"
+    fontWeight: 'bold',
+    textAlign: 'center',
+    whiteSpace: 'nowrap',
+    lineHeight: 'inherit'
+  },
+  noBold: {
+    fontWeight: 'normal'
+  },
+  topNavNoHover: {
+    padding: '.5rem'
+  },
+  dropdown: {
+    position: 'relative',
+    "&:hover div": {
+      display: "block"
+    }
+  },
+  dropdownMenu: {
+    display: 'none',
+    position:'absolute',
+    right: 0,
+    left: 'auto',
+    border: '1px solid rgba(0,0,0,.15)',
+    borderRadius: '.25rem',
+    zIndex: theme.zIndex.drawer + 2,
+    padding: '.5rem 0',
+    backgroundColor: '#fff',
+    "&:hover": {
+      display: 'block'
+    },
+    "& button": {
+      justifyContent: 'left',
+      textTransform: 'none',
+      width: '100%',
+      fontWeight: 'bold',
+      color: 'black',
+      border: 'none',
+      '&:hover': {
+        border: 'none'
+      },
+      whiteSpace: 'nowrap',
+      padding: '.25rem 1.5rem'
+    }
   }
 });
 
@@ -140,12 +184,11 @@ class AppWrap extends React.Component<Props, State> {
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <Grid container justify="flex-start">
-              <div>
+              <div className={classes.topNavNoHover}>
                 <Typography
                   variant="subtitle1"
                   color="inherit"
-                  className={classes.grow}
-                  onClick={() => this.redirectTo("")}
+                  className={classes.topNavText + " " + classes.noBold}
                 >
                   {/* {this.getTitleName()} */}
                   TMS: Question Management
@@ -153,7 +196,7 @@ class AppWrap extends React.Component<Props, State> {
               </div>
               <div
                 onClick={() => this.redirectTo("category")}
-                className={classes.topNav}
+                className={classes.topNav + " navbarItem"}
               >
                 <Typography variant="body2" className={classes.topNavText}>
                   Categories
@@ -161,7 +204,7 @@ class AppWrap extends React.Component<Props, State> {
               </div>
               <div
                 onClick={() => this.redirectTo("language")}
-                className={classes.topNav}
+                className={classes.topNav + " navbarItem"}
               >
                 <Typography variant="body2" className={classes.topNavText}>
                   Languages
@@ -169,7 +212,7 @@ class AppWrap extends React.Component<Props, State> {
               </div>
               <div
                 onClick={() => this.redirectTo("question")}
-                className={classes.topNav}
+                className={classes.topNav  + " navbarItem"}
               >
                 <Typography variant="body2" className={classes.topNavText}>
                   Questions
@@ -177,7 +220,7 @@ class AppWrap extends React.Component<Props, State> {
               </div>
               <div
                 onClick={() => this.redirectTo("report")}
-                className={classes.topNav}
+                className={classes.topNav + " navbarItem"}
               >
                 <Typography variant="body2" className={classes.topNavText}>
                   Report
@@ -185,7 +228,44 @@ class AppWrap extends React.Component<Props, State> {
               </div>
             </Grid>
 
-            <Button
+            <div
+              className={classes.topNav + " " + classes.dropdown}
+            >
+              <Typography variant="body2" className={classes.topNavText}>
+                Administration&nbsp;&#9660;
+              </Typography>
+
+              <div className={classes.dropdownMenu}>
+                <ButtonGroup
+                  orientation="vertical"
+                  color="primary"
+                >
+                  <Button onClick={() => this.handleRedirect(config.questionsUrl)}>Question Management</Button>
+                  <Button onClick={() => this.handleRedirect(config.configUrl)}>Configuration Management</Button>
+                </ButtonGroup>
+              </div>
+            </div>
+
+            <div
+              className={classes.topNav + " " + classes.dropdown}
+            >
+              <Typography variant="body2" className={classes.topNavText}>
+                {this.props.name}&nbsp;&#9660;
+              </Typography>
+
+              <div className={classes.dropdownMenu}>
+                <ButtonGroup
+                  orientation="vertical"
+                  color="primary"
+                >
+                  <Button onClick={() => this.handleRedirect(config.profileUrl)}>My Profile</Button>
+                  <Button onClick={() => this.handleRedirect(config.examUrl)}>My Exams</Button>
+                  <Button onClick={this.props.logout}>Sign Out</Button>
+                </ButtonGroup>
+              </div>
+            </div>
+
+            {/* <Button
               color="inherit"
               onClick={this.handleMenuClick}
               style={{ width: 150 }}
@@ -197,14 +277,14 @@ class AppWrap extends React.Component<Props, State> {
               open={Boolean(this.state.menuAnchor)}
               onClose={this.handleMenuClose}
             >
-              <MenuItem onClick={() => this.handleRedirect(config.dashboard)}>
-                Dashboard
-              </MenuItem>
               <MenuItem onClick={() => this.handleRedirect(config.profileUrl)}>
                 My Profile
               </MenuItem>
-              <MenuItem onClick={this.props.logout}>Logout</MenuItem>
-            </Menu>
+              <MenuItem onClick={() => this.handleRedirect(config.examUrl)}>
+                My Exams
+              </MenuItem>
+              <MenuItem onClick={this.props.logout}>Sign Out</MenuItem>
+            </Menu> */}
           </Toolbar>
         </AppBar>
         {/* <Drawer
