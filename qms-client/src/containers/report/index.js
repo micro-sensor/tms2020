@@ -104,7 +104,7 @@ class Report extends React.Component<Props, State> {
     }
 
     return (
-      <Grid container spacing={16} justify="center">
+      <Grid container spacing={2} justify="center">
         <Grid item xs={12}>
           <Typography variant="h4" style={{ marginLeft: 2 }}>
             Question count report

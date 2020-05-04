@@ -30,9 +30,9 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-        <Grid container justify="center">
+        <Grid container justify="center" spacing={4}>
           <Grid item xs={12} lg={10}>
-            <Grid container spacing={32}>
+            <Grid container spacing={4}>
               <Grid item xs={12} sm={12} md={4}>
                 <HomeTile
                   onClick={() => this.props.history.push("/category")}

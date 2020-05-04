@@ -234,7 +234,7 @@ class Category extends React.Component<Props, State> {
 
     const dtl = this.state.categoryList[this.state.selectedIndex];
     return (
-      <Grid container spacing={16}>
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={5} lg={5}>
           <Paper>
             <CategoryList

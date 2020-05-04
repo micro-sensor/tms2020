@@ -200,7 +200,7 @@ class Language extends React.Component<Props, State> {
 
     const dtl = this.state.langList[this.state.selectedIndex];
     return (
-      <Grid container spacing={16}>
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={5} lg={5}>
           <Paper>
             <LangList
