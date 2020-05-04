@@ -14,6 +14,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as api from "./api";
+import DialogButton from "../../components/DialogButton";
+import FileUpload from "../FileUpload";
 
 type Props = {
   showSnack: (string, boolean) => void,
@@ -173,6 +175,33 @@ class Category extends React.Component<Props, State> {
       });
   };
 
+  exportAll = () => {
+    api
+        .exportAll()
+        .then(msg => {
+          var FileSaver = require('file-saver');
+          var blob = new Blob([msg.data], {type: "text/xml"});
+          FileSaver.saveAs(blob, "categories");
+          this.props.showSnack("Success. All questions exported.", true);
+        })
+        .catch(e => {
+          this.props.showSnack("Error. Could not export all questions.", false);
+          console.log(e);
+        });
+  };
+
+  removeAll = () => {
+    api
+        .deleteAll()
+        .then(msg => {
+          window.location.reload();
+        })
+        .catch(e => {
+          this.props.showSnack("Error. Could not delete all questions. Reason: " + e.response.data.message, false);
+          console.log(e.response.data.message);
+        });
+  };
+
   callDeleteCategory = () => {
     const dtl = this.state.categoryList[this.state.selectedIndex];
     this.props.showConfirmDialog(
@@ -215,42 +244,85 @@ class Category extends React.Component<Props, State> {
             />
           </Paper>
           <br />
-          <div>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                this.setState({
-                  open: true
-                });
-              }}
-            >
-              Create New
-            </Button>
-            <Dialog
-              open={this.state.open}
-              onClose={this.handleClose}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
-            >
-              <DialogTitle id="alert-dialog-title">
-                {`Create new Category: ` + this.state.newCategory.name}
-              </DialogTitle>
-              <DialogContent>
-                <div style={{ minWidth: 552 }}>
-                  <CategoryDetail
-                    handleChangeBody={this.handleChange("description", true)}
-                    handleChangeName={this.handleChange("name", true)}
-                    handleSave={this.createCategory}
-                    detail={this.state.newCategory}
-                    create
-                    nameError={this.state.newEmpty.name}
-                    descError={this.state.newEmpty.description}
-                  />
-                </div>
-              </DialogContent>
-            </Dialog>
-          </div>
+          <Grid container direction="column">
+            <div>
+              <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    this.setState({
+                      open: true
+                    });
+                  }}
+              >
+                Create New
+              </Button>
+              <Dialog
+                  open={this.state.open}
+                  onClose={this.handleClose}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">
+                  {`Create new Category: ` + this.state.newCategory.name}
+                </DialogTitle>
+                <DialogContent>
+                  <div style={{ minWidth: 552 }}>
+                    <CategoryDetail
+                        handleChangeBody={this.handleChange("description", true)}
+                        handleChangeName={this.handleChange("name", true)}
+                        handleSave={this.createCategory}
+                        detail={this.state.newCategory}
+                        create
+                        nameError={this.state.newEmpty.name}
+                        descError={this.state.newEmpty.description}
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+            <Grid container style={{ marginTop: 5}}>
+              <DialogButton
+                  title="IMPORT CATEGORIES"
+                  buttonLabel="IMPORT CATEGORIES"
+                  variant="contained"
+                  history = {this.props.history}
+                  dialogContent={(close, open) => {
+                    return (
+                        <FileUpload
+                            postUrl={api.importCategories}
+                            accept={["text/xml"]}
+                            // multiple={true}
+                            maxSize={1000000}
+                            showMessage={(message) => this.props.showSnack(message, false)}
+                            rejectMessage="File rejected. Files must be smaller than 1 MB"
+                            history = {this.props.history}
+                            onSuccess={() => {
+                              this.props.showSnack("File successfully processed.", true);
+                            }}
+                        />
+                    );
+                  }}
+              />
+              <Button
+                  style={{ marginLeft: 5}}
+                  variant="contained"
+                  color="primary"
+                  onClick={() =>  this.exportAll()}
+              >
+                EXPORT
+              </Button>
+              <Button
+                  style={{ marginLeft: 5}}
+                  variant="contained"
+                  color="secondary"
+                  onClick={() =>  this.removeAll()}
+              >
+                Delete All
+              </Button>
+
+            </Grid>
+          </Grid>
         </Grid>
         {this.state.categoryList.length > 0 && dtl && (
           <Grid item xs={12} sm={12} md={7} lg={7}>
