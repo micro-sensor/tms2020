@@ -45,7 +45,10 @@ public class QuestionService {
 
         for (int i = 0; i < indexs.length; i++) {
             Question tmpQuestion = tempQuestions.get(indexs[i]);
-            Code code = codeRepository.findByQuestionAndAndLanguage(tmpQuestion, language);
+            Code code = null;
+            if (language != null) {
+                code = codeRepository.findByQuestionAndAndLanguage(tmpQuestion, language);
+            }
             List<Choice> choices = choiceRepository.findByQuestion(tmpQuestion);
             questionSingleCodeDtos.add(new QuestionSingleCodeDto(tmpQuestion.getTitle(), tmpQuestion.getLevel(), tmpQuestion.getBody(), code, choices));
         }

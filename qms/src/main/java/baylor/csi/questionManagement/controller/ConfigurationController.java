@@ -4,6 +4,7 @@ import baylor.csi.questionManagement.Exception.JPAException;
 import baylor.csi.questionManagement.Exception.ResourceNotFoundException;
 import baylor.csi.questionManagement.model.Configuration;
 import baylor.csi.questionManagement.model.ConfigurationGroup;
+import baylor.csi.questionManagement.model.Language;
 import baylor.csi.questionManagement.repository.ConfigurationRepository;
 import baylor.csi.questionManagement.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +75,14 @@ public class ConfigurationController {
         ConfigurationGroup c = new ConfigurationGroup();
         c.setCategory(Long.parseLong(group.get("category").toString()));
         c.setCount(Integer.parseInt(group.get("count").toString()));
-        c.setLanguageId(languageRepository.findByName(group.get("language").toString()).getId());
+        if (group.get("language") != null) {
+            Language lang = languageRepository.findByName(group.get("language").toString());
+            if (lang != null) {
+                c.setLanguageId(lang.getId());
+            }
+        } else {
+            c.setLanguageId(null);
+        }
         c.setLevel(Integer.parseInt(group.get("level").toString()));
         c.setConfiguration(configuration);
         configuration.getGroups().add(c);
