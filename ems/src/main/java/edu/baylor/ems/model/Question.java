@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +31,7 @@ public class Question implements Serializable {
     private List<Choice> choices;
 
     @Column(name = "body")
+    @Size(max = 1024)
     private String body;
 
     @Column(name = "code")
