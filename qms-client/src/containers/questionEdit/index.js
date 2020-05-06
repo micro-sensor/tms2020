@@ -2,6 +2,8 @@
 
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import CKEditor from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {
   Paper,
   Divider,
@@ -150,9 +152,9 @@ class QuestionEdit extends React.Component<Props, State> {
     }
   };
 
-  change = property => event => {
+  change = (property, event) => {
     const newQuestion = Object.assign({}, this.props.question);
-    newQuestion[property] = event.target.value;
+    newQuestion[property] = event.target ? event.target.value : event.getData();
     this.props.updateQuestion(newQuestion);
   };
 
@@ -272,9 +274,9 @@ class QuestionEdit extends React.Component<Props, State> {
     this.props.updateQuestion(newQuestion);
   };
 
-  changeCodeBody = langId => event => {
+  changeCodeBody = (langId, event) => {
     const c = this.getCode(langId);
-    c.body = event.target.value;
+    c.body = event.target ? event.target.value : event.getData();
     const newQuestion = Object.assign({}, this.props.question);
     const newCodes = this.setInArray(c, newQuestion.codes, "languageId");
     newQuestion.codes = newCodes;
@@ -360,6 +362,22 @@ class QuestionEdit extends React.Component<Props, State> {
   render() {
     const { question, updateQuestion } = this.props;
 
+    let editorConfiguration = {
+      extraPlugins: [],
+      toolbar: {
+        items: [
+          "heading", "|", "undo", "redo", "|",
+          "selectAll", "bold", "italic", "blockQuote", "|",
+          "numberedList", "bulletedList", "|" ,
+          "indent", "outdent", "|" ,
+          "insertTable", "link", "mediaEmbed",  "|" ,
+        ],
+        shouldNotGroupWhenFull: true,
+      },
+      label: "Hi",
+      placeholder: "Hello",
+    };
+
     if (!question) {
       return <div />;
     }
@@ -381,29 +399,43 @@ class QuestionEdit extends React.Component<Props, State> {
                     error={question.title.length == 0}
                     style={{ width: "100%" }}
                     value={question.title}
-                    onChange={this.change("title")}
+                    onChange={event => this.change("title", event)}
                     label="Title"
                     InputProps={{ style: { fontSize: 24 } }}
                 />
               </div>
               <Divider />
               <div style={{ padding: 16 }}>
-                <TextField
-                    error={question.body.length < 3}
-                    multiline
-                    label="Body"
-                    value={question.body}
-                    style={{ width: "100%" }}
-                    onChange={this.change("body")}
-                    helperText="The actual text of the question"
-                    variant="outlined"
-                >
-                  {[1, 2, 3, 4, 5].map(option => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                  ))}
-                </TextField>
+                {/*<TextField*/}
+                {/*    error={question.body.length < 3}*/}
+                {/*    multiline*/}
+                {/*    label="Body"*/}
+                {/*    value={question.body}*/}
+                {/*    style={{ width: "100%" }}*/}
+                {/*    onChange={ event => this.change("body", event)}*/}
+                {/*    helperText="The actual text of the question"*/}
+                {/*    variant="outlined"*/}
+                {/*>*/}
+                {/*  {[1, 2, 3, 4, 5].map(option => (*/}
+                {/*      <MenuItem key={option} value={option}>*/}
+                {/*        {option}*/}
+                {/*      </MenuItem>*/}
+                {/*  ))}*/}
+                {/*</TextField>*/}
+                {editorConfiguration["placeholder"] = "Body of the question"}
+                <CKEditor
+                    data={question.body}
+                    editor={ ClassicEditor }
+                    config={editorConfiguration}
+                    onChange={( event, editor ) => this.change("body", editor)}
+                    style={{ fontSize: 24 } }
+                    onInit={ editor => {
+                      // You can store the "editor" and use when it is needed.
+                      console.log( 'Editor is ready to use!', editor );
+                      console.log("available CKEditor plugins: ", ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ));
+                      console.log("all toolbar items: ", Array.from( editor.ui.componentFactory.names() ));
+                    } }
+                />
               </div>
               <Divider />
               <div style={{ padding: 16 }}>
@@ -412,7 +444,7 @@ class QuestionEdit extends React.Component<Props, State> {
                     label="Difficulty level"
                     value={question.level}
                     style={{ width: 128 }}
-                    onChange={this.change("level")}
+                    onChange={event => this.change("level", event)}
                 >
                   {[1, 2, 3, 4, 5].map(option => (
                       <MenuItem key={option} value={option}>
@@ -606,15 +638,22 @@ class QuestionEdit extends React.Component<Props, State> {
                         <ExpansionPanelDetails>
                           <Grid container>
                             <Grid item xs={12}>
-                              <TextField
-                                  error={code.body.length < 3}
-                                  multiline
-                                  variant="outlined"
-                                  label="Code snippet body"
-                                  value={code.body}
-                                  style={{ width: "100%" }}
-                                  onChange={this.changeCodeBody(code.languageId)}
-                                  InputProps={{ style: { fontFamily: "monospace" } }}
+                              {/*<TextField*/}
+                              {/*    error={code.body.length < 3}*/}
+                              {/*    multiline*/}
+                              {/*    variant="outlined"*/}
+                              {/*    label="Code snippet body"*/}
+                              {/*    value={code.body}*/}
+                              {/*    style={{ width: "100%" }}*/}
+                              {/*    onChange={(event) => this.changeCodeBody(code.languageId, event)}*/}
+                              {/*    InputProps={{ style: { fontFamily: "monospace" } }}*/}
+                              {/*/>*/}
+                              {editorConfiguration["placeholder"] = "Code snippet body"}
+                              <CKEditor
+                                  data={code.body}
+                                  editor={ ClassicEditor }
+                                  config={editorConfiguration}
+                                  onChange={( event, editor ) => this.changeCodeBody(code.languageId, editor)}
                               />
                             </Grid>
                             <Grid item xs={12}>
