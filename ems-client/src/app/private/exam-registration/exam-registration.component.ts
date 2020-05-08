@@ -3,6 +3,7 @@ import {ExamRegistration} from "../../model/exam-registration";
 import {ExamManagerService} from "../exam-manager.service";
 import {KeycloakService} from 'keycloak-angular';
 import { Exam } from 'src/app/model/exam';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-exam-registration',
@@ -42,6 +43,9 @@ export class ExamRegistrationComponent implements OnInit {
         //   console.log(id);
         // });
 
+      },
+      error => {
+        alertify.error('Failed to retrieve exams!');
       });
     })
   }

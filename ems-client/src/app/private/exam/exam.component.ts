@@ -6,6 +6,7 @@ import {Observable, timer} from 'rxjs';
 import {map, take, tap} from 'rxjs/operators';
 import { Question } from 'src/app/model/question';
 import { QuestionSubmission } from 'src/app/model/question-submission';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-exam',
@@ -42,23 +43,6 @@ export class ExamComponent implements OnInit {
 
         this.examManager.getExam(params['id']).subscribe( (data) => {
           this.exam = data;
-          // let today: any = new Date();
-          // // console.log(today);
-          // let deadline: any = new Date(this.exam.examDate);
-          // deadline = new Date(deadline.getTime() + 5*60*60*1000)
-          // // console.log(Christmas);
-          // let diffMs: any = (deadline - today); // milliseconds between now & Christmas
-          // // let diffDays = Math.floor(diffMs / 86400000); // days
-          // // let diffHrs = Math.floor((diffMs % 86400000) / 3600000); // hours
-          // let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000); // minutes
-          //
-          // // console.log(diffDays + " days, " + diffHrs + " hours, " + diffMins + " minutes until Christmas 2009 =)");
-          // this.diff = diffMins;
-          // console.log("first");
-          // console.log(today);
-          // console.log(deadline);
-          // console.log(diffMs);
-          // console.log(diffMins);
 
           this.counter$ = timer(0,60000).pipe(
             take(this.count),
@@ -75,6 +59,8 @@ export class ExamComponent implements OnInit {
               this.diff = diffMins;
             })
           );
+        }, error => {
+          alertify.error('Failed to retrieve exam!');
         });
       });
     });
@@ -122,8 +108,11 @@ export class ExamComponent implements OnInit {
 
   public submitExam(): void {
     this.examManager.submitExam(this.examId).subscribe( data => {
-      this.router.navigate(['/'])
-    })
+      this.router.navigate(['/']);
+      alertify.success("Exam submitted!");
+    }, error => {
+      alertify.error("Failed to submit exam!");
+    });
   }
 
   public submitQuestion() : Observable<Object> {
@@ -142,9 +131,14 @@ export class ExamComponent implements OnInit {
   public submit(){
     this.submitQuestion().subscribe( data => {
       console.log(data);
-      if(confirm("Are you sure to submit the exam?")) {
-        this.submitExam();
-      }
+      alertify.confirm('Submit Exam', "Are you sure you want to submit the exam?",
+        () => {
+          this.submitExam();
+        },
+        function(){} // noop for cancel
+      );
+    }, error => {
+      alertify.error("Failed to submit exam!");
     });
   }
 }

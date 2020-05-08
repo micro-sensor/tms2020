@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ConfigurationService} from '../configuration.service';
 import {FormControl, FormGroup} from '@angular/forms';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-conf-wrapper',
@@ -41,9 +42,11 @@ export class ConfWrapperComponent implements OnInit {
       description: result.description,
       groups: this.groups
     }).subscribe( (data) => {
-      alert("Configuration created");
+      alertify.notify("Configuration created");
       this.configForm.reset();
       this.groups = [];
+    }, error => {
+      alertify.notify("Failed to create configuration!");
     })
 
   }

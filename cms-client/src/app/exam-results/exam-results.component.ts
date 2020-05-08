@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ConfigurationService} from '../configuration.service';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-exam-results',
@@ -45,8 +46,16 @@ export class ExamResultsComponent implements OnInit {
       });
 
     });
-    this.config.getConfigurations().subscribe(data => {this.configurations = data;});
-    this.config.getAllUsers().subscribe(data => {this.users = data;});
+    this.config.getConfigurations().subscribe(data => {
+      this.configurations = data;
+    }, error => {
+      alertify.error("Failed to retrieve configurations!");
+    });
+    this.config.getAllUsers().subscribe(data => {
+      this.users = data;
+    }, error => {
+      alertify.error("Failed to retrieve users!");
+    });
   }
 
 

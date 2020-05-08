@@ -14,6 +14,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as api from "./api";
+import alertify from 'alertifyjs';
 
 type Props = {
   showSnack: (string, boolean) => void,
@@ -65,7 +66,7 @@ class Language extends React.Component<Props, State> {
             loaded: true,
             err: true
           });
-          this.props.showSnack("Could not load languages.", false);
+          alertify.error("Could not load languages.", false);
         } else {
           const list = m.data.sort((a, b) => {
             return a.name < b.name ? -1 : 1;
@@ -82,7 +83,7 @@ class Language extends React.Component<Props, State> {
           loaded: true,
           err: true
         });
-        this.props.showSnack("Could not load languages.", false);
+        alertify.error("Could not load languages.", false);
         console.log(e);
       });
   };
@@ -132,12 +133,12 @@ class Language extends React.Component<Props, State> {
             langList: newList
           },
           () => {
-            this.props.showSnack("Success. Language updated.", true);
+            alertify.success("Success. Language updated.");
           }
         );
       })
       .catch(e => {
-        this.props.showSnack("Error. Could not save language.", false);
+        alertify.error("Error. Could not save language.");
       });
   };
 
@@ -152,7 +153,7 @@ class Language extends React.Component<Props, State> {
           },
           () => {
             this.fetchAll();
-            this.props.showSnack("Success. Language created.", true);
+            alertify.success("Success. Language created.");
           }
         );
       })
@@ -164,14 +165,13 @@ class Language extends React.Component<Props, State> {
           }
         });
 
-        this.props.showSnack("Error. Could not create language.", false);
+        alertify.error("Error. Could not create language.");
       });
   };
 
   callDeleteLang = () => {
     const dtl = this.state.langList[this.state.selectedIndex];
-    this.props.showConfirmDialog(
-      "Do you really want to delete language " + dtl.name + "?",
+    alertify.confirm('Delete Language', "Do you really want to delete language " + dtl.name + "?",
       () => {
         api
           .deleteLanguage(this.state.langList[this.state.selectedIndex].id)
@@ -182,14 +182,15 @@ class Language extends React.Component<Props, State> {
               },
               () => {
                 this.fetchAll();
-                this.props.showSnack("Success. Language removed.", true);
+                alertify.success('Success. Language removed.');
               }
             );
           })
           .catch(e => {
-            this.props.showSnack("Error. Could not remove language.", false);
+            alertify.error('Error. Could not remove language.');
           });
-      }
+      },
+      function(){} // noop for cancel
     );
   };
 

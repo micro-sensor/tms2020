@@ -2,6 +2,7 @@ import {Component, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {ConfigurationService} from '../configuration.service';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-exam-assignment',
@@ -59,10 +60,12 @@ export class ExamAssignmentComponent implements OnInit {
     result.examinee = this.id;
 
     this.configuration.createExam(result).subscribe((data) => {
-    alert("Assignment created");
-    this.reviewForm.reset();
+      alertify.success("Exam assigned!");
+      this.reviewForm.reset();
       this.configuration.getAllAssignmentsInit().subscribe(data => {  this.exams = data;})
-    }, error1 => {})
+    }, error1 => {
+      alertify.error("Failed to assign exam!");
+    });
 
   }
 

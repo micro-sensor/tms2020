@@ -36,7 +36,7 @@ class UserInfo extends Component {
 
     componentDidMount() {
         const http = new XMLHttpRequest();
-        http.open('GET', 'http://tcs.ecs.baylor.edu/ums/userinfo/userByUsername/' + this.props.nameToGet);
+        http.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/userByUsername/' + this.props.nameToGet);
         http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http.onload = (event) => {
             if (http.response == null) return;
@@ -84,8 +84,8 @@ class UserInfo extends Component {
                                 <Card.Title>Account Info</Card.Title>
                                 <Form className="UserInfo">
                                     <Form.Group>
-                                        <Form.Label>ID</Form.Label>
-                                        <Form.Control value={this.state.id} name='id' type='text' readOnly />
+                                        <Form.Label>Email</Form.Label>
+                                        <Form.Control value={this.state.email} name='email' type='text' readOnly />
                                     </Form.Group>
                                     <Form.Group onChange={(event) => {this.handleChange(event)}}>
                                         <Form.Label>Username</Form.Label>
@@ -98,10 +98,6 @@ class UserInfo extends Component {
                                     <Form.Group onChange={(event) => {this.handleChange(event)}}>
                                         <Form.Label>Last Name</Form.Label>
                                         <Form.Control value={this.state.lastName} name='lastName' type='text' />
-                                    </Form.Group>
-                                    <Form.Group onChange={(event) => {this.handleChange(event)}}>
-                                        <Form.Label>Email</Form.Label>
-                                        <Form.Control value={this.state.email} name='email' type='text' />
                                     </Form.Group>
                                 </Form>
                             </Card.Body>
@@ -192,7 +188,7 @@ class UserInfo extends Component {
                 </Row>
                 <br/>
                 <Row>
-                    <Col>
+                    {/* <Col>
                         <Card style={{ width: '22rem' }} className='text-black'>
                             <Card.Body>
                                 <Card.Title>Teacher Info</Card.Title>
@@ -217,7 +213,7 @@ class UserInfo extends Component {
                             </Card.Body>
                         </Card>
                     </Col>
-                    <br/>
+                    <br/> */}
                     <Col>
                         <Card style={{ width: '22rem' }} className='text-black'>
                             <Card.Body>

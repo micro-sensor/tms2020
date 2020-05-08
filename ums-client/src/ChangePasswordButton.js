@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Button} from "react-bootstrap";
+import alertify from 'alertifyjs';
 
 /**
  * This is a button that will change the logged in user's password in keycloak.
@@ -33,10 +34,10 @@ class ChangePasswordButton extends Component {
      */
     handleClick = () => {
         if (!this.validPassword()) {
-            alert('Error! Password must be at least 6 characters long!');
+            alertify.error('Password must be at least 6 characters long!');
             return;
         }
-        fetch('http://tcs.ecs.baylor.edu/ums/userinfo/changePassword/' + this.props.id, {
+        fetch('https://tcs.ecs.baylor.edu/ums/userinfo/changePassword/' + this.props.id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -45,9 +46,10 @@ class ChangePasswordButton extends Component {
             body: this.props.newPassword,
         })
             .then(response => {
-                if (response.status === 200)
+                if (response.status === 200) {
+                    alertify.success('Password updated.');
                     return response.json();
-                else
+                } else
                     return { status: response.status, message: response.statusText }
             })
             .then(json => this.setState((state, props) => ({
@@ -55,6 +57,7 @@ class ChangePasswordButton extends Component {
             })))
             .catch(err => {
                 this.setState((state, props) => ({ response: err.toString() }))
+                alertify.error('Failed to update password.');
             })
     };
 

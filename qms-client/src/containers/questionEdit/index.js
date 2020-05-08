@@ -29,6 +29,7 @@ import uuidv1 from "uuid";
 import DeleteIcon from "@material-ui/icons/DeleteRounded";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as api from "../question/api";
+import alertify from 'alertifyjs';
 
 type Props = {
   question: Question,
@@ -72,7 +73,7 @@ class QuestionEdit extends React.Component<Props, State> {
               categoryLoaded: true,
               categoryError: true
             });
-            this.props.showSnack("Could not load categories.", false);
+            alertify.error("Could not load categories.");
           } else {
             const list = m.data.sort(function(a, b) {
               return a.name < b.name ? -1 : 1;
@@ -93,7 +94,7 @@ class QuestionEdit extends React.Component<Props, State> {
             categoryLoaded: true,
             categoryError: true
           });
-          this.props.showSnack("Could not load categories.", false);
+          alertify.error("Could not load categories.");
           console.log(e);
         });
   };
@@ -107,7 +108,7 @@ class QuestionEdit extends React.Component<Props, State> {
               langLoaded: true,
               langError: true
             });
-            this.props.showSnack("Could not load languages.", false);
+            alertify.error("Could not load languages.");
           } else {
             const list = m.data.sort(function(a, b) {
               return a.name < b.name ? -1 : 1;
@@ -127,7 +128,7 @@ class QuestionEdit extends React.Component<Props, State> {
             langLoaded: true,
             langError: true
           });
-          this.props.showSnack("Could not load languages.", false);
+          alertify.error("Could not load languages.");
           console.log(e);
         });
   };
@@ -305,10 +306,10 @@ class QuestionEdit extends React.Component<Props, State> {
           var FileSaver = require('file-saver');
           var blob = new Blob([msg.data], {type: "text/xml"});
           FileSaver.saveAs(blob, "question");
-          this.props.showSnack("Success. Question exported.", true);
+          alertify.success("Success. Question exported.");
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not export the question.", false);
+          alertify.error("Error. Could not export the question.");
           console.log(e);
         });
   };
@@ -321,10 +322,10 @@ class QuestionEdit extends React.Component<Props, State> {
           .save(question, question.id)
           .then(msg => {
             this.processSave(msg);
-            this.props.showSnack("Success. Question updated.", true);
+            alertify.success("Success. Question updated.");
           })
           .catch(e => {
-            this.props.showSnack("Error. Could not update question.", false);
+            alertify.error("Error. Could not update question.");
             console.log(e);
           });
     } else {
@@ -332,11 +333,11 @@ class QuestionEdit extends React.Component<Props, State> {
           .create(question)
           .then(msg => {
             this.processSave(msg);
-            this.props.showSnack("Success. Question created.", true);
+            alertify.success("Success. Question created.");
             this.props.history.push("/question/edit/" + msg.data.id);
           })
           .catch(e => {
-            this.props.showSnack("Error. Could not create question.", false);
+            alertify.error("Error. Could not create question.");
             console.log(e);
           });
     }
@@ -348,11 +349,11 @@ class QuestionEdit extends React.Component<Props, State> {
     api
         .remove(question.id)
         .then(msg => {
-          this.props.showSnack("Success. Question deleted.", true);
+          alertify.success("Success. Question deleted.");
           this.props.history.push("/question");
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not delete question.", false);
+          alertify.error("Error. Could not delete question.");
           console.log(e);
         });
   };

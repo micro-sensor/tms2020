@@ -16,6 +16,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import * as api from "./api";
 import DialogButton from "../../components/DialogButton";
 import FileUpload from "../FileUpload";
+import alertify from 'alertifyjs';
 
 type Props = {
   showSnack: (string, boolean) => void,
@@ -71,7 +72,7 @@ class Category extends React.Component<Props, State> {
             loaded: true,
             err: true
           });
-          this.props.showSnack("Could not load categories.", false);
+          alertify.error("Could not load categories.", false);
         } else {
           const list = m.data.sort(function(a, b) {
             return a.name < b.name ? -1 : 1;
@@ -88,7 +89,7 @@ class Category extends React.Component<Props, State> {
           loaded: true,
           err: true
         });
-        this.props.showSnack("Could not load categories.", false);
+        alertify.error("Could not load categories.", false);
         console.log(e);
       });
   };
@@ -138,12 +139,12 @@ class Category extends React.Component<Props, State> {
             categoryList: newList
           },
           () => {
-            this.props.showSnack("Success. Category updated.", true);
+            alertify.success("Success. Category updated.");
           }
         );
       })
       .catch(e => {
-        this.props.showSnack("Error. Could not save category.", false);
+        alertify.error("Error. Could not save category.");
       });
   };
 
@@ -158,7 +159,7 @@ class Category extends React.Component<Props, State> {
           },
           () => {
             this.fetchAll();
-            this.props.showSnack("Success. Category created.", true);
+            alertify.success("Success. Category created.");
           }
         );
       })
@@ -171,7 +172,7 @@ class Category extends React.Component<Props, State> {
           }
         });
 
-        this.props.showSnack("Error. Could not create category.", false);
+        alertify.error("Error. Could not create category.");
       });
   };
 
@@ -182,10 +183,10 @@ class Category extends React.Component<Props, State> {
           var FileSaver = require('file-saver');
           var blob = new Blob([msg.data], {type: "text/xml"});
           FileSaver.saveAs(blob, "categories");
-          this.props.showSnack("Success. All questions exported.", true);
+          alertify.success("Success. All questions exported.");
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not export all questions.", false);
+          alertify.error("Error. Could not export all questions.");
           console.log(e);
         });
   };
@@ -197,15 +198,14 @@ class Category extends React.Component<Props, State> {
           window.location.reload();
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not delete all questions. Reason: " + e.response.data.message, false);
+          alertify.error("Error. Could not delete all questions. Reason: " + e.response.data.message, false);
           console.log(e.response.data.message);
         });
   };
 
   callDeleteCategory = () => {
     const dtl = this.state.categoryList[this.state.selectedIndex];
-    this.props.showConfirmDialog(
-      "Do you really want to delete " + dtl.name + "?",
+    alertify.confirm('Delete Category', "Do you really want to delete " + dtl.name + "?",
       () => {
         api
           .deleteCategory(this.state.categoryList[this.state.selectedIndex].id)
@@ -216,14 +216,15 @@ class Category extends React.Component<Props, State> {
               },
               () => {
                 this.fetchAll();
-                this.props.showSnack("Success. Category removed.", true);
+                alertify.success('Success. Category removed.');
               }
             );
           })
           .catch(e => {
-            this.props.showSnack("Error. Could not remove category.", false);
+            alertify.error('Error. Could not remove category.');
           });
-      }
+      },
+      function(){} // noop for cancel
     );
   };
 
@@ -294,11 +295,11 @@ class Category extends React.Component<Props, State> {
                             accept={["text/xml"]}
                             // multiple={true}
                             maxSize={1000000}
-                            showMessage={(message) => this.props.showSnack(message, false)}
+                            showMessage={(message) => alertify.error(message)}
                             rejectMessage="File rejected. Files must be smaller than 1 MB"
                             history = {this.props.history}
                             onSuccess={() => {
-                              this.props.showSnack("File successfully processed.", true);
+                              alertify.success("File successfully processed.");
                             }}
                         />
                     );

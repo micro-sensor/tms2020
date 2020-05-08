@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-conf-creator',
@@ -87,12 +88,13 @@ export class ConfCreatorComponent implements OnInit {
   onSubmit(){
     const result: any = Object.assign({}, this.groupForm.value);
     this.group.emit(result);
-    alert("Group created");
+    alertify.notify("Group added");
     this.groupForm.reset();
     this.initVariables();
-
   }
 
-
+  isEmptyOrSpaces(str) {
+    return str === null || str.match(/^\s*$/) !== null;
+  }
 
 }

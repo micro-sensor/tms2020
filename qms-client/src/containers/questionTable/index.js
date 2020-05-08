@@ -7,6 +7,7 @@ import {Button, Grid} from "@material-ui/core";
 import "index.css";
 import DialogButton from "../../components/DialogButton";
 import FileUpload from "../FileUpload";
+import alertify from 'alertifyjs';
 
 type State = {
   questionList: Array<{
@@ -53,7 +54,7 @@ class QuestionTable<Props, State> extends React.Component {
             err: true
           });
           console.log(e);
-          this.props.showSnack("Could not load questions.", false);
+          alertify.error("Could not load questions.");
         });
   };
   createNew = () => {
@@ -67,10 +68,10 @@ class QuestionTable<Props, State> extends React.Component {
           var FileSaver = require('file-saver');
           var blob = new Blob([msg.data], {type: "text/xml"});
           FileSaver.saveAs(blob, "allQuestions");
-          this.props.showSnack("Success. All questions exported.", true);
+          alertify.success("Success. All questions exported.");
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not export all questions.", false);
+          alertify.error("Error. Could not export all questions.");
           console.log(e);
         });
   };
@@ -85,10 +86,10 @@ class QuestionTable<Props, State> extends React.Component {
           var FileSaver = require('file-saver');
           var blob = new Blob([msg.data], {type: "text/xml"});
           FileSaver.saveAs(blob, "filteredQuestions");
-          this.props.showSnack("Success. All filtered questions were exported.", true);
+          alertify.success("Success. All filtered questions were exported.");
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not export filtered questions.", false);
+          alertify.error("Error. Could not export filtered questions.");
           console.log(e);
         });
   };
@@ -100,7 +101,7 @@ class QuestionTable<Props, State> extends React.Component {
           window.location.reload();
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not delete all questions. Reason: " + e.response.data.message, false);
+          alertify.error("Error. Could not delete all questions. Reason: " + e.response.data.message);
           console.log(e.response.data.message);
         });
   }
@@ -219,11 +220,11 @@ class QuestionTable<Props, State> extends React.Component {
                             accept={["text/xml"]}
                             // multiple={true}
                             maxSize={1000000}
-                            showMessage={(message) => this.props.showSnack(message, false)}
+                            showMessage={(message) => alertify.error(message)}
                             rejectMessage="File rejected. Files must be smaller than 1 MB"
                             history = {this.props.history}
                             onSuccess={() => {
-                              this.props.showSnack("File successfully processed.", true);
+                              alertify.success("File successfully processed.");
                             }}
                         />
                     );

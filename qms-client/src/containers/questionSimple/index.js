@@ -19,6 +19,7 @@ import * as api from "../question/api";
 import DialogButton from "components/DialogButton";
 import FileUpload from "containers/FileUpload";
 import { saveAs, FileSaver } from 'file-saver';
+import alertify from 'alertifyjs';
 
 
 type Props = {};
@@ -105,7 +106,7 @@ class Question extends React.Component<Props, State> {
               categoryLoaded: true,
               categoryError: true
             });
-            this.props.showSnack("Could not load categories.", false);
+            alertify.error("Could not load categories.");
           } else {
             const list = m.data.sort(function(a, b) {
               return a.name < b.name ? -1 : 1;
@@ -136,7 +137,7 @@ class Question extends React.Component<Props, State> {
             categoryLoaded: true,
             categoryError: true
           });
-          this.props.showSnack("Could not load categories.", false);
+          alertify.error("Could not load categories.");
           console.log(e);
         });
   };
@@ -186,10 +187,10 @@ class Question extends React.Component<Props, State> {
           var FileSaver = require('file-saver');
           var blob = new Blob([msg.data], {type: "text/xml"});
           FileSaver.saveAs(blob, "question");
-          this.props.showSnack("Success. Question exported.", true);
+          alertify.success("Success. Question exported.");
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not export the question.", false);
+          alertify.error("Error. Could not export the question.");
           console.log(e);
         });
   };
@@ -201,10 +202,10 @@ class Question extends React.Component<Props, State> {
           var FileSaver = require('file-saver');
           var blob = new Blob([msg.data], {type: "text/xml"});
           FileSaver.saveAs(blob, "allQuestions");
-          this.props.showSnack("Success. All questions exported.", true);
+          alertify.success("Success. All questions exported.");
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not export all questions.", false);
+          alertify.error("Error. Could not export all questions.");
           console.log(e);
         });
   };
@@ -218,10 +219,10 @@ class Question extends React.Component<Props, State> {
           var FileSaver = require('file-saver');
           var blob = new Blob([msg.data], {type: "text/xml"});
           FileSaver.saveAs(blob, "filteredQuestions");
-          this.props.showSnack("Success. All filtered questions were exported.", true);
+          alertify.success("Success. All filtered questions were exported.");
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not export filtered questions.", false);
+          alertify.error("Error. Could not export filtered questions.");
           console.log(e);
         });
   };
@@ -241,7 +242,7 @@ class Question extends React.Component<Props, State> {
           window.location.reload();
         })
         .catch(e => {
-          this.props.showSnack("Error. Could not delete all questions. Reason: " + e.response.data.message, false);
+          alertify.error("Error. Could not delete all questions. Reason: " + e.response.data.message);
           console.log(e.response.data.message);
         });
   }
@@ -318,11 +319,11 @@ class Question extends React.Component<Props, State> {
                           accept={["text/xml"]}
                           // multiple={true}
                           maxSize={1000000}
-                          showMessage={(message) => this.props.showSnack(message, false)}
+                          showMessage={(message) => alertify.error(message)}
                           rejectMessage="File rejected. Files must be smaller than 1 MB"
                           history = {this.props.history}
                           onSuccess={() => {
-                            this.props.showSnack("File successfully processed.", true);
+                            alertify.success("File successfully processed.");
                           }}
                       />
                   );

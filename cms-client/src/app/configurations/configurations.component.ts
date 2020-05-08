@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ConfigurationService} from '../configuration.service';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-configurations',
@@ -17,6 +18,8 @@ export class ConfigurationsComponent implements OnInit {
       this.configurations = data;
       this.config.getConfigInfo().subscribe(data => {this.configInfo = data;});
       this.config.getAllLanguages().subscribe( data => {this.languages = data;})
+    }, error => {
+      alertify.error("Unable to retrieve configurations!");
     });
   }
 

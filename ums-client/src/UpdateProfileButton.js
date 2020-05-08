@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Button} from 'react-bootstrap';
+import alertify from 'alertifyjs';
 
 /**
  * This button will send updated user profile details to the backend
@@ -23,7 +24,7 @@ class UpdateProfileButton extends Component {
      * @version 0.1
      */
     handleClick = () => {
-        fetch('http://tcs.ecs.baylor.edu/ums/userinfo/updateUser', {
+        fetch('https://tcs.ecs.baylor.edu/ums/userinfo/updateUser', {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -31,36 +32,38 @@ class UpdateProfileButton extends Component {
             },
             body: JSON.stringify(this.props.profileData),
         }).then(response => {
-            if (response.status === 200)
-                return response.json();
-            else
-                return { status: response.status, message: response.statusText }
-        }).then(json => this.setState((state, props) => ({
-            response: JSON.stringify(json, null, 2)
-        }))).catch(err => {
-            this.setState((state, props) => ({ response: err.toString() }))
-        });
-
-        fetch('http://tcs.ecs.baylor.edu/ums/userinfo/addUserRoles/' + this.props.profileData.username, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.props.keycloak.token,
-            },
-            body: JSON.stringify(this.props.roles),
-        }).then(response => {
             if (response.status === 200) {
+                alertify.success('Profile updated!');
                 return response.json();
-            } else {
-                return { status: response.status, message: response.statusText }
             }
+            else
+                alertify.error('Failed to update profile!');
+                return { status: response.status, message: response.statusText }
         }).then(json => this.setState((state, props) => ({
             response: JSON.stringify(json, null, 2)
         }))).catch(err => {
             this.setState((state, props) => ({ response: err.toString() }))
         });
 
-        alert('Profile Updated!');
+        // fetch('https://tcs.ecs.baylor.edu/ums/userinfo/addUserRoles/' + this.props.profileData.username, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         'Authorization': 'Bearer ' + this.props.keycloak.token,
+        //     },
+        //     body: JSON.stringify(this.props.roles),
+        // }).then(response => {
+        //     if (response.status === 200) {
+        //         return response.json();
+        //     } else {
+        //         return { status: response.status, message: response.statusText }
+        //     }
+        // }).then(json => this.setState((state, props) => ({
+        //     response: JSON.stringify(json, null, 2)
+        // }))).catch(err => {
+        //     this.setState((state, props) => ({ response: err.toString() }))
+        // });
+
     };
 
     render() {
