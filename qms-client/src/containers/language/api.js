@@ -17,3 +17,13 @@ export const create = (lang: any) => {
 export const deleteLanguage = (id: number) => {
   return api.delete(configuration.backend + "/language/" + id);
 };
+
+export const deleteAll = () => {
+  return api.delete(configuration.backend + "/language");
+};
+
+export const exportAll = () => {
+  return api.get(configuration.backend + "/language/export");
+};
+
+export const importLanguages = configuration.backend + "/language/import";
