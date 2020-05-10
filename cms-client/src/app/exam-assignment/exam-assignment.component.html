@@ -15,12 +15,25 @@
     <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" novalidate>
 
 
-      <div class="field">
+      <!-- <div class="field">
         <label class="label">Examinee email</label>
         <div class="control">
           <input class="input" type="text" placeholder="Examinee" formControlName="examinee">
         </div>
         <p class="help is-success" *ngIf="id">Email is valid</p>
+      </div> -->
+
+      <div class="field">
+        <label class="label">Examinee</label>
+        <div class="control">
+          <ng-select [items]="users"
+                     bindLabel="email"
+                     autofocus
+                     bindValue="email"
+                     placeholder="Select Examinee"
+                     formControlName="examinee">
+          </ng-select>
+        </div>
       </div>
 
       <div class="field">
@@ -38,7 +51,7 @@
 
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-link" type="submit" [disabled]="!id">Save</button>
+          <button class="button is-link" type="submit" [disabled]="reviewForm.pristine">Save</button>
         </div>
         <div class="control">
           <button class="button is-text" type="reset" (click)="revert()" [disabled]="reviewForm.pristine">Revert</button>

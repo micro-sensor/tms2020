@@ -28,16 +28,16 @@ export class ExamAssignmentComponent implements OnInit {
     this.configuration.getConfigurations().subscribe((data) => {
       this.configurations = data;
     });
-    this.reviewForm.valueChanges.pipe(
-      debounceTime(1000),
-      distinctUntilChanged()
-    ).subscribe(data => {
-      this.configuration.isEmailValid(data.examinee).subscribe( data2 => {
-        let email: ExamDto = <ExamDto>data2;
-        this.id = data.examinee;
-        console.log(data.examinee);
-      })
-    });
+    // this.reviewForm.valueChanges.pipe(
+    //   debounceTime(1000),
+    //   distinctUntilChanged()
+    // ).subscribe(data => {
+    //   this.configuration.isEmailValid(data.examinee).subscribe( data2 => {
+    //     let email: ExamDto = <ExamDto>data2;
+    //     this.id = data.examinee;
+    //     console.log(data.examinee);
+    //   })
+    // });
   }
 
   ngOnInit() {
@@ -57,7 +57,7 @@ export class ExamAssignmentComponent implements OnInit {
     // Make sure to create a deep copy of the form-model
     const result: any = Object.assign({}, this.reviewForm.value);
     console.log(result);
-    result.examinee = this.id;
+    // result.examinee = this.id;
 
     this.configuration.createExam(result).subscribe((data) => {
       alertify.success("Exam assigned!");
