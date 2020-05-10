@@ -66,7 +66,9 @@ export class ExamCardComponent implements OnInit {
   }
 
   deleteAssignment(id){
-    this.toBeDelete.emit(id);
+    if(confirm("Are you sure to delete?")) {
+      this.toBeDelete.emit(id);
+    }
   }
 
 }
