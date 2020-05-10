@@ -14,8 +14,7 @@
                      placeholder="Select Category"
                      formControlName="category" (change)="groupSelected($event)">
             <ng-template ng-option-tmp let-item="item" let-index="index" let-search="id">
-              <b>{{item.name}}</b> | {{item.id}}
-              <p>{{item.description}}</p>
+              {{item.id}} | {{item.name}} | {{item.description}}
             </ng-template>
           </ng-select>
         </div>
