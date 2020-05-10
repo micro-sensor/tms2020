@@ -26,7 +26,6 @@ public class ExamController {
     @CrossOrigin
     @GetMapping("/{email}")
     public ResponseEntity<EmailDto> isEmailValid(@PathVariable String email, @RequestHeader("Authorization") String authorication) {
-        System.out.println(authorication);
         return umsService.isEmailValid(email, authorication);
     }
 

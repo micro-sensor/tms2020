@@ -31,6 +31,10 @@ public class ExamService {
         return this.examRepository.findById(id);
     }
 
+    public void deleteExam(Integer id) {
+        this.examRepository.deleteById(id);
+    }
+
     public List<Exam> findAllExams() {
         return this.examRepository.findAll();
     }
