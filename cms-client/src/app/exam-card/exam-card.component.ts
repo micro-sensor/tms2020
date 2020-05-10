@@ -32,7 +32,7 @@ export class ExamCardComponent implements OnInit {
   set setPredicate(predicate: any){
     this.show = true;
     if (predicate != undefined){
-      let user = this.users.find(x => x.id == this.exam.examinee);
+      let user = this.users.find(x => x.email == this.exam.examinee);
       if (predicate.firstName != "") {
         if (!user.firstName.includes(predicate.firstName)) {
           this.show = false;
