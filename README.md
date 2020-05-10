@@ -2,6 +2,19 @@
 
 ## Local deployment
 
+- Copy certificates into `ssl` folder in following structure
+
+```
+$ ls -R ssl
+certs/ keys/
+
+ssl/certs:
+tcs_ecs_baylor_edu.crt
+
+ssl/keys:
+tcs_ecs_baylor_edu.key
+```
+
 - Specify `extra_hosts` in `docker-compose.yml`. The IP addresses in the `extra_hosts` fields must be matched to the host machine's IP in `ifconfig`.
 
 - Build images
@@ -36,6 +49,14 @@ $ docker ps
 $ docker-compose logs -f
 ```
 
+- Add custom host entry
+
+```
+$ cat /etc/hosts
+
+127.0.0.1 tcs.ecs.baylor.edu
+```
+
 ## Production deployment
 
 - Configure `firewalld`, source address should match `subnet` in `docker-compose.yml` file
@@ -48,6 +69,19 @@ $ sudo firewall-cmd --permanent --zone=public --add-rich-rule='rule family=ipv4 
 ```
 
 - Copy `docker-compose.yml` file and create empty folders for each services i.e. `cms`, `cms-client`, `nginx`, `postgress`, `keycloak`, etc
+
+- Copy certificates into `ssl` folder in following structure
+
+```
+$ ls -R ssl
+certs/ keys/
+
+ssl/certs:
+tcs_ecs_baylor_edu.crt
+
+ssl/keys:
+tcs_ecs_baylor_edu.key
+```
 
 - Specify `subnet` and `extra_hosts` in `docker-compose.yml` file. For example, if subnet is `172.18.0.0/16` then use `172.18.0.1` in `extra_hosts`
 
@@ -73,11 +107,6 @@ $ docker-compose up --no-build --detach
 ```
 
 ## Port forwarding
-
-```
-$ sudo ssh -L 80:127.0.0.1:1234 das@fire.ecs.baylor.edu
-$ ssh -L 1234:127.0.0.1:80 das@tcs.ecs.baylor.edu
-```
 
 ```
 $ sudo ssh -L 443:127.0.0.1:1234 das@fire.ecs.baylor.edu
