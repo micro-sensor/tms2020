@@ -195,6 +195,14 @@ class Secured extends Component {
                           TMS: Question Management
                         </Typography>
                       </div>
+                      <div
+                          onClick={() => this.handleRedirect(config.dashboard)}
+                          className={classes.topNav + " navbarItem"}
+                      >
+                        <Typography variant="body2" className={classes.topNavText}>
+                          Home
+                        </Typography>
+                      </div>
                     </Grid>
                     <div className={classes.topNav + " " + classes.dropdown}>
                       <Typography variant="body2" className={classes.topNavText}>
