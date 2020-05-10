@@ -49,7 +49,7 @@ export class ConfigurationService {
   }
 
   getAssignment(id){
-    return this.http.get(this.EMS_URL + "exam/" + id, { headers: this.headers });
+    return this.http.get(this.EMS_URL + "exam/review/" + id, { headers: this.headers });
   }
 
   getAllLanguages(){

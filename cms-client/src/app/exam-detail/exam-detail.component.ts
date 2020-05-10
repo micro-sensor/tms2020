@@ -22,6 +22,7 @@ export class ExamDetailComponent implements OnInit {
       this.id = params['id'];
       this.config.getAssignment(this.id).subscribe( data => {
         this.questions = data;
+        this.questions = this.questions.questions;
         this.questions.map(n => {
           let choices = n.choices;
           let allMatechs = true;
