@@ -18,11 +18,7 @@ export class NavigationComponent implements OnInit {
 
   async ngOnInit() {
     let roles: string[] = await this.keycloak.getUserRoles();
-    roles.forEach(r => {
-      if (r == "admin"){
-        this.isAdmin = true;
-      }
-    });
+    this.isAdmin = roles.includes('admin');
     this.keycloak.loadUserProfile(true).then(data => {
       this.userData = data;
     })

@@ -13,16 +13,19 @@
 
   <div id="mainNavbar" class="navbar-menu" [ngClass]="{'is-active': active == true}">
     <div class="navbar-start">
-      <a class="navbar-item" [routerLink]="['/exam']">
+      <a class="navbar-item" href="https://tcs.ecs.baylor.edu/">
+        Home
+      </a>
+      <a class="navbar-item" [routerLink]="['/exam']" *ngIf="isAdmin">
         Exam assignments
       </a>
-      <a class="navbar-item" [routerLink]="['/results']">
+      <a class="navbar-item" [routerLink]="['/results']" *ngIf="isAdmin">
         Exam Results
       </a>
-      <a class="navbar-item" [routerLink]="['']">
+      <a class="navbar-item" [routerLink]="['']" *ngIf="isAdmin">
         Configuration creator
       </a>
-      <a class="navbar-item" [routerLink]="['/configurations']">
+      <a class="navbar-item" [routerLink]="['/configurations']" *ngIf="isAdmin">
         Configurations
       </a>
     </div>
