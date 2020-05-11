@@ -170,7 +170,7 @@ class LoggedInUserInfo extends Component {
                 </Row>
                 <br/>
                 <Row>
-                    <Col>
+                    {/* <Col>
                         <Card style={{ width: '22rem' }} className='text-black'>
                             <Card.Body>
                                 <Card.Title>Teacher Info</Card.Title>
@@ -193,7 +193,7 @@ class LoggedInUserInfo extends Component {
                                 </Form>
                             </Card.Body>
                         </Card>
-                    </Col>
+                    </Col> */}
                     <Col>
                         <Card style={{ width: '22rem' }} className='text-black'>
                             <Card.Body>
