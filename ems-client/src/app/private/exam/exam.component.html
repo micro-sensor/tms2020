@@ -15,14 +15,12 @@
       <article class="media">
         <div class="media-content">
           <div class="content">
-            <p>
-              {{questions[qIndex].body}}
-            </p>
+            <div [innerHTML]="questions[qIndex].body"></div>
             <form #heroForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
               <div class="control">
                 <div *ngFor="let ch of questions[qIndex].choices; index as i;">
                   <label class="radio">
-                    <input type="checkbox" (click)="choose(i)" [checked]="questions[qIndex].choices[i].chosen">
+                    <input type="checkbox" (click)="choose(i)" [checked]="questions[qIndex].choices[i].chosen" >
                     {{ ch.body }}
                   </label>
                 </div>
@@ -38,7 +36,7 @@
       <p>Code: </p>
       <div class="media-content">
         <div class="content" style="white-space: pre-line;">
-          <pre>{{questions[qIndex].code}}</pre>
+          <pre [innerHTML]="questions[qIndex].code"></pre>
         </div>
       </div>
     </div>
