@@ -24,12 +24,7 @@ class EditUsers extends Component {
     }
 
     render() {
-        let users = this.state.names.map((item, id) =>
-            <UserListTab key={id} user={item}/>
-        );
-        let userPanes = this.state.names.map((item, id) =>
-            <UserPane key={item} keycloak={this.props.keycloak} user={item}/>
-        );
+        const {names } = this.state;
         return (
             <Tab.Container defaultActiveKey={this.state.names[0]}>
                 <Row>
@@ -40,17 +35,30 @@ class EditUsers extends Component {
                                 <Form.Control size='lg' type='text' placeholder='enter a username to search' name='searchVal' value={this.state.searchVal} />
                             </Form.Group>
                             <Form.Group inline>
-                                <Button variant='primary' type='submit' onClick={e => {this.handleClick(e)}}>Show All</Button>
+                                <Button variant='primary' type="submit" onClick={e => {this.handleSearch(e)}}>Search</Button>
+                                <Button variant='primary' type="submit" style={{marginLeft: "5px"}} type='submit' onClick={e => {this.handleAll(e)}}>Show All</Button>
                             </Form.Group>
                         </Form>
                         <br/>
                         <Nav variant='pills' className='flex-column'>
-                            {users}
+                            {
+                                names.length > 0
+                                    ? names.map((item, id) => {
+                                        return ( <UserListTab key={id} user={item}/>);
+                                    })
+                                    : null
+                            }
                         </Nav>
                     </Col>
                     <Col xl='auto'>
                         <Tab.Content>
-                            {userPanes}
+                            {
+                                names.length > 0
+                                    ? names.map((item, id) => {
+                                        return ( <UserPane key={item} keycloak={this.props.keycloak} user={item}/>);
+                                    })
+                                    : null
+                            }
                         </Tab.Content>
                     </Col>
                 </Row>
@@ -64,28 +72,51 @@ class EditUsers extends Component {
         this.setState({
             [name]: value,
         });
-        const http = new XMLHttpRequest();
-        http.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/usernamesLike?username=' + value);
-        http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
-        http.onload = (event) => {
-            const resp = JSON.parse(http.response);
-            this.setState({
-                names: resp,
-            });
-        };
-        http.send();
     }
 
     handleSubmit(event) {
         event.preventDefault();
     }
 
-    handleClick(event) {
+    handleSearch(event) {
         event.preventDefault();
-        this.setState({
-            searchVal: ''
-        });
-        this.handleChange(event);
+        const value = this.state.searchVal;
+        const http = new XMLHttpRequest();
+        if( value.length > 0) {
+            http.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/usernamesLike?username=' + value);
+            http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
+            http.onload = (event) => {
+                console.log("http.response: ", http);
+                const resp = JSON.parse(http.response);
+                this.setState({
+                    names: resp,
+                });
+            };
+            http.send();
+        }
+        else {
+            this.handleAll(event);
+        }
+    }
+
+    handleAll(event) {
+        event.preventDefault();
+        const http = new XMLHttpRequest();
+        http.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/usernames');
+        http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
+        http.onload = (event) => {
+            console.log("http.response: ", http);
+            const resp = JSON.parse(http.response);
+            this.setState({
+                names: resp,
+            });
+        };
+        http.send();
+
+    }
+
+    componentDidMount() {
+        console.log("keycloak token:", this.props.keycloak);
     }
 }
 
