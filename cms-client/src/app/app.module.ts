@@ -23,6 +23,7 @@ import { ExamResultsComponent } from './exam-results/exam-results.component';
 import { ConfigurationsComponent } from './configurations/configurations.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { NoAccessComponent } from './no-access/no-access.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ExamCardComponent,
     ExamResultsComponent,
     ConfigurationsComponent,
+    NoAccessComponent,
   ],
   imports: [
     BrowserModule,

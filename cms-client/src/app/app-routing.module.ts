@@ -6,6 +6,7 @@ import {ExamAssignmentComponent} from './exam-assignment/exam-assignment.compone
 import {ExamResultsComponent} from './exam-results/exam-results.component';
 import {ConfigurationsComponent} from './configurations/configurations.component';
 import {ExamDetailComponent} from './exam-detail/exam-detail.component';
+import { NoAccessComponent } from './no-access/no-access.component';
 
 const routes: Routes = [
   { path: '', component: WlayoutComponent, children: [
@@ -13,7 +14,8 @@ const routes: Routes = [
       { path: 'exam', component: ExamAssignmentComponent},
       { path: 'results', component: ExamResultsComponent},
       { path: 'results/:id', component: ExamDetailComponent},
-      { path: 'configurations', component: ConfigurationsComponent}
+      { path: 'configurations', component: ConfigurationsComponent},
+      { path: 'denied', component: NoAccessComponent}
     ]
   },
 ];
