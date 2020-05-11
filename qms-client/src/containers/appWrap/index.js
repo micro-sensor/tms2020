@@ -195,14 +195,6 @@ class AppWrap extends React.Component<Props, State> {
                 </Typography>
               </div>
               <div
-                  onClick={() => this.handleRedirect(config.dashboard)}
-                  className={classes.topNav + " navbarItem"}
-              >
-                <Typography variant="body2" className={classes.topNavText}>
-                  Home
-                </Typography>
-              </div>
-              <div
                 onClick={() => this.redirectTo("category")}
                 className={classes.topNav + " navbarItem"}
               >
@@ -235,6 +227,15 @@ class AppWrap extends React.Component<Props, State> {
                 </Typography>
               </div>
             </Grid>
+
+            <div
+              onClick={() => this.handleRedirect(config.dashboard)}
+              className={classes.topNav + " navbarItem"}
+            >
+              <Typography variant="body2" className={classes.topNavText}>
+                TMS Home
+              </Typography>
+            </div>
 
             <div
               className={classes.topNav + " " + classes.dropdown}
