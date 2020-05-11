@@ -31,7 +31,7 @@ public class QuestionService {
         Integer[] indexs = new Integer[group.getCount()];
         List<QuestionSingleCodeDto> questionSingleCodeDtos = new ArrayList<>();
         List<Question> tempQuestions = questionRepository.findByCategoryIdAndLevelAndLanguage(group.getCategory(), group.getLevel(), group.getLanguageId());
-        Language language = languageRepository.findById(group.getLanguageId()).orElse(null);
+        Language language = group.getLanguageId() != null ? languageRepository.findById(group.getLanguageId()).orElse(null) : null;
         if (tempQuestions.size() < group.getCount()) {
             throw new JPAException("Questions for " + group.getCategory() + " " + group.getLevel() + " " + group.getLanguageId() + " are not enough, please check the configuration ");
         } else if (tempQuestions.size() == group.getCount()) {
