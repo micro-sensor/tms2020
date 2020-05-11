@@ -30,8 +30,15 @@ public class QuestionService {
     public List<QuestionSingleCodeDto> getQuestionSingleCodeDtosByConfigGroup(ConfigurationGroup group) {
         Integer[] indexs = new Integer[group.getCount()];
         List<QuestionSingleCodeDto> questionSingleCodeDtos = new ArrayList<>();
-        List<Question> tempQuestions = questionRepository.findByCategoryIdAndLevelAndLanguage(group.getCategory(), group.getLevel(), group.getLanguageId());
-        Language language = group.getLanguageId() != null ? languageRepository.findById(group.getLanguageId()).orElse(null) : null;
+        List<Question> tempQuestions;
+        Language language;
+        if (group.getLanguageId() != null) {
+            tempQuestions = questionRepository.findByCategoryIdAndLevelAndLanguage(group.getCategory(), group.getLevel(), group.getLanguageId());
+            language = languageRepository.findById(group.getLanguageId()).orElse(null);
+        } else {
+            tempQuestions = questionRepository.findByCategoryIdAndLevel(group.getCategory(), group.getLevel());
+            language = null;
+        }
         if (tempQuestions.size() < group.getCount()) {
             throw new JPAException("Questions for " + group.getCategory() + " " + group.getLevel() + " " + group.getLanguageId() + " are not enough, please check the configuration ");
         } else if (tempQuestions.size() == group.getCount()) {

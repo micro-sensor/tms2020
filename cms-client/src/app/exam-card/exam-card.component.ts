@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-exam-card',
@@ -66,9 +67,12 @@ export class ExamCardComponent implements OnInit {
   }
 
   deleteAssignment(id){
-    if(confirm("Are you sure to delete?")) {
-      this.toBeDelete.emit(id);
-    }
+    alertify.confirm('Delete Category', "Do you really want to delete this assignment?",
+      () => {
+        this.toBeDelete.emit(id);
+      },
+      function(){} // noop for cancel
+    );
   }
 
 }

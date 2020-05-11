@@ -21,15 +21,15 @@ import java.util.Set;
                 query = "select q from Question q join q.categories c where c.id = ?1"),
         @NamedQuery(name = Question.FIND_BY_CATEGORYID_LEVEL_LANGUAGE,
                 query = "select q from Question q join q.categories c join q.codes code join code.language l where c.id = ?1 and q.level= ?2 and l.id= ?3"),
-
-
-
+        @NamedQuery(name = Question.FIND_BY_CATEGORYID_LEVEL,
+                query = "select q from Question q join q.categories c where c.id = ?1 and q.level= ?2"),
 })
 public class Question extends UUIDHashedEntityObject {
     public static final String FIND_BY_CATEGORYID_AND_NAME = "FIND_BY_CATEGORYID_AND_NAME";
     public static final String FIND_DTO_BY_NAME = "FIND_DTO_BY_NAME";
     public static final String FIND_BY_CATEGORYID = "FIND_BY_CATEGORYID";
     public static final String FIND_BY_CATEGORYID_LEVEL_LANGUAGE = "FIND_BY_CATEGORYID_LEVEL_LANGUAGE";
+    public static final String FIND_BY_CATEGORYID_LEVEL = "FIND_BY_CATEGORYID_LEVEL";
     private String title;
     private Integer level;
     private String body;

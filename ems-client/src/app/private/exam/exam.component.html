@@ -33,7 +33,7 @@
     </div>
     
     
-    <div class="box">
+    <div class="box" *ngIf="questions[qIndex].code && questions[qIndex].code !== ''">
       <p>Code: </p>
       <div class="media-content">
         <div class="content" style="white-space: pre-line;">
