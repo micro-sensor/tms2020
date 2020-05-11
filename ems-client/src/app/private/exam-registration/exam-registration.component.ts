@@ -17,18 +17,21 @@ export class ExamRegistrationComponent implements OnInit {
   examsReady: Exam[] = [];
   examsPast: Exam[] = [];
 
+  isLoading: boolean = true;
+
   username: any;
   userData: any;
 
   archiveMode: boolean = false;
 
   constructor(private examManager: ExamManagerService, private keycloak: KeycloakService) {
-    console.log(this.keycloak.getUsername());
+    this.isLoading = true;
     this.keycloak.loadUserProfile().then(keycloakData => {
       console.log(keycloakData);
       let obs = this.examManager.getExamRegistrationsByUsername(keycloakData.username);
       this.username = keycloakData.username;
       obs.subscribe( data => {
+        this.isLoading = false;
         this.examRegistrationlist = data.filter(e => e.examinee === keycloakData.email).sort(this.examSorter);
         this.examsInProgress = this.examRegistrationlist.filter(e => e.status === "PROGRESS").sort(this.examSorter);
         this.examsReady = this.examRegistrationlist.filter(e => e.status === "INIT").sort(this.examSorter);

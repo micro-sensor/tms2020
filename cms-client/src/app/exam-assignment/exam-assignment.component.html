@@ -27,6 +27,7 @@
         <label class="label">Examinee</label>
         <div class="control">
           <ng-select [items]="users"
+                     [loading]="isUsersLoading"
                      bindLabel="email"
                      autofocus
                      bindValue="email"
@@ -40,6 +41,7 @@
         <label class="label">Configuration</label>
         <div class="control">
           <ng-select [items]="configurations"
+                     [loading]="isConfigurationsLoading"
                      bindLabel="name"
                      autofocus
                      bindValue="id"

@@ -23,11 +23,14 @@ export class ExamAssignmentComponent implements OnInit {
     'lastName': ""
   };
 
+  isUsersLoading: boolean = true;
+  isConfigurationsLoading: boolean = true;
+
   constructor(private formBuilder: FormBuilder, private configuration: ConfigurationService) {
     this.reviewForm = this.createFormGroup();
-    this.configuration.getConfigurations().subscribe((data) => {
-      this.configurations = data;
-    });
+    // this.configuration.getConfigurations().subscribe((data) => {
+    //   this.configurations = data;
+    // });
     // this.reviewForm.valueChanges.pipe(
     //   debounceTime(1000),
     //   distinctUntilChanged()
@@ -42,8 +45,14 @@ export class ExamAssignmentComponent implements OnInit {
 
   ngOnInit() {
     this.configuration.getAllAssignmentsInit().subscribe(data => { this.exams = data;})
-    this.configuration.getConfigurations().subscribe(data => {this.configurations = data;});
-    this.configuration.getAllUsers().subscribe(data => {this.users = data;});
+    this.configuration.getConfigurations().subscribe(data => {
+      this.configurations = data;
+      this.isConfigurationsLoading = false;
+    });
+    this.configuration.getAllUsers().subscribe(data => {
+      this.users = data;
+      this.isUsersLoading = false;
+    });
   }
 
   createFormGroup() {
