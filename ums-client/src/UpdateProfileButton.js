@@ -32,16 +32,18 @@ class UpdateProfileButton extends Component {
             },
             body: JSON.stringify(this.props.profileData),
         }).then(response => {
-            if (response.status === 200) {
+            if (response.status === 200 || response.status === 204) {
                 alertify.success('Profile updated!');
                 return response.json();
             }
-            else
+            else {
                 alertify.error('Failed to update profile!');
                 return { status: response.status, message: response.statusText }
+            }
         }).then(json => this.setState((state, props) => ({
             response: JSON.stringify(json, null, 2)
         }))).catch(err => {
+            console.log(err);
             this.setState((state, props) => ({ response: err.toString() }))
         });
 

@@ -6,6 +6,7 @@ import edu.baylor.ecs.seer.usermanagement.entity.User;
 import edu.baylor.ecs.seer.usermanagement.service.UserAccessService;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -169,6 +170,10 @@ public class UserInfoController {
 
         if (user == null) {
             return ResponseEntity.status(404).body("No such user");
+        }
+
+        if (newPassword.length() < 6) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Password must be at least 6 characters");
         }
 
         if (user.getId().equals(id)

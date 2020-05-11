@@ -48,16 +48,22 @@ class ChangePasswordButton extends Component {
             .then(response => {
                 if (response.status === 200) {
                     alertify.success('Password updated.');
-                    return response.json();
-                } else
+                    return response;
+                } else {
+                    alertify.error('Failed to update password.');
                     return { status: response.status, message: response.statusText }
+                }
             })
-            .then(json => this.setState((state, props) => ({
-                response: JSON.stringify(json, null, 2)
-            })))
+            .then(res => {
+                this.setState((state, props) => ({
+                    //response: JSON.stringify(json, null, 2)
+                    repsonse: res
+                }));
+            })
             .catch(err => {
-                this.setState((state, props) => ({ response: err.toString() }))
+                this.setState((state, props) => ({ response: err.toString() }));
                 alertify.error('Failed to update password.');
+                console.log(err);
             })
     };
 

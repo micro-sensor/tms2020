@@ -600,6 +600,7 @@
       "clientRoles": {
         "realm-management": [
           "query-users",
+          "manage-users",
           "view-users"
         ],
         "ums-backend": [
@@ -1724,11 +1725,15 @@
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
       "redirectUris": [
+        "https://tcs.ecs.baylor.edu",
+        "http://tcs.ecs.baylor.edu",
         "http://tcs.ecs.baylor.edu/*",
         "https://tcs.ecs.baylor.edu/*"
       ],
       "webOrigins": [
+        "https://tcs.ecs.baylor.edu",
         "http://tcs.ecs.baylor.edu",
+        "http://tcs.ecs.baylor.edu/*",
         "https://tcs.ecs.baylor.edu/*"
       ],
       "notBefore": 0,
