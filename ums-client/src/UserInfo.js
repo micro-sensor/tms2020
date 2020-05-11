@@ -48,20 +48,20 @@ class UserInfo extends Component {
                 firstName: resp.firstName,
                 lastName: resp.lastName,
                 email: resp.email,
-                preferred_prog_lang: resp.attributes == null ? null: resp.attributes.preferred_prog_lang[0],
-                teacher_level: resp.attributes == null ? null: resp.attributes.teacher_level[0],
+                // preferred_prog_lang: resp.attributes == null ? null: resp.attributes.preferred_prog_lang[0],
+                // teacher_level: resp.attributes == null ? null: resp.attributes.teacher_level[0],
                 address1: resp.attributes == null ? null: resp.attributes['Address 1'][0],
                 address2: resp.attributes == null ? null: resp.attributes['Address 2'][0],
                 city: resp.attributes == null ? null: resp.attributes.City[0],
                 state: resp.attributes == null ? null: resp.attributes.State[0],
                 zip: resp.attributes == null ? null: resp.attributes.Zip[0],
-                institution: resp.attributes == null ? null: resp.attributes.Institution[0],
+                //institution: resp.attributes == null ? null: resp.attributes.Institution[0],
             });
         };
         http.send();
         const http2 = new XMLHttpRequest();
         console.log(http2.response);
-        http2.open('GET', 'http://tcs.ecs.baylor.edu/ums/userinfo/userRoles/' + this.props.nameToGet);
+        http2.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/userRoles/' + this.props.nameToGet);
         http2.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http2.onload = (event) => {
             if (http.response == null) return;

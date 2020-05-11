@@ -47,8 +47,8 @@ class AuthNavbar extends Component {
             return (
                 <>
                     {/* <Nav.Link href='/users'>Edit Users</Nav.Link> */}
-                    <Nav.Link href='http://tcs.ecs.baylor.edu/config'>Manage Content</Nav.Link>
-                    <Nav.Link href='http://tcs.ecs.baylor.edu/questions'>Manage Questions</Nav.Link>
+                    <Nav.Link href='https://tcs.ecs.baylor.edu/config'>Manage Content</Nav.Link>
+                    <Nav.Link href='https://tcs.ecs.baylor.edu/questions'>Manage Questions</Nav.Link>
                 </>
             )
         }
