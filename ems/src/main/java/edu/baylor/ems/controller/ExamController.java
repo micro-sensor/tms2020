@@ -40,6 +40,13 @@ public class ExamController {
     }
 
     @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json; charset=UTF-8")
+    public ResponseEntity<Integer> deleteExam(@PathVariable("id") Integer id) {
+        examService.deleteExam(id);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "*")
     @RequestMapping(value = "/take/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<QuestionEmsDto>> takeExam(@PathVariable("id") Integer id) {
         // check ID

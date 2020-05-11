@@ -21,11 +21,11 @@ public class CategoryListDto {
 
     @JacksonXmlProperty(localName = "category")
     @JacksonXmlElementWrapper(useWrapping = false)
-    public List<Category> getQuestions() {
+    public List<Category> getCategories() {
         return categories;
     }
 
-    public void setQuestions(List<Category> categories) {
+    public void setCategories(List<Category> categories) {
         this.categories = categories;
     }
 

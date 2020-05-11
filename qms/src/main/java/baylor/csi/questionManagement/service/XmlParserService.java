@@ -173,7 +173,7 @@ public class XmlParserService {
                         }
                     }
                     else {
-                        throw new ParsingException("Category should have id or name");
+                        throw new ParsingException("Language should have id or name");
                     }
                 }
                 languageList.add(language);

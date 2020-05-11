@@ -9,6 +9,7 @@ export class ConfigurationService {
 
   private CMS_URL: string = "https://tcs.ecs.baylor.edu/cms/";
   private EMS_URL: string = "https://tcs.ecs.baylor.edu/ems/";
+  private UMS_URL: string = "https://tcs.ecs.baylor.edu/ums/";
   private QMS_URL: string = "https://tcs.ecs.baylor.edu/qms/language";
   private headers: any;
 
@@ -26,7 +27,7 @@ export class ConfigurationService {
   }
 
   public getAllUsers() {
-    return this.http.get(this.CMS_URL + "exam/users", { headers: this.headers });
+    return this.http.get(this.UMS_URL + "userinfo/users", { headers: this.headers });
   }
 
   public getConfigurations() {
@@ -48,25 +49,23 @@ export class ConfigurationService {
   }
 
   getAssignment(id){
-    return this.http.get(this.CMS_URL + "exam/" + id + "/detail", { headers: this.headers });
+    return this.http.get(this.EMS_URL + "exam/review/" + id, { headers: this.headers });
   }
 
   getAllLanguages(){
     return this.http.get(this.QMS_URL, { headers: this.headers });
   }
 
-
   deleteAssignment(id){
-    console.log(this.CMS_URL + "exam/deleteExam/" + id);
-    return this.http.delete(this.CMS_URL + "exam/deleteExam/" + id, { headers: this.headers });
+    return this.http.delete(this.EMS_URL + "exam/" + id, { headers: this.headers });
   }
 
   getAllAssignmentsInit(){
-    return this.http.get(this.CMS_URL + "exam/getAllExamsInStatusINIT", { headers: this.headers });
+    return this.http.get(this.EMS_URL + "exam", { headers: this.headers });
   }
 
   getAllAssignments(){
-    return this.http.get(this.CMS_URL + "exam", { headers: this.headers });
+    return this.http.get(this.EMS_URL + "exam", { headers: this.headers });
   }
 
   getQuestions(id){

@@ -3,7 +3,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import {ClassicEditor, InlineEditor} from '@barsbek/ckeditor5-build-baylor-tms';
 import {
   Paper,
   Divider,
@@ -13,6 +13,7 @@ import {
   Tab,
   Tabs,
   TextField,
+  InputLabel,
   MenuItem,
   FormControlLabel,
   Switch,
@@ -188,9 +189,9 @@ class QuestionEdit extends React.Component<Props, State> {
     this.props.updateQuestion(newQuestion);
   };
 
-  changeAnswerBody = uuid => event => {
+  changeAnswerBody = (uuid, event) => {
     const c = this.findOption(uuid);
-    c.body = event.target.value;
+    c.body = event.target ? event.target.value : event.getData();
     const newQuestion = Object.assign({}, this.props.question);
     const newChoices = this.setInArray(c, newQuestion.choices, "uuid");
     newQuestion.choices = newChoices;
@@ -363,21 +364,50 @@ class QuestionEdit extends React.Component<Props, State> {
   render() {
     const { question, updateQuestion } = this.props;
 
-    let editorConfiguration = {
-      extraPlugins: [],
+    let classicEditorConfiguration = {
       toolbar: {
         items: [
           "heading", "|", "undo", "redo", "|",
-          "selectAll", "bold", "italic", "blockQuote", "|",
+          "selectAll", "bold", "italic", "underline", "strikethrough", "subscript", "superscript", "fontColor", "fontBackgroundColor", "blockQuote", "|",
+          "code", "codeBlock", "|" ,
           "numberedList", "bulletedList", "|" ,
-          "indent", "outdent", "|" ,
-          "insertTable", "link", "mediaEmbed",  "|" ,
+          "alignment", "indent", "outdent", "|" ,
+          "specialCharacters","insertTable", "link", "mediaEmbed",  "|" ,
+          "removeFormat"
         ],
+        // viewportTopOffset: 500,
         shouldNotGroupWhenFull: true,
       },
-      label: "Hi",
-      placeholder: "Hello",
+      placeholder: "The actual text of the question",
+      typing: {
+        transformations: {include: [ 'symbols', 'mathematical',],}
+      },
+      codeBlock: {
+        languages: [{ language: 'plaintext', label: 'CodeBlock'}]
+      }
     };
+    const inlineEditorConfiguration = {
+      toolbar: {
+        items: [
+          "undo", "redo", "|",
+          "selectAll", "bold", "italic", "underline", "strikethrough", "subscript", "superscript", "fontColor", "fontBackgroundColor", "blockQuote", "|",
+          "code", "codeBlock", "|" ,
+          "numberedList", "bulletedList", "|" ,
+          "alignment", "indent", "outdent", "|" ,
+          "specialCharacters","insertTable", "link", "mediaEmbed",  "|" ,
+          "removeFormat"
+        ],
+        shouldNotGroupWhenFull: false,
+      },
+      typing: {
+        transformations: {include: [ 'symbols', 'mathematical',],}
+      },
+      codeBlock: {
+        languages: [{ language: 'plaintext', label: 'CodeBlock'}]
+      }
+    }
+    let codeEditorConfiguration = Object.assign({}, classicEditorConfiguration);
+    codeEditorConfiguration.placeholder = "Code snippet body";
 
     if (!question) {
       return <div />;
@@ -407,35 +437,19 @@ class QuestionEdit extends React.Component<Props, State> {
               </div>
               <Divider />
               <div style={{ padding: 16 }}>
-                {/*<TextField*/}
-                {/*    error={question.body.length < 3}*/}
-                {/*    multiline*/}
-                {/*    label="Body"*/}
-                {/*    value={question.body}*/}
-                {/*    style={{ width: "100%" }}*/}
-                {/*    onChange={ event => this.change("body", event)}*/}
-                {/*    helperText="The actual text of the question"*/}
-                {/*    variant="outlined"*/}
-                {/*>*/}
-                {/*  {[1, 2, 3, 4, 5].map(option => (*/}
-                {/*      <MenuItem key={option} value={option}>*/}
-                {/*        {option}*/}
-                {/*      </MenuItem>*/}
-                {/*  ))}*/}
-                {/*</TextField>*/}
-                {editorConfiguration["placeholder"] = "Body of the question"}
+                <InputLabel style={{ marginBottom: "5px" }} error={question.body.length < 3}>
+                  {question.body.length < 3 ? "Body must have at least 3 characters" : "Body"}
+                </InputLabel>
                 <CKEditor
                     data={question.body}
                     editor={ ClassicEditor }
-                    config={editorConfiguration}
+                    config={classicEditorConfiguration}
                     onChange={( event, editor ) => this.change("body", editor)}
-                    style={{ fontSize: 24 } }
                     onInit={ editor => {
                       // You can store the "editor" and use when it is needed.
                       console.log( 'Editor is ready to use!', editor );
-                      console.log("available CKEditor plugins: ", ClassicEditor.builtinPlugins.map( plugin => plugin.pluginName ));
-                      console.log("all toolbar items: ", Array.from( editor.ui.componentFactory.names() ));
                     } }
+                    onError={error => {alertify.error("Problem initializing rich-text editor.");}}
                 />
               </div>
               <Divider />
@@ -469,14 +483,18 @@ class QuestionEdit extends React.Component<Props, State> {
                     return (
                         <div key={c.uuid}>
                           <div style={{ padding: 16 }}>
-                            <TextField
-                                error={c.body.length == 0}
-                                label="Answer"
-                                value={c.body}
-                                multiline
-                                style={{ width: "100%" }}
-                                onChange={this.changeAnswerBody(c.uuid)}
-                            />
+                            <InputLabel style={{ marginBottom: "5px" }} error={c.body.length == 0}>
+                              {c.body.length == 0 ? "Answer cannot be empty" : "Answer"}
+                            </InputLabel>
+                            <div style={{ border: "1px solid lightgray" }}>
+                              <CKEditor
+                                  data={c.body}
+                                  editor={ InlineEditor }
+                                  config={inlineEditorConfiguration}
+                                  onChange={( event, editor ) => this.changeAnswerBody(c.uuid, editor)}
+                                  onError={error => {alertify.error("Problem initializing rich-text editor.");}}
+                              />
+                            </div>
                             <Grid container justify="space-between">
                               <FormControlLabel
                                   control={
@@ -639,22 +657,15 @@ class QuestionEdit extends React.Component<Props, State> {
                         <ExpansionPanelDetails>
                           <Grid container>
                             <Grid item xs={12}>
-                              {/*<TextField*/}
-                              {/*    error={code.body.length < 3}*/}
-                              {/*    multiline*/}
-                              {/*    variant="outlined"*/}
-                              {/*    label="Code snippet body"*/}
-                              {/*    value={code.body}*/}
-                              {/*    style={{ width: "100%" }}*/}
-                              {/*    onChange={(event) => this.changeCodeBody(code.languageId, event)}*/}
-                              {/*    InputProps={{ style: { fontFamily: "monospace" } }}*/}
-                              {/*/>*/}
-                              {editorConfiguration["placeholder"] = "Code snippet body"}
+                              <InputLabel style={{ marginBottom: "5px" }} error={code.body.length < 3}>
+                                {code.body.length < 3 ? "Code snippet body must have at least 3 characters" : "Code snippet body"}
+                              </InputLabel>
                               <CKEditor
                                   data={code.body}
                                   editor={ ClassicEditor }
-                                  config={editorConfiguration}
+                                  config={codeEditorConfiguration}
                                   onChange={( event, editor ) => this.changeCodeBody(code.languageId, editor)}
+                                  onError={error => {alertify.error("Problem initializing rich-text editor.");}}
                               />
                             </Grid>
                             <Grid item xs={12}>

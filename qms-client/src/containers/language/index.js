@@ -15,6 +15,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import * as api from "./api";
 import alertify from 'alertifyjs';
+import DialogButton from "../../components/DialogButton";
+import FileUpload from "../FileUpload";
 
 type Props = {
   showSnack: (string, boolean) => void,
@@ -169,6 +171,33 @@ class Language extends React.Component<Props, State> {
       });
   };
 
+  exportAll = () => {
+    api
+        .exportAll()
+        .then(msg => {
+          var FileSaver = require('file-saver');
+          var blob = new Blob([msg.data], {type: "text/xml"});
+          FileSaver.saveAs(blob, "languages");
+          alertify.success("Success. All languages exported.");
+        })
+        .catch(e => {
+          alertify.error("Error. Could not export all languages.");
+          console.log(e);
+        });
+  };
+
+  removeAll = () => {
+    api
+        .deleteAll()
+        .then(msg => {
+          window.location.reload();
+        })
+        .catch(e => {
+          alertify.error("Error. Could not delete all languages. Reason: " + e.response.data.message, false);
+          console.log(e.response.data.message);
+        });
+  };
+
   callDeleteLang = () => {
     const dtl = this.state.langList[this.state.selectedIndex];
     alertify.confirm('Delete Language', "Do you really want to delete language " + dtl.name + "?",
@@ -246,6 +275,47 @@ class Language extends React.Component<Props, State> {
               </DialogContent>
             </Dialog>
           </div>
+          <Grid container style={{ marginTop: 5}}>
+            <DialogButton
+                title="IMPORT LANGUAGES"
+                buttonLabel="IMPORT LANGUAGES"
+                variant="contained"
+                history = {this.props.history}
+                dialogContent={(close, open) => {
+                  return (
+                      <FileUpload
+                          postUrl={api.importLanguages}
+                          accept={["text/xml"]}
+                          // multiple={true}
+                          maxSize={100000000}
+                          showMessage={(message) => alertify.error(message)}
+                          rejectMessage="File rejected. Files must be smaller than 100 MB"
+                          history = {this.props.history}
+                          onSuccess={() => {
+                            alertify.success("File successfully processed.");
+                          }}
+                      />
+                  );
+                }}
+            />
+            <Button
+                style={{ marginLeft: 5}}
+                variant="contained"
+                color="primary"
+                onClick={() =>  this.exportAll()}
+            >
+              EXPORT
+            </Button>
+            <Button
+                style={{ marginLeft: 5}}
+                variant="contained"
+                color="secondary"
+                onClick={() =>  this.removeAll()}
+            >
+              Delete All
+            </Button>
+
+          </Grid>
         </Grid>
         {this.state.langList.length > 0 && dtl && (
           <Grid item xs={12} sm={12} md={7} lg={7}>

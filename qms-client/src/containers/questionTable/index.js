@@ -219,9 +219,9 @@ class QuestionTable<Props, State> extends React.Component {
                             postUrl={api.importQuestions}
                             accept={["text/xml"]}
                             // multiple={true}
-                            maxSize={1000000}
+                            maxSize={100000000}
                             showMessage={(message) => alertify.error(message)}
-                            rejectMessage="File rejected. Files must be smaller than 1 MB"
+                            rejectMessage="File rejected. Files must be smaller than 100 MB"
                             history = {this.props.history}
                             onSuccess={() => {
                               alertify.success("File successfully processed.");

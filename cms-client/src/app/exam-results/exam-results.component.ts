@@ -60,7 +60,6 @@ export class ExamResultsComponent implements OnInit {
 
 
   filter(){
-
     let predicate = {
       'dateTimeTo': this.dateTimeTo,
       'dateTimeFrom': this.dateTimeFrom,
@@ -68,6 +67,10 @@ export class ExamResultsComponent implements OnInit {
       'lastName': this.last
     };
     this.predicate = predicate;
+  }
+
+  onDeleted(event){
+    this.config.getAllAssignments().subscribe(data => { this.assignments = data;});
   }
 
 }

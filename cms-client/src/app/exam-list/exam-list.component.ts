@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ConfigurationService} from '../configuration.service';
+import alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-exam-list',
@@ -40,9 +41,11 @@ export class ExamListComponent implements OnInit {
   }
 
   deleteAssignment(id: any){
-    this.configurationService.deleteAssignment(id).subscribe( data => {alert(data)}, error1 => {
-      alert("Successfully deleted");
+    this.configurationService.deleteAssignment(id).subscribe( data => {
+      alertify.success("Assignment deleted");
       this.deleted.emit("deleted");
+    }, error1 => {
+      alertify.error("Failed to delete assignment");
     });
   }
 
