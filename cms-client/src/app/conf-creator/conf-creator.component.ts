@@ -94,7 +94,7 @@ export class ConfCreatorComponent implements OnInit {
   }
 
   isEmptyOrSpaces(str) {
-    return str === null || String(str).match(/^\s*$/) !== null;
+    return str === null || str.match(/^\s*$/) !== null;
   }
 
 }
