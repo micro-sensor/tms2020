@@ -1,9 +1,14 @@
 
 <app-navigation></app-navigation>
 
-<div class="columns content">
-
+<div class="columns content" *ngIf="isAdmin">
     <main class="column is-10 is-offset-1" style="margin-top: 3em;">
         <router-outlet></router-outlet>
+    </main>
+</div>
+
+<div class="columns content" *ngIf="!isAdmin">
+    <main class="column is-10 is-offset-1" style="margin-top: 3em;">
+        You do not have access to this service. 
     </main>
 </div>
