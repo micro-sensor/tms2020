@@ -197,15 +197,7 @@ class LoggedInUserInfo extends Component {
                     <Col>
                         <Card style={{ width: '22rem' }} className='text-black'>
                             <Card.Body>
-                                <Card.Title>Profile Actions</Card.Title>
-                                <Form className="ChangePassword">
-                                    <Form.Group onChange={(event) => {this.handleChange(event)}}>
-                                        <Form.Label>New Password</Form.Label>
-                                        <Form.Control value={this.state.newPassword} name='newPassword' type='password' />
-                                    </Form.Group>
-                                </Form>
-                                <ChangePasswordButton keycloak={this.props.keycloak} id={this.state.id} newPassword={this.state.newPassword} />
-                                <div className='small-break'/>
+                                <Card.Title>Update Profile</Card.Title>
                                 <UpdateProfileButton keycloak={this.props.keycloak} profileData={
                                     {
                                         id: this.state.id,
@@ -241,6 +233,20 @@ class LoggedInUserInfo extends Component {
                                         }
                                     }
                                 } />
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                    <Col>
+                        <Card style={{ width: '22rem' }} className='text-black'>
+                            <Card.Body>
+                                <Card.Title>Change Password</Card.Title>
+                                <Form className="ChangePassword" onSubmit={(e) => e.preventDefault()}>
+                                    <Form.Group onChange={(event) => {this.handleChange(event)}}>
+                                        <Form.Label>New Password</Form.Label>
+                                        <Form.Control value={this.state.newPassword} name='newPassword' type='password' />
+                                    </Form.Group>
+                                </Form>
+                                <ChangePasswordButton keycloak={this.props.keycloak} id={this.state.id} newPassword={this.state.newPassword} />
                             </Card.Body>
                         </Card>
                     </Col>

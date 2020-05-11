@@ -217,7 +217,7 @@ class UserInfo extends Component {
                     <Col>
                         <Card style={{ width: '22rem' }} className='text-black'>
                             <Card.Body>
-                                <Card.Title>Profile Actions</Card.Title>
+                                <Card.Title>Update Profile</Card.Title>
                                 <Form>
                                     <Form.Check type='checkbox'
                                                 checked={this.state.isAdmin}
