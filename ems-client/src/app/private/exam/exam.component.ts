@@ -28,12 +28,15 @@ export class ExamComponent implements OnInit {
   public exam: Exam;
   public diff: any;
 
+  isLoading: boolean = true;
+
   counter$: Observable<number>;
   count = 1800000;
   minute = 60000;
 
 
   constructor(private examManager: ExamManagerService, private route: ActivatedRoute, private router: Router) {
+    this.isLoading = true;
     this.route.params.subscribe( params => {
       this.examManager.takeExam(params['id']).subscribe((data) => {
         this.questions = <Question[]>data;
@@ -42,6 +45,7 @@ export class ExamComponent implements OnInit {
         this.examId = params['id'];
 
         this.examManager.getExam(params['id']).subscribe( (data) => {
+          this.isLoading = false;
           this.exam = data;
 
           this.counter$ = timer(0,60000).pipe(
@@ -60,8 +64,14 @@ export class ExamComponent implements OnInit {
             })
           );
         }, error => {
+          console.log(error);
           alertify.error('Failed to retrieve exam!');
+          this.router.navigate(['/']);
         });
+      }, error => {
+          console.log(error);
+          alertify.error('Failed to retrieve exam! It may have expired or been removed.');
+        this.router.navigate(['/']);
       });
     });
   }
