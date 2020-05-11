@@ -2,7 +2,7 @@
 import React from "react";
 import ReactTable from "react-table";
 import * as api from "../question/api";
-import "react-table/react-table.css";
+import "./react-table.css";
 import {Button, Grid} from "@material-ui/core";
 import "index.css";
 import DialogButton from "../../components/DialogButton";
