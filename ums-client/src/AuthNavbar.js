@@ -55,6 +55,22 @@ class AuthNavbar extends Component {
         return null;
     }
 
+    renderAdminDropdowns() {
+        if (this.props.keycloak.tokenParsed.realm_access.roles.includes("admin")
+                || this.props.keycloak.tokenParsed.realm_access.roles.includes("superadmin")) {
+            return (
+                <Dropdown as={Nav.Item}>
+                    <Dropdown.Toggle as={Nav.Link}>Administration</Dropdown.Toggle>
+                    <Dropdown.Menu renderOnMount={true} alignRight={true}>
+                        <Dropdown.Item href="https://tcs.ecs.baylor.edu/questions">Question Management</Dropdown.Item>
+                        <Dropdown.Item href="https://tcs.ecs.baylor.edu/config">Configuration Management</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            )
+        }
+        return null;
+    }
+
     render() {
         return (
             <Navbar bg='dark' variant='dark' static='top'>
@@ -67,23 +83,7 @@ class AuthNavbar extends Component {
                     {this.renderAdminNav()}
                 </Nav>
                 <Nav>
-                    <Dropdown as={Nav.Item}>
-                        <Dropdown.Toggle as={Nav.Link}>Administration</Dropdown.Toggle>
-                        <Dropdown.Menu renderOnMount={true} alignRight={true}>
-                            <Dropdown.Item href="https://tcs.ecs.baylor.edu/questions">Question Management</Dropdown.Item>
-                            <Dropdown.Item href="https://tcs.ecs.baylor.edu/config">Configuration Management</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown as={Nav.Item}>
-                        <Dropdown.Toggle as={Nav.Link}>{this.props.keycloak.tokenParsed.name}</Dropdown.Toggle>
-                        <Dropdown.Menu renderOnMount={true} alignRight={true}>
-                            <LinkContainer exact to="/profile">
-                                <Dropdown.Item href="/profile">Profile</Dropdown.Item>
-                            </LinkContainer>
-                            <Dropdown.Divider></Dropdown.Divider>
-                            <Logout keycloak={this.props.keycloak} />
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    {this.renderAdminDropdowns()}
                     {/* <NavDropdown title="Administration" id="basic-nav-dropdown" renderMenuOnMount={true}>
                         <NavDropdown.Item href="tcs.ecs.baylor.edu/questions">Question Management</NavDropdown.Item>
                         <NavDropdown.Item href="tcs.ecs.baylor.edu/config">Configuration Management</NavDropdown.Item>

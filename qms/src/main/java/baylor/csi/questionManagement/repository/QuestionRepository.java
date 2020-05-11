@@ -20,4 +20,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findByCategoryId(Long categoryId);
     @Query(name = Question.FIND_BY_CATEGORYID_LEVEL_LANGUAGE)
     List<Question> findByCategoryIdAndLevelAndLanguage(Long categoryId, Integer level, Long languageId);
+    @Query(name = Question.FIND_BY_CATEGORYID_LEVEL)
+    List<Question> findByCategoryIdAndLevel(Long categoryId, Integer level);
 }

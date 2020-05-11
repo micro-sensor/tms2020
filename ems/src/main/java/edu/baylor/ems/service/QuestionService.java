@@ -83,7 +83,7 @@ public class QuestionService {
         ) {
             Question question = new Question();
             question.setBody(q.getBody());
-            question.setCode(q.getCode().getBody());
+            question.setCode(q.getCode() != null ? q.getCode().getBody() : "");
             question.setExam(exam);
             question = this.questionRepository.save(question);
             Set<Choice> choices = choicesFromQmsToModel(q.getChoices(), question);
