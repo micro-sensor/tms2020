@@ -1,6 +1,8 @@
 {
   "id": "UserManagement",
   "realm": "UserManagement",
+  "displayName": "Texas Teacher Training",
+  "displayNameHtml": "Texas Teacher Training",
   "notBefore": 1587784284,
   "revokeRefreshToken": false,
   "refreshTokenMaxReuse": 0,
@@ -2411,6 +2413,7 @@
     "strictTransportSecurity": "max-age=31536000; includeSubDomains"
   },
   "smtpServer": {},
+  "loginTheme": "tmstheme",
   "eventsEnabled": false,
   "eventsListeners": [
     "jboss-logging"
