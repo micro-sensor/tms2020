@@ -34,6 +34,15 @@ class Secured extends Component {
      * @returns {*}
      */
     renderPage() {
+        const noAccessStyles = {
+            width: "100%",
+            textAlign: "center",
+            top: "120px",
+            position: "relative",
+            fontSize: "x-large",
+            fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+            fontWeight: "200"
+        };
         if (this.props.match.path === "/profile" || history.location.pathname === "/profile" || history.location.pathname === "/profile/") {
             return (
                 <>
@@ -44,14 +53,29 @@ class Secured extends Component {
                 </>
             );
         } else if (this.props.match.path === "/users" || history.location.pathname === "/users" || history.location.pathname === "/users/") {
-            return (
-                <>
-                    <AppNavbar keycloak={this.props.keycloak} authenticated={this.props.authenticated} login={this.props.login} />
-                    <div className='App-header'>
-                        <EditUsers keycloak={this.props.keycloak} authenticated={this.props.authenticated} />
-                    </div>
-                </>
-            )
+            if(this.props.keycloak.tokenParsed.realm_access.roles.includes("admin")
+                || this.props.keycloak.tokenParsed.realm_access.roles.includes("superadmin"))
+            {
+                return (
+                    <>
+                        <AppNavbar keycloak={this.props.keycloak} authenticated={this.props.authenticated} login={this.props.login} />
+                        <div className='App-header'>
+                            <EditUsers keycloak={this.props.keycloak} authenticated={this.props.authenticated} />
+                        </div>
+                    </>
+                )
+            }
+            else{
+                return (
+                    <>
+                        <AppNavbar keycloak={this.props.keycloak} authenticated={this.props.authenticated} login={this.props.login} />
+                        <div style={noAccessStyles}>
+                            You do not have access to this service.
+                        </div>
+                    </>
+                )
+            }
+
         }
         return null;
     }
