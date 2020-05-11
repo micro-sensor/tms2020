@@ -112,11 +112,6 @@ class EditUsers extends Component {
             });
         };
         http.send();
-
-    }
-
-    componentDidMount() {
-        console.log("keycloak token:", this.props.keycloak);
     }
 }
 

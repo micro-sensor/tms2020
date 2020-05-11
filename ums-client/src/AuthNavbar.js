@@ -67,13 +67,18 @@ class AuthNavbar extends Component {
                     {this.renderAdminNav()}
                 </Nav>
                 <Nav>
-                    <Dropdown as={Nav.Item}>
-                        <Dropdown.Toggle as={Nav.Link}>Administration</Dropdown.Toggle>
-                        <Dropdown.Menu renderOnMount={true} alignRight={true}>
-                            <Dropdown.Item href="https://tcs.ecs.baylor.edu/questions">Question Management</Dropdown.Item>
-                            <Dropdown.Item href="https://tcs.ecs.baylor.edu/config">Configuration Management</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
+                    {
+                        (this.props.keycloak.tokenParsed.realm_access.roles.includes("admin")
+                        || this.props.keycloak.tokenParsed.realm_access.roles.includes("superadmin"))
+                        ? <Dropdown as={Nav.Item}>
+                            <Dropdown.Toggle as={Nav.Link}>Administration</Dropdown.Toggle>
+                            <Dropdown.Menu renderOnMount={true} alignRight={true}>
+                                <Dropdown.Item href="https://tcs.ecs.baylor.edu/questions">Question Management</Dropdown.Item>
+                                <Dropdown.Item href="https://tcs.ecs.baylor.edu/config">Configuration Management</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                            : null
+                    }
                     <Dropdown as={Nav.Item}>
                         <Dropdown.Toggle as={Nav.Link}>{this.props.keycloak.tokenParsed.name}</Dropdown.Toggle>
                         <Dropdown.Menu renderOnMount={true} alignRight={true}>

@@ -39,7 +39,7 @@ class Welcome extends Component {
                                 Login to your account to get started!
                             </Card.Text>
                         </Card.Body>
-                    </Card> 
+                    </Card>
                 </Row>
             )
         }
@@ -70,6 +70,14 @@ class Welcome extends Component {
                                 <Card.Link href="https://tcs.ecs.baylor.edu/config">Exam Configurations and Assignments</Card.Link>
                                 <Card.Text>
                                     Configure and assign exams here.
+                                </Card.Text>
+                            </Card.Body>
+                        </Card>
+                        <Card style={{ width: '18rem' }}>
+                            <Card.Body>
+                                <Card.Link href="https://tcs.ecs.baylor.edu//users">User Management</Card.Link>
+                                <Card.Text>
+                                    Search and manage users here.
                                 </Card.Text>
                             </Card.Body>
                         </Card>
