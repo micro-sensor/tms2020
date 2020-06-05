@@ -449,7 +449,11 @@ class QuestionEdit extends React.Component<Props, State> {
                       // You can store the "editor" and use when it is needed.
                       console.log( 'Editor is ready to use!', editor );
                     } }
-                    onError={error => {alertify.error("Problem initializing rich-text editor.");}}
+                    onError={error => {
+                      alertify.error("Problem initializing rich-text editor.");
+                      console.log("Question.body: ", question.body);
+                      console.log("Problem initializing rich-text editor (Question Body): ", error);
+                    }}
                 />
               </div>
               <Divider />
@@ -492,7 +496,11 @@ class QuestionEdit extends React.Component<Props, State> {
                                   editor={ InlineEditor }
                                   config={inlineEditorConfiguration}
                                   onChange={( event, editor ) => this.changeAnswerBody(c.uuid, editor)}
-                                  onError={error => {alertify.error("Problem initializing rich-text editor.");}}
+                                  onError={error => {
+                                    alertify.error("Problem initializing rich-text editor.");
+                                    console.log("answer choise - c.body: ", c.body);
+                                    console.log("Problem initializing rich-text editor (Answer Choice Body): ", error);
+                                  }}
                               />
                             </div>
                             <Grid container justify="space-between">
@@ -665,7 +673,11 @@ class QuestionEdit extends React.Component<Props, State> {
                                   editor={ ClassicEditor }
                                   config={codeEditorConfiguration}
                                   onChange={( event, editor ) => this.changeCodeBody(code.languageId, editor)}
-                                  onError={error => {alertify.error("Problem initializing rich-text editor.");}}
+                                  onError={error => {
+                                    alertify.error("Problem initializing rich-text editor.");
+                                    console.log("code.body: ", code.body);
+                                    console.log("Problem initializing rich-text editor (Code snippet body):", error);
+                                  }}
                               />
                             </Grid>
                             <Grid item xs={12}>

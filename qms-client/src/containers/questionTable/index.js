@@ -2,7 +2,6 @@
 import React from "react";
 import ReactTable from "react-table";
 import * as api from "../question/api";
-import "./react-table.css";
 import {Button, Grid} from "@material-ui/core";
 import "index.css";
 import DialogButton from "../../components/DialogButton";
@@ -231,6 +230,7 @@ class QuestionTable<Props, State> extends React.Component {
                   }}
               />
             </Grid>
+            <link rel="stylesheet" href="https://unpkg.com/react-table@6.9.2/react-table.css"/>
             <ReactTable
                 data={this.state.questionList}
                 ref={(r) => {
