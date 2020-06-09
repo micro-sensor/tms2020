@@ -30,11 +30,11 @@ public class Question implements Serializable {
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     private List<Choice> choices;
 
-    @Column(name = "body")
-    @Size(max = 1024)
+    @Column(name = "body", columnDefinition="TEXT")
+//    @Size(max = 1024)
     private String body;
 
-    @Column(name = "code")
+    @Column(name = "code", columnDefinition="TEXT")
     private String code;
 
     @Column(name = "flagged")

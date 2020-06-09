@@ -3,6 +3,7 @@ package baylor.csi.questionManagement.model;
 import baylor.csi.questionManagement.model.supermodel.UUIDHashedEntityObject;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -24,6 +25,7 @@ import java.util.Set;
         @NamedQuery(name = Question.FIND_BY_CATEGORYID_LEVEL,
                 query = "select q from Question q join q.categories c where c.id = ?1 and q.level= ?2"),
 })
+@JacksonXmlRootElement(localName = "question")
 public class Question extends UUIDHashedEntityObject {
     public static final String FIND_BY_CATEGORYID_AND_NAME = "FIND_BY_CATEGORYID_AND_NAME";
     public static final String FIND_DTO_BY_NAME = "FIND_DTO_BY_NAME";
@@ -61,8 +63,8 @@ public class Question extends UUIDHashedEntityObject {
     }
 
     @NotNull
-    @Column(nullable = false)
-    @Size(min = 3, max = 1024)
+    @Column(nullable = false, columnDefinition="TEXT")
+    @Size(min = 3)
     public String getBody() {
         return body;
     }

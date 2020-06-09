@@ -378,6 +378,7 @@ class QuestionEdit extends React.Component<Props, State> {
         // viewportTopOffset: 500,
         shouldNotGroupWhenFull: true,
       },
+      // toolbar: [],
       placeholder: "The actual text of the question",
       typing: {
         transformations: {include: [ 'symbols', 'mathematical',],}
@@ -446,9 +447,9 @@ class QuestionEdit extends React.Component<Props, State> {
                     config={classicEditorConfiguration}
                     onChange={( event, editor ) => this.change("body", editor)}
                     onInit={ editor => {
-                      // You can store the "editor" and use when it is needed.
-                      console.log( 'Editor is ready to use!', editor );
-                    } }
+                      editor.setData(question.body);
+                      console.log( 'Editor init() function (Question Body)');
+                    }}
                     onError={error => {
                       alertify.error("Problem initializing rich-text editor.");
                       console.log("Question.body: ", question.body);
@@ -495,6 +496,10 @@ class QuestionEdit extends React.Component<Props, State> {
                                   data={c.body}
                                   editor={ InlineEditor }
                                   config={inlineEditorConfiguration}
+                                  onInit={ editor => {
+                                    editor.setData(c.body);
+                                    console.log( 'Editor init() function (Answer Choice Body)');
+                                  }}
                                   onChange={( event, editor ) => this.changeAnswerBody(c.uuid, editor)}
                                   onError={error => {
                                     alertify.error("Problem initializing rich-text editor.");
@@ -672,6 +677,10 @@ class QuestionEdit extends React.Component<Props, State> {
                                   data={code.body}
                                   editor={ ClassicEditor }
                                   config={codeEditorConfiguration}
+                                  onInit={ editor => {
+                                    editor.setData(code.body);
+                                    console.log( 'Editor init() function (Code snippet Body)');
+                                  }}
                                   onChange={( event, editor ) => this.changeCodeBody(code.languageId, editor)}
                                   onError={error => {
                                     alertify.error("Problem initializing rich-text editor.");

@@ -16,7 +16,7 @@ public class Choice extends UUIDHashedEntityObject {
     private Question question;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition="TEXT")
     public String getBody() {
         return body;
     }
