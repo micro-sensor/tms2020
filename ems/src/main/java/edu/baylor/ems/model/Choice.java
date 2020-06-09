@@ -15,7 +15,7 @@ public class Choice implements Serializable {
     @Column(columnDefinition = "serial")
     private Integer id;
 
-    @Column(name="body")
+    @Column(name="body", columnDefinition="TEXT")
     private String body;
 
     @Column(name="correct")

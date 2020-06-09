@@ -366,9 +366,6 @@ public class QuestionController {
         System.out.println("Exporting the question " + questionId);
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        xmlMapper.writeValue(new File("question "+questionId+".xml"), question);
-        File file = new File("question "+questionId+".xml");
-        assertNotNull(file);
 
         if( question != null)
             return xmlMapper.writeValueAsString(question);
