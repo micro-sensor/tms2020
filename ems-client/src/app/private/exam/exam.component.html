@@ -11,7 +11,7 @@
     </div>
 
     <h2>Question #{{qIndex + 1}}</h2>
-    
+
     <div class="box">
       <article class="media">
         <div class="media-content">
@@ -19,10 +19,10 @@
             <div [innerHTML]="questions[qIndex].body"></div>
             <form #heroForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
               <div class="control">
-                <div *ngFor="let ch of questions[qIndex].choices; index as i;">
-                  <label class="radio">
-                    <input type="checkbox" (click)="choose(i)" [checked]="questions[qIndex].choices[i].chosen" >
-                    {{ ch.body }}
+                <div *ngFor="let ch of questions[qIndex].choices; index as i;" >
+                  <label class="radio" style="display: inline-flex">
+                    <input type="checkbox" (click)="choose(i)" [checked]="questions[qIndex].choices[i].chosen">
+                    <div [innerHTML]="ch.body"></div>
                   </label>
                 </div>
               </div>
@@ -31,8 +31,8 @@
         </div>
       </article>
     </div>
-    
-    
+
+
     <div class="box" *ngIf="questions[qIndex].code && questions[qIndex].code !== ''">
       <p>Code: </p>
       <div class="media-content">
@@ -41,7 +41,7 @@
         </div>
       </div>
     </div>
-    
+
     <!-- Controls -->
     <div class="buttons is-grouped is-centered">
       <button class="button" [disabled]="qIndex <= 0" (click)="prev()"><span class="fas fa-chevron-circle-left"></span>&nbsp;Previous</button>
