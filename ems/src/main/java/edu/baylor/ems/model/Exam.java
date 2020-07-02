@@ -36,6 +36,12 @@ public class Exam implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss", timezone="US/Central")
     private Date submissionDate;
 
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="US/Central")
+    private Date examDateFrom;
+
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="US/Central")
+    private Date examDateTo;
+
     @Column(name="status")
     private ExamStatus status;
 
@@ -52,6 +58,8 @@ public class Exam implements Serializable {
         this.examDate = examDto.getExamDate();
         this.issuer = examDto.getIssuer();
         this.configurationId = examDto.getConfigurationId();
+        this.examDateFrom = examDto.getExamDateFrom();
+        this.examDateTo = examDto.getExamDateTo();
     }
 
     public Integer getId() {
@@ -102,6 +110,22 @@ public class Exam implements Serializable {
         this.submissionDate = submissionDate;
     }
 
+    public Date getExamDateFrom() {
+        return examDateFrom;
+    }
+
+    public void setExamDateFrom(Date examDateFrom) {
+        this.examDateFrom = examDateFrom;
+    }
+
+    public Date getExamDateTo() {
+        return examDateTo;
+    }
+
+    public void setExamDateTo(Date examDateTo) {
+        this.examDateTo = examDateTo;
+    }
+
     public ExamStatus getStatus() {
         return status;
     }
@@ -134,6 +158,7 @@ public class Exam implements Serializable {
         this.configurationName = configurationName;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -146,12 +171,14 @@ public class Exam implements Serializable {
                 Objects.equals(getExamDate(), exam.getExamDate()) &&
                 getStatus() == exam.getStatus() &&
                 Objects.equals(getCorrect(), exam.getCorrect()) &&
-                Objects.equals(getSum(), exam.getSum());
+                Objects.equals(getSum(), exam.getSum()) &&
+                Objects.equals(getExamDateFrom(), exam.getExamDateFrom()) &&
+                Objects.equals(getExamDateTo(), exam.getExamDateTo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getExaminee(), getIssuer(), getConfigurationId(), getExamDate(), getStatus(), getCorrect(), getSum());
+        return Objects.hash(getId(), getExaminee(), getIssuer(), getConfigurationId(), getExamDate(), getStatus(), getCorrect(), getSum(), getExamDateFrom(), getExamDateTo());
     }
 
     @Override
@@ -165,6 +192,8 @@ public class Exam implements Serializable {
                 ", status=" + status +
                 ", correct=" + correct +
                 ", sum=" + sum +
+                ", validFrom=" + examDateFrom +
+                ", validTill=" + examDateTo +
                 '}';
     }
 }

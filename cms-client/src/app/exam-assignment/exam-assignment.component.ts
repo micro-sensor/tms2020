@@ -58,7 +58,9 @@ export class ExamAssignmentComponent implements OnInit {
   createFormGroup() {
     return new FormGroup({
       examinee: new FormControl(),
-      configurationId: new FormControl()
+      configurationId: new FormControl(),
+      examDateFrom: new FormControl(),
+      examDateTo: new FormControl()
     });
   }
 

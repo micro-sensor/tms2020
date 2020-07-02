@@ -60,6 +60,13 @@ public class ExamService {
         exam.setExamDate(new Date());
         exam.setConfigurationName(qmsService.getConfigName(Integer.toUnsignedLong(examDto.getConfigurationId())));
         exam.setStatus(ExamStatus.INIT);
+        exam.getExamDateFrom().setHours(0);
+        exam.getExamDateFrom().setMinutes(0);
+        exam.getExamDateFrom().setSeconds(0);
+        exam.getExamDateTo().setHours(23);
+        exam.getExamDateTo().setMinutes(59);
+        exam.getExamDateTo().setSeconds(59);
+
         return this.examRepository.saveAndFlush(exam);
     }
 
