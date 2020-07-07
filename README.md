@@ -29,7 +29,7 @@ $ ./build.sh
 $ docker-compose push
 ```
 
-- (Optional) Cleanup volume (**WARNING**: do this only if necessary)
+- (Optional) Cleanup volume (**WARNING**: do this only if necessary, it deletes all data in the database)
 
 ```
 $ docker-compose down --remove-orphans
@@ -42,11 +42,19 @@ $ docker volume rm tms2020_postgres_data
 $ docker-compose up --no-build --detach
 ```
 
+- Access database
+
+    - local: ```$ docker exec -it tms2020_postgres_1 psql -U pguser (local)```
+    - production: ```$ sudo docker exec -it tms_postgres_1 psql -U pguser```
+    - [how to drop database](doc/Database-Drop.md)
+
 - View logs
 
 ```
 $ docker ps
 $ docker-compose logs -f
+$ docker-compose logs -f {container-name}
+ex: $ docker-compose logs -f qms
 ```
 
 - Add custom host entry
@@ -57,7 +65,16 @@ $ cat /etc/hosts
 127.0.0.1 tcs.ecs.baylor.edu
 ```
 
-## Production deployment
+## Production Redeploy
+
+It was decided to not have code in the server, instead docker images are built and pushed from your local machine, and then images are pulled in production and deployed.
+
+1. **Building images on your local:** Once you test you latest updates, and push your code to bitbucket, you just need to build images on your local `./build.sh`
+2. **Push images:** Now you need to push images, `docker-compose push`. Before that you may need to `docker login` with `username: cloudhubs2` and for password you should ask from previous developers or Dr. Cerny.
+3. **Pull images in production:** go to `tcs.ecs.baylor.edu` (either from Baylor's network or via `fire.ecs.baylor.edu` tunnel), `cd /tms` and pull images `sudo docker-compose pull`. You may need to `docker login`.
+4. **Deploy:** run `sudo docker-compose down` and `sudo docker-compose up --no-build --detach`
+
+## Production deployment from scratch
 
 - Configure `firewalld`, source address should match `subnet` in `docker-compose.yml` file
 
@@ -129,54 +146,7 @@ The QMS client is deployed to the subdirectory /questions, which requires these 
   * configuration.js: add the required routerBase entry for the above to work: `routerBase: "/questions"`
 * index.js: make sure the keycloak.json file is served from the correct address: `const keycloak = Keycloak(process.env.PUBLIC_URL + "/keycloak.json");`
 
-## UI Notifications: AlertifyJS
+## Other Development notes:
 
-All clients use AlertifyJS, so there is a unified messaging/dialog confirmation across all sites.
-
-To use it requires 4 steps.
-
-First, install alertify by npm:
-
-```
-npm install alertifyjs --save
-```
-
-Second, use the alertify CDN to include the CSS files in your index.html:
-
-```
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
-```
-
-Third, import alertify:
-
-```
-import alertify from 'alertifyjs';
-```
-
-Finally, use one of the alertify functions:
-
-```
-// demonstrates confirmation dialog and notifications:
-alertify.confirm('Delete Category', "Do you really want to delete " + dtl.name + "?",
-    () => {
-        api
-            .deleteCategory(this.state.categoryList[this.state.selectedIndex].id)
-            .then(c => {
-                this.setState(
-                    {
-                        selectedIndex: -1
-                    },
-                    () => {
-                        this.fetchAll();
-                        alertify.success('Success. Category removed.');
-                    }
-                );
-            })
-            .catch(e => {
-                alertify.error('Error. Could not remove category.');
-            });
-    },
-    function(){} // noop for cancel
-);
-```
+* [UI Notifications](doc/UI_Notifications.md)
+* [Rich Text Editor Customization](doc/Rich-Text-Editor.md)
