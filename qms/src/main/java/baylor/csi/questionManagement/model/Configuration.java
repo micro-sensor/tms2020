@@ -37,6 +37,7 @@ public class Configuration extends UUIDHashedEntityObject {
     public void setDescription(String description) {
         this.description = description;
     }
+
     @OneToMany(mappedBy = "configuration", cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
     public Set<ConfigurationGroup> getGroups() {
         return groups;

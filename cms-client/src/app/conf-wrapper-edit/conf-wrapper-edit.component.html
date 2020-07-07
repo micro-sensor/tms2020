@@ -1,11 +1,10 @@
 <div class="container" style="padding: 10px;">
 
-  <h3>Create Configuration</h3>
+  <h3>Update Configuration</h3>
 
   <p>
-    In order to create a configuration, insert an unique configuration name.
-    Then select a category, difficulty level and number of questions.
-    You can add multiple categories and specify difficulty levels and number of questions for each of them.
+    You can update a configuration by changing name and description. If you want to update a group inside
+    a configuration, you can remove it and then add new group in its place.
   </p>
 
   <div class="columns">
@@ -49,10 +48,10 @@
 
       <div class="field is-grouped">
         <div class="control">
-          <button class="button is-success" type="submit" (click)="onSubmit()">Save Configuration</button>
+          <button class="button is-success" type="submit" (click)="onSubmit()">Update Configuration</button>
         </div>
         <div class="control">
-          <button class="button is-text" type="reset" (click)="revert()">Revert</button>
+          <button class="button is-text" type="reset" (click)="reset()">Reset</button>
         </div>
       </div>
     </div>

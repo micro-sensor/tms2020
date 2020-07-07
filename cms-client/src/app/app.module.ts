@@ -11,6 +11,7 @@ import {WlayoutComponent} from './wlayout/wlayout.component';
 import {NavigationComponent} from './navigation/navigation.component';
 import {ExamAssignmentComponent} from './exam-assignment/exam-assignment.component';
 import {ConfWrapperComponent} from './conf-wrapper/conf-wrapper.component';
+import {ConfWrapperEditComponent} from './conf-wrapper-edit/conf-wrapper-edit.component';
 import {ConfListComponent} from './conf-list/conf-list.component';
 import {ConfGroupComponent} from './conf-group/conf-group.component';
 import {ConfCreatorComponent} from './conf-creator/conf-creator.component';
@@ -31,6 +32,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     NavigationComponent,
     ExamAssignmentComponent,
     ConfWrapperComponent,
+    ConfWrapperEditComponent,
     ConfListComponent,
     ConfGroupComponent,
     ConfCreatorComponent,

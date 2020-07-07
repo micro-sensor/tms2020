@@ -1,9 +1,16 @@
-
+<div class="container" *ngIf="zeroConfigurations">
+  <h3 class="has-text-centered">There are no configurations yet</h3>
+</div>
 <div class="card" style="margin-top: 2em;" *ngFor="let e of configurations">
   <div class="card-content">
     <div class="content">
-      <p>Name: {{e.name}}</p>
-      <p>Description: {{e.description}}</p>
+      <p>Name: {{e.name}}
+        <button class="button is-small is-info is-outlined is-pulled-right" [routerLink]="['/edit/' + e.id]">Edit</button>
+      </p>
+      <p>Description: {{e.description}}
+        <button class="button is-small is-danger is-outlined is-pulled-right" (click)="deleteConfig(e.id)"><i class="material-icons">delete</i></button>
+      </p>
+<!--      <button (click)="printConfig(e)">Console Print</button>-->
       <hr>
       <table>
         <tr>
