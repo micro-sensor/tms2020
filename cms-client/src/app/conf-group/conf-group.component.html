@@ -4,7 +4,10 @@
 
       <div class="media-content">
         <div class="content">
-          <p>Category ID: {{g.category}} | Level: {{g.level}} | Language: {{g.language}} | Count: {{g.count}}</p>
+          <p>Category ID: {{g.category}} | Level: {{g.level}} | Language: {{g.language}} | Count: {{g.count}}
+            <button class="button is-small is-danger is-outlined is-pulled-right" (click)="remove(g.id)"><i class="material-icons">delete</i></button>
+          </p>
+<!--          <button class="button" (click)="edit(g)">Edit</button>-->
         </div>
       </div>
     </article>

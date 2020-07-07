@@ -10,6 +10,7 @@ spring:
     password: 'pgpass'
   jpa:
     hibernate:
+      show-sql : false
       ddl-auto: update
   main:
     allow-bean-definition-overriding: true

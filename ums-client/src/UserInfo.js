@@ -30,6 +30,7 @@ class UserInfo extends Component {
             zip: "",
             institution: "",
             newPassword: "",
+            isAdmin: false,
         };
 
     }
@@ -50,27 +51,32 @@ class UserInfo extends Component {
                 email: resp.email,
                 // preferred_prog_lang: resp.attributes == null ? null: resp.attributes.preferred_prog_lang[0],
                 // teacher_level: resp.attributes == null ? null: resp.attributes.teacher_level[0],
-                address1: resp.attributes == null ? null: resp.attributes['Address 1'][0],
-                address2: resp.attributes == null ? null: resp.attributes['Address 2'][0],
-                city: resp.attributes == null ? null: resp.attributes.City[0],
-                state: resp.attributes == null ? null: resp.attributes.State[0],
-                zip: resp.attributes == null ? null: resp.attributes.Zip[0],
+                address1: resp.attributes == null ? null: (resp.attributes['Address 1'] ? resp.attributes['Address 1'][0] : null),
+                address2: resp.attributes == null ? null: (resp.attributes['Address 2'] ? resp.attributes['Address 2'][0] : null),
+                city: resp.attributes == null ? null: (resp.attributes.City ? resp.attributes.City[0] : null),
+                state: resp.attributes == null ? null: (resp.attributes.State ? resp.attributes.State[0] : null),
+                zip: resp.attributes == null ? null: (resp.attributes.Zip ? resp.attributes.Zip[0] : null),
                 //institution: resp.attributes == null ? null: resp.attributes.Institution[0],
             });
         };
         http.send();
         const http2 = new XMLHttpRequest();
         console.log(http2.response);
+        console.log("username: ", this.state.username);
         http2.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/userRoles/' + this.props.nameToGet);
         http2.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http2.onload = (event) => {
-            if (http.response == null) return;
+            if (http2.response == null || http2.response == "") {
+                console.log("http2 response is null or empty");
+                return;
+            }
             const resp = JSON.parse(http2.response);
             this.setState({
                 isAdmin: (resp.includes("admin") || resp.includes("superadmin")),
             });
         };
         http2.send();
+        console.log("this.state for user: ", this.state);
     }
 
     render() {
@@ -89,7 +95,7 @@ class UserInfo extends Component {
                                     </Form.Group>
                                     <Form.Group onChange={(event) => {this.handleChange(event)}}>
                                         <Form.Label>Username</Form.Label>
-                                        <Form.Control value={this.state.username} name='username' type='text' />
+                                        <Form.Control value={this.state.username} name='username' type='text' readOnly />
                                     </Form.Group>
                                     <Form.Group onChange={(event) => {this.handleChange(event)}}>
                                         <Form.Label>First Name</Form.Label>

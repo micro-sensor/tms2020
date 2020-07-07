@@ -59,4 +59,16 @@ public class ConfigurationGroup extends UUIDHashedEntityObject {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
+
+    @Override
+    public String toString() {
+        return "ConfigurationGroup{" +
+                "category=" + category +
+                ", level=" + level +
+                ", count=" + count +
+                ", languageId=" + languageId +
+                ", configuration=" + configuration +
+                ", id=" + id +
+                '}';
+    }
 }

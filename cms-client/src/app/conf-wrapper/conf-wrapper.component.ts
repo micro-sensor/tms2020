@@ -13,6 +13,7 @@ export class ConfWrapperComponent implements OnInit {
   public configForm: FormGroup;
   public groups: any = new Array();
   public configInfo: any;
+  public selectedGroup: any;
 
   constructor(private config: ConfigurationService) { }
 
@@ -21,11 +22,22 @@ export class ConfWrapperComponent implements OnInit {
       this.configInfo = data;
     });
     this.configForm = this.createFormGroup();
+    this.selectedGroup = null;
   }
 
 
   passGroup(group){
     this.groups.push(group);
+    this.selectedGroup = null;
+  }
+
+  selectGroup(group) {
+    this.groups = this.groups.filter(gr => gr.id !== group.id);
+    this.selectedGroup = group;
+  }
+
+  deleteGroup(groupId) {
+    this.groups = this.groups.filter(gr => gr.id !== groupId);
   }
 
   createFormGroup() {
@@ -37,6 +49,7 @@ export class ConfWrapperComponent implements OnInit {
 
   onSubmit(){
     const result: any = Object.assign({}, this.configForm.value);
+    console.log("this.groups before submit: ", this.groups);
     this.config.createConfig({
       name: result.name,
       description: result.description,
@@ -45,8 +58,9 @@ export class ConfWrapperComponent implements OnInit {
       alertify.notify("Configuration created");
       this.configForm.reset();
       this.groups = [];
+      this.selectedGroup = null;
     }, error => {
-      alertify.notify("Failed to create configuration!");
+      alertify.error("Failed to create configuration!");
     })
 
   }

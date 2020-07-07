@@ -31,13 +31,24 @@ export class ConfigurationService {
   }
 
   public getConfigurations() {
-
     return this.http.get(this.CMS_URL + "configuration", { headers: this.headers });
+  }
 
+  public getConfiguration(configId: number) {
+    return this.http.get(this.CMS_URL + "configuration/" + configId, { headers: this.headers });
+  }
+
+  public deleteConfiguration(configId: number) {
+    console.log("Hello from CMS->configService->deleteConfig");
+    return this.http.delete(this.CMS_URL + "configuration/" + configId, { headers: this.headers });
   }
 
   createConfig(config: any) {
     return this.http.post(this.CMS_URL + "configuration", config, { headers: this.headers } );
+  }
+
+  updateConfig(configId: number, config: any) {
+    return this.http.put(this.CMS_URL + "configuration/" + configId, config, { headers: this.headers } );
   }
 
   createExam(exam: any) {

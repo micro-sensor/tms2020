@@ -1,6 +1,7 @@
 
 package edu.baylor.ecs.seer.usermanagement.controller;
 
+import edu.baylor.ecs.seer.usermanagement.dto.UserDto;
 import edu.baylor.ecs.seer.usermanagement.entity.Role;
 import edu.baylor.ecs.seer.usermanagement.entity.User;
 import edu.baylor.ecs.seer.usermanagement.service.UserAccessService;
@@ -126,6 +127,13 @@ public class UserInfoController {
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
         return ResponseEntity.ok(userAccessService.addNewUser(user));
+    }
+
+    @CrossOrigin
+    @PostMapping(path = "/addUsers")
+    @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
+    public String addNewUsers(@RequestBody UserDto[] users) {
+        return userAccessService.addNewUsers(users);
     }
 
     @CrossOrigin

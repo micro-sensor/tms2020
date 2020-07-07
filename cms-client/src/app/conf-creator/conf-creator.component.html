@@ -12,7 +12,7 @@
                      autofocus
                      bindValue="id"
                      placeholder="Select Category"
-                     formControlName="category" (change)="groupSelected($event)">
+                     formControlName="category" (change)="categorySelected($event)">
             <ng-template ng-option-tmp let-item="item" let-index="index" let-search="id">
               {{item.id}} | {{item.name}} | {{item.description}}
             </ng-template>

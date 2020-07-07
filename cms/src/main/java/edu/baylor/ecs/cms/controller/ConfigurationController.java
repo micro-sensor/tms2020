@@ -15,8 +15,14 @@ public class ConfigurationController {
 
     @CrossOrigin
     @PostMapping("")
-    public ResponseEntity<Object> createConfiguration(@RequestBody ConfigurationDto object) {
+    public ResponseEntity<Object> createConfiguration(@RequestBody Object object) {
         return qmsService.createConfiguration(object);
+    }
+
+    @CrossOrigin
+    @PutMapping("/{configurationId}")
+    public ResponseEntity<?> updateConfiguration(@PathVariable Long configurationId, @RequestBody Object object) {
+        return qmsService.updateConfiguration(configurationId, object);
     }
 
     @CrossOrigin
@@ -25,7 +31,19 @@ public class ConfigurationController {
         return qmsService.getConfigurations();
     }
 
-    //ToDo: update, delete
+    @CrossOrigin
+    @GetMapping("/{configurationId}")
+    public ResponseEntity<Object> getConfiguration(@PathVariable Long configurationId) {
+        return qmsService.getConfiguration(configurationId);
+    }
+
+    @CrossOrigin
+    @DeleteMapping("/{configurationId}")
+    public ResponseEntity<?> deleteConfiguration(@PathVariable Long configurationId) {
+        return qmsService.deleteConfiguration(configurationId);
+    }
+
+    //ToDo: update
 
 
 }
