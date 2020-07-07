@@ -14,6 +14,10 @@ public class ExamDto {
     private Date examDate;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="US/Central")
     private Date submissionDate;
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="US/Central")
+    private Date examDateFrom;
+    @JsonFormat(pattern="yyyy-MM-dd", timezone="US/Central")
+    private Date examDateTo;
 
     public ExamDto() {
     }
@@ -72,5 +76,21 @@ public class ExamDto {
 
     public void setConfigurationName(String configurationName) {
         this.configurationName = configurationName;
+    }
+
+    public Date getExamDateFrom() {
+        return examDateFrom;
+    }
+
+    public void setExamDateFrom(Date examDateFrom) {
+        this.examDateFrom = examDateFrom;
+    }
+
+    public Date getExamDateTo() {
+        return examDateTo;
+    }
+
+    public void setExamDateTo(Date examDateTo) {
+        this.examDateTo = examDateTo;
     }
 }
