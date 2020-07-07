@@ -2,6 +2,13 @@ import React, {Component} from 'react';
 import {Row, Col, Tab, Nav, Form, Button} from 'react-bootstrap';
 import UserListTab from "./UserListTab";
 import UserPane from "./UserPane";
+import * as api from "./api";
+import DialogButton from "./components/DialogButton";
+import FileUpload from "./containers/FileUpload";
+import alertify from 'alertifyjs';
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Grid from "@material-ui/core/Grid";
 
 /**
  * This is the edit users page, which allows admins and above
@@ -19,12 +26,13 @@ class EditUsers extends Component {
         super(props);
         this.state = {
             names: [],
-            searchVal: ''
+            searchVal: '',
+            importResponse: '',
         };
     }
 
     render() {
-        const {names } = this.state;
+        const {names, importResponse } = this.state;
         return (
             <Tab.Container defaultActiveKey={this.state.names[0]}>
                 <Row>
@@ -37,6 +45,41 @@ class EditUsers extends Component {
                             <Form.Group inline>
                                 <Button variant='primary' type="submit" onClick={e => {this.handleSearch(e)}}>Search</Button>
                                 <Button variant='primary' type="submit" style={{marginLeft: "5px"}} type='submit' onClick={e => {this.handleAll(e)}}>Show All</Button>
+                                <DialogButton
+                                    style={{
+                                        marginTop: "5px"
+                                    }}
+                                    title="IMPORT USERS"
+                                    buttonLabel="IMPORT USERS"
+                                    variant="contained"
+                                    dialogContent={(close, open) => {
+                                        return (
+                                            <Grid container>
+                                                <Grid item xs>
+                                                    <FileUpload
+                                                        postUrl={api.importUsers}
+                                                        keycloak={this.props.keycloak}
+                                                        accept={[".csv,application/vnd.ms-excel,.xlt,application/vnd.ms-excel,.xla,application/vnd.ms-excel,.xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xltx,application/vnd.openxmlformats-officedocument.spreadsheetml.template,.xlsm,application/vnd.ms-excel.sheet.macroEnabled.12,.xltm,application/vnd.ms-excel.template.macroEnabled.12,.xlam,application/vnd.ms-excel.addin.macroEnabled.12,.xlsb,application/vnd.ms-excel.sheet.binary.macroEnabled.12"]}
+                                                        // multiple={true}
+                                                        maxSize={100000000}
+                                                        showMessage={(message) => alertify.error(message)}
+                                                        rejectMessage="File rejected. Files must be smaller than 100 MB"
+                                                        onSuccess={() => {
+                                                            alertify.success("File successfully processed.");
+                                                        }}
+                                                        updateResponse={(response)=> {this.setState({
+                                                            importResponse: response,
+                                                        });}}
+                                                    />
+                                                </Grid>
+                                                <Grid item xs>
+                                                    <Typography variant="body1" align="center">Import Response</Typography>
+                                                    <Typography variant="body1">{importResponse}</Typography>
+                                                </Grid>
+                                            </Grid>
+                                        );
+                                    }}
+                                />
                             </Form.Group>
                         </Form>
                         <br/>
@@ -86,7 +129,10 @@ class EditUsers extends Component {
             http.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/usernamesLike?username=' + value);
             http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
             http.onload = (event) => {
-                console.log("http.response: ", http);
+                if (http.response == null || http.response == "") {
+                    console.log("http response is null or empty");
+                    return;
+                }
                 const resp = JSON.parse(http.response);
                 this.setState({
                     names: resp,
@@ -105,7 +151,11 @@ class EditUsers extends Component {
         http.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/usernames');
         http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http.onload = (event) => {
-            console.log("http.response: ", http);
+            if (http.response == null || http.response == "") {
+                console.log("http response is null or empty");
+                return;
+            }
+            // console.log("http.response: ", http);
             const resp = JSON.parse(http.response);
             this.setState({
                 names: resp,

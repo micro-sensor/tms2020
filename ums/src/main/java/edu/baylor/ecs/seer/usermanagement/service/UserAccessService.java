@@ -1,5 +1,7 @@
 package edu.baylor.ecs.seer.usermanagement.service;
 
+import edu.baylor.ecs.seer.usermanagement.dto.UserDto;
+import edu.baylor.ecs.seer.usermanagement.entity.Credential;
 import edu.baylor.ecs.seer.usermanagement.entity.Role;
 import edu.baylor.ecs.seer.usermanagement.entity.User;
 import org.keycloak.OAuth2Constants;
@@ -76,6 +78,37 @@ public class UserAccessService {
         ResponseEntity<User> response = restTemplate.postForEntity(keycloakEndpoint, user, User.class);
         return response.getBody();
     }
+
+    public String addNewUsers(UserDto[] users) {
+
+        System.out.println("UMS UserAccessService addNewUsers");
+        for(UserDto user : users) {
+            System.out.println(user);
+        }
+//        User newUser = new User();
+//        newUser.setFirstName("importbek");
+//        newUser.setUsername("import4");
+//        newUser.setEmail("import4@import.com");
+//        newUser.setLastName("importov");
+//        newUser.setEnabled(true);
+//        Credential passwordCredential = new Credential("password",true);
+//        List<Credential> credentials = new ArrayList<>();
+//        credentials.add(passwordCredential);
+//        newUser.setCredentials(credentials);
+
+//        Map<String, Object> attributes = new HashMap<>();
+//        attributes.put("type", "password");
+//        attributes.put("temporary", true);
+//        attributes.put("value", "password");
+//        restTemplate.postForEntity(keycloakEndpoint, newUser, User.class, attributes);
+//        restTemplate.postForEntity(keycloakEndpoint, newUser, User.class);
+
+        String jsonUsers = restTemplate.getForObject(keycloakEndpoint, String.class);
+
+
+        return jsonUsers;
+    }
+
 
     public void updateUser(User user) {
         restTemplate.put(keycloakEndpoint + "/" + user.getId(), user);

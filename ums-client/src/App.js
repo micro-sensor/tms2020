@@ -5,6 +5,7 @@ import Keycloak from 'keycloak-js';
 import Secured from './Secured';
 import './App.css';
 import Welcome from "./Welcome";
+import EditUsers from "./EditUsers";
 
 const TITLE = 'UMS';
 
@@ -86,6 +87,9 @@ class App extends Component {
                         <Secured {...props} keycloak={this.state.keycloak} authenticated={this.state.authenticated} authFinished={this.state.authFinished} login={this.login} />
                     } />
                     <Route path='/users' render={(props) =>
+                        // <div className='App-header'>
+                        //     <EditUsers keycloak={this.props.keycloak} authenticated={this.props.authenticated} />
+                        // </div>
                         <Secured {...props} keycloak={this.state.keycloak} authenticated={this.state.authenticated} authFinished={this.state.authFinished} login={this.login} />
                     } />
                   </div>

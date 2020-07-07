@@ -1,4 +1,6 @@
-package edu.baylor.ecs.seer.usermanagement.entity;
+package edu.baylor.ecs.seer.usermanagement.dto;
+
+import edu.baylor.ecs.seer.usermanagement.entity.Credential;
 
 import java.util.List;
 import java.util.Map;
@@ -10,31 +12,15 @@ import java.util.Map;
  * @author J.R. Diehl
  * @version 0.1
  */
-public class User {
+public class UserDto {
 
-    private String id;
+    public String username;
 
-    private String username;
+    public String email;
 
-    private String email;
+    public String lastName;
 
-    private String lastName;
-
-    private String firstName;
-
-    private boolean enabled;
-
-    private List<Credential> credentials;
-
-    private Map<String, List<String>> attributes;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    public String firstName;
 
     public String getUsername() {
         return username;
@@ -67,22 +53,6 @@ public class User {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
-    public boolean isEnabled() { return enabled; }
-
-    public void setEnabled(boolean enabled) { this.enabled = enabled; }
-
-    public Map<String, List<String>> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(Map<String, List<String>> attributes) {
-        this.attributes = attributes;
-    }
-
-    public List<Credential> getCredentials() { return credentials; }
-
-    public void setCredentials(List<Credential> credentials) { this.credentials = credentials; }
 
     @Override
     public String toString() {
