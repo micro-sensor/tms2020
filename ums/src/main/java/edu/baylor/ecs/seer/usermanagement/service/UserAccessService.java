@@ -1,9 +1,6 @@
 package edu.baylor.ecs.seer.usermanagement.service;
 
-import edu.baylor.ecs.seer.usermanagement.dto.UserDto;
-import edu.baylor.ecs.seer.usermanagement.entity.Credential;
-import edu.baylor.ecs.seer.usermanagement.entity.Role;
-import edu.baylor.ecs.seer.usermanagement.entity.User;
+import edu.baylor.ecs.seer.usermanagement.entity.*;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
@@ -34,7 +31,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserAccessService {
 
-    private static final String keycloakEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms/UserManagement/users";
+    private static final String keycloakAdminRestEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms";
+    private static final String keycloakUsersEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms/UserManagement/users";
+    private static final String keycloakImportEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms/UserManagement/partialImport";
     private static final String keycloakBaseURL = "https://tcs.ecs.baylor.edu/auth";
     private static final String keycloakRealm = "UserManagement";
     private static final String keycloakClient = "ums-backend";
@@ -44,20 +43,48 @@ public class UserAccessService {
     private OAuth2RestTemplate restTemplate;
 
     public List<User> getUsers() {
-        ResponseEntity<User[]> response = restTemplate.getForEntity(keycloakEndpoint, User[].class);
+        ResponseEntity<User[]> response = restTemplate.getForEntity(keycloakUsersEndpoint, User[].class);
         if (response.getBody() == null) {
             return null;
         }
         return Arrays.asList(response.getBody());
     }
 
-    public List<User> getUsersLikeName(String name) {
+    public User checkExactUsernameExists(String username) {
+        List<User> userList =  searchUsersWithQueryParam("username", username);
+        User exists = null;
+        for( User user: userList) {
+            if( username.equals(user.getUsername())) {
+                exists = user;
+                break;
+            }
+        }
+        return exists;
+    }
 
+    public User checkExactEmailExists(String email) {
+        List<User> userList =  searchUsersWithQueryParam("email", email);
+        User exists = null;
+        for( User user: userList) {
+            if( email.equals(user.getEmail())) {
+                exists = user;
+                break;
+            }
+        }
+        return exists;
+    }
+
+    public List<User> getUsersLikeName(String name) {
+        return searchUsersWithQueryParam("username", name);
+    }
+
+    public List<User> searchUsersWithQueryParam(String paramName, String paramValue)
+    {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(keycloakEndpoint)
-                .queryParam("username", name);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(keycloakUsersEndpoint)
+                .queryParam(paramName, paramValue);
 
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
@@ -74,48 +101,125 @@ public class UserAccessService {
         return Arrays.asList(response.getBody());
     }
 
+    public void sendEmailWithRequiredActions( String userId, List<String> actions ,String redirectURI, int lifespan) {
+
+        // for tries #1 and #2
+//         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(keycloakUsersEndpoint + "/" + userId + "/execute-actions-email")
+//                 .queryParam("lifespan", lifespan)
+//                 .queryParam("redirect_uri", redirectURI);
+        // for tries #2 and #3
+//        Map<String, Object> params = new HashMap<>();
+//        params.put("lifespan", lifespan);
+//        params.put("redirect_uri", redirectURI);
+
+        // try #1
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+//        HttpEntity<?> httpEntity = new HttpEntity<>(actions, headers);
+//        restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, httpEntity, String.class);
+
+        // try #2
+//        System.out.println("URI build and expand: " + uriBuilder.buildAndExpand(params).toUriString());
+//        System.out.println("URI build: " + uriBuilder.toUriString());
+//        restTemplate.put(uriBuilder.toUriString(), actions);
+
+        // try #3
+//        restTemplate.put(keycloakUsersEndpoint + "/" + userId + "/execute-actions-email", actions, params);
+
+        // try #4
+//        RequiredActionsDto requiredActionsDto = new RequiredActionsDto(lifespan, redirectURI);
+//        restTemplate.put(keycloakUsersEndpoint + "/" + userId + "/execute-actions-email", actions, requiredActionsDto);
+
+        restTemplate.put(keycloakUsersEndpoint + "/" + userId + "/execute-actions-email", actions);
+    }
+
     public User addNewUser(User user) {
-        ResponseEntity<User> response = restTemplate.postForEntity(keycloakEndpoint, user, User.class);
+        ResponseEntity<User> response = restTemplate.postForEntity(keycloakUsersEndpoint, user, User.class);
         return response.getBody();
     }
 
-    public String addNewUsers(UserDto[] users) {
-
+    public ResponseEntity<?> addNewUsers(User[] users) {
         System.out.println("UMS UserAccessService addNewUsers");
-        for(UserDto user : users) {
+        String responseBody = "";
+        int line = 1;
+        for(User user : users) {
+            line++;
+            // setup new user. if username is empty, set email as username
+            user.setEnabled(true);
+            if( user.getUsername().isEmpty()) {
+                user.setUsername(user.getEmail());
+            }
             System.out.println(user);
+            // check if username is already taken:
+            User usernameExists = checkExactUsernameExists(user.getUsername());
+            if(usernameExists != null) {
+                responseBody += "line " + String.valueOf(line) + ": username '" + user.getUsername() + "' already exists\n";
+                continue;
+            }
+
+            // check if email is already used:
+            User emailIsUsed = checkExactEmailExists(user.getEmail());
+            if(emailIsUsed != null) {
+                responseBody += "line " + String.valueOf(line) + ": email '" + user.getEmail() + "' is already used\n";
+                continue;
+            }
+
+            // creating password from user's information:
+//            int atIndex = user.getEmail().indexOf('@');
+//            String last3email = user.getEmail().substring(atIndex-3,atIndex);
+//            String password = user.getFirstName().substring(0, 3) + user.getLastName().substring(0, 3) + last3email;
+            String password = "agaqilfuh1iotblhr4875bb3kk4j"; // random string
+
+            // setting password information:
+            Credential passwordCredential = new Credential(password,true);
+            List<Credential> credentials = new ArrayList<>();
+            credentials.add(passwordCredential);
+            user.setCredentials(credentials);
+
+            // create user in keycloak:
+            try {
+                ResponseEntity<User> userCreateResponse = restTemplate.postForEntity(keycloakUsersEndpoint, user, User.class);
+            } catch (Exception e) {
+                //e.printStackTrace();
+                responseBody += "line " + String.valueOf(line) + ": Couldn't create user with username '" + user.getUsername() + "'. Reason: "+ e.getMessage() +"\n";
+                continue;
+            }
+
+            // get newly created user's id:
+            User isUserCreated = checkExactUsernameExists(user.getUsername());
+            if( isUserCreated == null) {
+                responseBody += "line " + String.valueOf(line) + ": Couldn't create user with username '" + user.getUsername() + "' due to internal server error\n";
+                continue;
+            }
+            System.out.println("created user: " + isUserCreated);
+            System.out.println("UMS UserAccessService addNewUsers -> check all users after creating");
+            List<User> userList =  getUsers();
+            for( User user1: userList) {
+                System.out.println(user1);
+            }
+
+            // send an update account email with required UPDATE_PASSWORD action:
+            List<String> requiredActions = new ArrayList<>();
+            requiredActions.add("UPDATE_PASSWORD");
+            // redirect_uri and lifespan (optional) parameters are not working for now. Default values are used
+            sendEmailWithRequiredActions(isUserCreated.getId(),requiredActions , "https://tcs.ecs.baylor.edu/", 86400);
+            // TODO frontend: check if provided information fulfill requirement, such as length, email format, etc
         }
-//        User newUser = new User();
-//        newUser.setFirstName("importbek");
-//        newUser.setUsername("import4");
-//        newUser.setEmail("import4@import.com");
-//        newUser.setLastName("importov");
-//        newUser.setEnabled(true);
-//        Credential passwordCredential = new Credential("password",true);
-//        List<Credential> credentials = new ArrayList<>();
-//        credentials.add(passwordCredential);
-//        newUser.setCredentials(credentials);
+//        String jsonUsers = restTemplate.getForObject(keycloakUsersEndpoint, String.class);
+//        return ResponseEntity.ok(jsonUsers);
 
-//        Map<String, Object> attributes = new HashMap<>();
-//        attributes.put("type", "password");
-//        attributes.put("temporary", true);
-//        attributes.put("value", "password");
-//        restTemplate.postForEntity(keycloakEndpoint, newUser, User.class, attributes);
-//        restTemplate.postForEntity(keycloakEndpoint, newUser, User.class);
+        if(responseBody.isEmpty()) { responseBody= "Users are created. They will receive emails to set their passwords";}
+        return ResponseEntity.ok(responseBody);
 
-        String jsonUsers = restTemplate.getForObject(keycloakEndpoint, String.class);
-
-
-        return jsonUsers;
     }
 
 
     public void updateUser(User user) {
-        restTemplate.put(keycloakEndpoint + "/" + user.getId(), user);
+        restTemplate.put(keycloakUsersEndpoint + "/" + user.getId(), user);
     }
 
     public void removeUser(String id) {
-        restTemplate.delete(keycloakEndpoint + "/" + id);
+        restTemplate.delete(keycloakUsersEndpoint + "/" + id);
     }
 
     public void changeUserPassword(String id, String newPassword) {
@@ -123,7 +227,7 @@ public class UserAccessService {
         request.put("type", "password");
         request.put("temporary", false);
         request.put("value", newPassword);
-        restTemplate.put(keycloakEndpoint + "/" + id + "/reset-password", request);
+        restTemplate.put(keycloakUsersEndpoint + "/" + id + "/reset-password", request);
     }
 
     public List<String> getUserRoleNames(String username) {
@@ -132,7 +236,7 @@ public class UserAccessService {
                 .filter(x -> x.getUsername().equals(username))
                 .findFirst().orElse(new User()).getId();
         ResponseEntity<Role[]> roles = restTemplate
-                .getForEntity(keycloakEndpoint + "/" + id + "/role-mappings/realm",
+                .getForEntity(keycloakUsersEndpoint + "/" + id + "/role-mappings/realm",
                         Role[].class);
         if (roles.getBody() == null) {
             return null;
