@@ -1,8 +1,5 @@
 package edu.baylor.ecs.seer.usermanagement.entity;
 
-import java.util.List;
-import java.util.Map;
-
 /**
  * This provides a basic DTO for keycloak users. It is used for
  * data transfer with the UMS frontend.

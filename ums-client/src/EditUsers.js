@@ -61,9 +61,9 @@ class EditUsers extends Component {
                                                         keycloak={this.props.keycloak}
                                                         accept={[".csv,application/vnd.ms-excel,.xlt,application/vnd.ms-excel,.xla,application/vnd.ms-excel,.xlsx, .xls, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xltx,application/vnd.openxmlformats-officedocument.spreadsheetml.template,.xlsm,application/vnd.ms-excel.sheet.macroEnabled.12,.xltm,application/vnd.ms-excel.template.macroEnabled.12,.xlam,application/vnd.ms-excel.addin.macroEnabled.12,.xlsb,application/vnd.ms-excel.sheet.binary.macroEnabled.12"]}
                                                         // multiple={true}
-                                                        maxSize={100000000}
+                                                        maxSize={10000000}
                                                         showMessage={(message) => alertify.error(message)}
-                                                        rejectMessage="File rejected. Files must be smaller than 100 MB"
+                                                        rejectMessage="File rejected. Files must be smaller than 10 GB"
                                                         onSuccess={() => {
                                                             alertify.success("File successfully processed.");
                                                         }}
@@ -73,7 +73,7 @@ class EditUsers extends Component {
                                                     />
                                                 </Grid>
                                                 <Grid item xs>
-                                                    <Typography variant="body1" align="center">Import Response</Typography>
+                                                    <Typography variant="subtitle2" align="center">Import Response</Typography>
                                                     <Typography variant="body1">{importResponse}</Typography>
                                                 </Grid>
                                             </Grid>
