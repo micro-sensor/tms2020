@@ -4,6 +4,7 @@ import edu.baylor.ems.dto.ExamDto;
 import edu.baylor.ems.dto.ExamReviewDto;
 import edu.baylor.ems.dto.QuestionEmsDto;
 import edu.baylor.ems.model.Exam;
+import edu.baylor.ems.service.EmailService;
 import edu.baylor.ems.service.ExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class ExamController {
 
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private EmailService emailService;
 
 //    @PreAuthorize("hasAnyAuthority('ROLE_ems-frontend')")
     @CrossOrigin(origins = "*")
@@ -36,6 +40,7 @@ public class ExamController {
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public ResponseEntity<Exam> createExam(@RequestBody ExamDto examDto) {
         Exam exam = examService.saveExam(examDto);
+        emailService.sendExamAssignmentNotification(exam);
         return new ResponseEntity<>(exam, HttpStatus.CREATED);
     }
 
