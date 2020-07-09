@@ -65,6 +65,10 @@ $ cat /etc/hosts
 127.0.0.1 tcs.ecs.baylor.edu
 ```
 
+- Test email sending on local:
+    - Download fakeSMTP and run it on any port you like on your computer.
+    - in `ems/src/main/resources/application.properties` set `spring.mail.host` to your computer email and `spring.mail.port` to the port you used for fakeSMTP
+
 ## Production Redeploy
 
 It was decided to not have code in the server, instead docker images are built and pushed from your local machine, and then images are pulled in production and deployed.
