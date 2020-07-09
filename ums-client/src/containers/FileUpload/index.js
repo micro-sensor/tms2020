@@ -9,6 +9,7 @@ import {Button} from "@material-ui/core";
 type Props = {
   postUrl: string,
   keycloak: any,
+  updateResponse: string => void,
   showMessage: string => void,
   maxSize: number,
   accept?: Array<string>,
@@ -30,14 +31,14 @@ type State = {
 class FileUpload extends Component<Props, State> {
   state: State;
   // postFile: Object => void;
-  onDropAccepted: (Array<Object>) => void;
-  onDropRejected: (Array<Object>) => void;
-  processFile: () => void;
+  // onDropAccepted: (Array<Object>) => void;
+  // onDropRejected: (Array<Object>) => void;
+  // processFile: () => void;
 
   static defaultProps = {
     multiple: false,
     showMessage: () => {},
-    maxSize: 100000000,
+    maxSize: 10000000,
     rejectMessage: "We don't accept this type of files",
     accept: undefined,
     title: "Drop your files here or click to select"
@@ -45,10 +46,6 @@ class FileUpload extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props);
-    // this.postFile = this._postFile.bind(this);
-    // this.onDropAccepted = this._onDropAccepted.bind(this);
-    // this.onDropRejected = this._onDropRejected.bind(this);
-    // this.processFile = this._processFile.bind(this);
     this.state = {
       sending: false,
       uploaded: false,
@@ -67,28 +64,28 @@ class FileUpload extends Component<Props, State> {
         var r = new FileReader();
         r.onload = e => {
           let contents = this.processExcel(e.target.result);
-          // contents = contents.filter(u => delete u.__rowNum__);
           this.setUsers(contents);
-          // console.log("file contents: ", file);
-          // console.log("e contents: ", e);
-          console.log("excel contents: ", contents);
-          console.log("typeof contents: ",typeof contents);
-          // this.setState({ users: contents });
-
+          this.setState({ users: contents });
           api
-              .post(postUrl, {users: contents},{headers: {
+              .post(postUrl, contents,{headers: {
                   'Authorization': "Bearer " + this.props.keycloak.token,
                 }})
               .then(resp => {
-                if (onSuccess) onSuccess(resp.data);
+                if(resp && resp.data) {
+                  console.log("importUsers resp.data: ", resp.data);
+                  this.props.updateResponse(resp.data);
+                }
+                if (onSuccess) onSuccess();
                 this.setState({
                   sending: false,
                   processed: true,
                 });
               })
               .catch(err => {
-                showMessage(err.response.data.message);
-                console.log(err.response.data.message);
+                if(err && err.response && err.response.data ) {
+                  showMessage(err.response.data.message);
+                }
+                console.error("err: ", err);
                 this.setState({ sending: false });
               });
         }

@@ -5,7 +5,7 @@
 ```DROP DATABASE [IF EXISTS] database_name;```
 
 - delete a database that has active connections 
-    - find the activities that are taken place against the target database
+    - find the activities that are taken place against the target database:
     ```
     SELECT
         *
@@ -14,7 +14,7 @@
     WHERE
         datname = 'database_name';
     ```
-    - terminate the active connections
+    - terminate the active connections:
     ```
     SELECT
     	pg_terminate_backend (pg_stat_activity.pid)
@@ -23,7 +23,7 @@
     WHERE
     	pg_stat_activity.datname = 'database_name';
     ```
-    - delete
+    - delete:
     ```
     DROP DATABASE database_name;
     ```  

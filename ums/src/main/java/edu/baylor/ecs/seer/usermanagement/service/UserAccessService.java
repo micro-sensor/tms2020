@@ -102,34 +102,6 @@ public class UserAccessService {
     }
 
     public void sendEmailWithRequiredActions( String userId, List<String> actions ,String redirectURI, int lifespan) {
-
-        // for tries #1 and #2
-//         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(keycloakUsersEndpoint + "/" + userId + "/execute-actions-email")
-//                 .queryParam("lifespan", lifespan)
-//                 .queryParam("redirect_uri", redirectURI);
-        // for tries #2 and #3
-//        Map<String, Object> params = new HashMap<>();
-//        params.put("lifespan", lifespan);
-//        params.put("redirect_uri", redirectURI);
-
-        // try #1
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-//        HttpEntity<?> httpEntity = new HttpEntity<>(actions, headers);
-//        restTemplate.exchange(uriBuilder.toUriString(), HttpMethod.PUT, httpEntity, String.class);
-
-        // try #2
-//        System.out.println("URI build and expand: " + uriBuilder.buildAndExpand(params).toUriString());
-//        System.out.println("URI build: " + uriBuilder.toUriString());
-//        restTemplate.put(uriBuilder.toUriString(), actions);
-
-        // try #3
-//        restTemplate.put(keycloakUsersEndpoint + "/" + userId + "/execute-actions-email", actions, params);
-
-        // try #4
-//        RequiredActionsDto requiredActionsDto = new RequiredActionsDto(lifespan, redirectURI);
-//        restTemplate.put(keycloakUsersEndpoint + "/" + userId + "/execute-actions-email", actions, requiredActionsDto);
-
         restTemplate.put(keycloakUsersEndpoint + "/" + userId + "/execute-actions-email", actions);
     }
 
@@ -203,11 +175,7 @@ public class UserAccessService {
             requiredActions.add("UPDATE_PASSWORD");
             // redirect_uri and lifespan (optional) parameters are not working for now. Default values are used
             sendEmailWithRequiredActions(isUserCreated.getId(),requiredActions , "https://tcs.ecs.baylor.edu/", 86400);
-            // TODO frontend: check if provided information fulfill requirement, such as length, email format, etc
         }
-//        String jsonUsers = restTemplate.getForObject(keycloakUsersEndpoint, String.class);
-//        return ResponseEntity.ok(jsonUsers);
-
         if(responseBody.isEmpty()) { responseBody= "Users are created. They will receive emails to set their passwords";}
         return ResponseEntity.ok(responseBody);
 

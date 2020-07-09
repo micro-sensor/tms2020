@@ -75,7 +75,7 @@ class Welcome extends Component {
                         </Card>
                         <Card style={{ width: '18rem' }}>
                             <Card.Body>
-                                <Card.Link href="https://tcs.ecs.baylor.edu//users">User Management</Card.Link>
+                                <Card.Link href="https://tcs.ecs.baylor.edu/users">User Management</Card.Link>
                                 <Card.Text>
                                     Search and manage users here.
                                 </Card.Text>

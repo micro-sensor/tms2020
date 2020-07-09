@@ -77,9 +77,10 @@ class FileUpload extends Component<Props, State> {
           });
         })
         .catch(err => {
-          showMessage(err.response.data.message);
-          console.log(err.response.data.message);
-
+          if(err && err.response && err.response.data) {
+            showMessage(err.response.data.message);
+          }
+          console.error("err: ", err);
           ref.setState({ sending: false });
         });
     }
