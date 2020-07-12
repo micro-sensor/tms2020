@@ -33,6 +33,7 @@ import DeleteIcon from "@material-ui/icons/DeleteRounded";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as api from "../question/api";
 import alertify from 'alertifyjs';
+import Select from "@material-ui/core/Select";
 
 type Props = {
   question: Question,
@@ -46,7 +47,8 @@ type State = {
   langList: Array<{ id: number, name: string }>,
   langLoaded: boolean,
   langError: boolean,
-  loadComplete: boolean
+  loadComplete: boolean,
+  isAddOptionDisabled: boolean,
 };
 
 class QuestionEdit extends React.Component<Props, State> {
@@ -59,7 +61,8 @@ class QuestionEdit extends React.Component<Props, State> {
       langList: [],
       langLoaded: false,
       langError: false,
-      loadComplete: false
+      loadComplete: false,
+      isAddOptionDisabled: false,
     };
   }
 
@@ -152,6 +155,7 @@ class QuestionEdit extends React.Component<Props, State> {
         loadComplete: true
       });
     }
+    this.updateQuestionType(null);
   };
 
   change = (property, event) => {
@@ -159,6 +163,43 @@ class QuestionEdit extends React.Component<Props, State> {
     newQuestion[property] = event.target ? event.target.value : event.getData();
     this.props.updateQuestion(newQuestion);
   };
+
+  updateQuestionType = (event) => {
+    let questionType = this.props.question.type;
+    if( event != null) {
+      questionType = event.target ? event.target.value : event.getData();
+    }
+    console.log("updateQuestionType() => questionType: ", questionType);
+    if(questionType === "TextInput") {
+      this.setState( {
+        isAddOptionDisabled: true,
+      });
+      let newQuestion = Object.assign({}, this.props.question);
+      newQuestion.type = questionType;
+      newQuestion.choices = [];
+      this.props.updateQuestion(newQuestion);
+    }
+    else if(questionType === "SingleChoice"){
+      this.setState( {
+        isAddOptionDisabled: false,
+      });
+      let newQuestion = Object.assign({}, this.props.question);
+      newQuestion.type = questionType;
+      console.log("newQuestion.choices.some( o => o.correct===true):", newQuestion.choices.some( o => o.correct===true));
+      if( newQuestion.choices.some( o => o.correct===true)) {
+        const c = newQuestion.choices.find( o => o.correct===true);
+        const updatedChoices = this.setInArrayForCorrectness(c, newQuestion.choices, "uuid", "SingleChoice");
+        newQuestion.choices = updatedChoices;
+        this.props.updateQuestion(newQuestion);
+        return;
+      }
+    }
+    else {
+      this.setState( {
+        isAddOptionDisabled: false,
+      });
+    }
+  }
 
   addOption = () => {
     const newQuestion = Object.assign({}, this.props.question);
@@ -184,7 +225,7 @@ class QuestionEdit extends React.Component<Props, State> {
     const c = this.findOption(uuid);
     c.correct = event.target.checked;
     const newQuestion = Object.assign({}, this.props.question);
-    const newChoices = this.setInArray(c, newQuestion.choices, "uuid");
+    const newChoices = this.setInArrayForCorrectness(c, newQuestion.choices, "uuid", this.props.question.type);
     newQuestion.choices = newChoices;
     this.props.updateQuestion(newQuestion);
   };
@@ -208,6 +249,37 @@ class QuestionEdit extends React.Component<Props, State> {
       }
     });
     return newArray;
+  };
+
+  setInArrayForCorrectness = (obj: any, arr: Array<any>, idtype: string, questionType: string): Array<any> => {
+    const newArray = [];
+    if( questionType === "SingleChoice") {
+      arr.forEach(o => {
+        if (o[idtype] != obj[idtype]) {
+          o.correct = false;
+          newArray.push(o);
+        } else {
+          newArray.push(obj);
+        }
+      });
+    }
+    else {
+      return this.setInArray(obj, arr, idtype);
+    }
+    return newArray;
+  };
+
+  checkAtLeastOneCorrectAnswer = () => {
+    if( this.props.question.type === "TextInput") {
+      return true;
+    }
+    const answerChoices = this.props.question.choices;
+    if( answerChoices.length == 0)
+    {
+      alertify.error("Error. Current type of question must have answer choice.");
+      return false;
+    }
+    return answerChoices.some( o => o.correct === true );
   };
 
   findOption = (uuid: any): Choice => {
@@ -320,6 +392,11 @@ class QuestionEdit extends React.Component<Props, State> {
   save = () => {
     const { question } = this.props;
     question.choices = question.choices.reverse();
+    const checkConstraint = this.checkAtLeastOneCorrectAnswer();
+    if( !checkConstraint) {
+      alertify.error("Error. There must be at least one correct answer.");
+      return;
+    }
     if (question.id) {
       api
           .save(question, question.id)
@@ -364,6 +441,7 @@ class QuestionEdit extends React.Component<Props, State> {
   render() {
     const { question, updateQuestion } = this.props;
 
+    const questionAnswerTypes = ["SingleChoice","MultipleChoice", "TextInput"];
     let classicEditorConfiguration = {
       toolbar: {
         items: [
@@ -463,7 +541,7 @@ class QuestionEdit extends React.Component<Props, State> {
                     select
                     label="Difficulty level"
                     value={question.level}
-                    style={{ width: 128 }}
+                    style={{ width: 135 }}
                     onChange={event => this.change("level", event)}
                 >
                   {[1, 2, 3, 4, 5].map(option => (
@@ -472,6 +550,24 @@ class QuestionEdit extends React.Component<Props, State> {
                       </MenuItem>
                   ))}
                 </TextField>
+              </div>
+              <Divider />
+              <div style={{ padding: 16 }}>
+                <Select
+                    label="Answer type"
+                    style={{ width: 135 }}
+                    value={question.type}
+                    onChange={event => {
+                      this.change("type", event);
+                      this.updateQuestionType(event);
+                    }}
+                >
+                  {questionAnswerTypes.map(option => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                  ))}
+                </Select>
               </div>
             </Paper>
             <br />
@@ -536,6 +632,7 @@ class QuestionEdit extends React.Component<Props, State> {
                 <Button
                     color="primary"
                     variant="outlined"
+                    disabled={this.state.isAddOptionDisabled}
                     onClick={this.addOption}
                 >
                   Add Option

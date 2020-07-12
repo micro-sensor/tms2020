@@ -25,6 +25,7 @@ const defaultQuestion = {
   title: "",
   level: 1,
   body: "",
+  type: "SingleChoice",
   categories: [],
   choices: [],
   codes: []

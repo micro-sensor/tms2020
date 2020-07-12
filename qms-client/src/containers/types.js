@@ -26,6 +26,7 @@ export type Question = {
   title: string,
   level: number,
   body: string,
+  type: string,
   categories: Array<number>,
   choices: Array<Choice>,
   codes: Array<Code>
