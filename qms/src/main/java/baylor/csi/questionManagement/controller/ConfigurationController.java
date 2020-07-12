@@ -65,7 +65,6 @@ public class ConfigurationController {
             for (Map<String, Object> group : groups) {
                 createNewGroupFromJSonForConfiguration(configuration, group, oldGroupIds);
             }
-
             return configurationRepository.save(configuration);
 
         } catch (Exception e) {
@@ -83,6 +82,9 @@ public class ConfigurationController {
             Set<ConfigurationGroup> configurationGroups = configuration.getGroups();
             configuration.setName((String) payload.get("name"));
             configuration.setDescription((String) payload.get("description"));
+            // clean groups: old groups will be added back, new groups will be added
+            Set<ConfigurationGroup> newGroups = new HashSet<>();
+            configuration.setGroups(newGroups);
 
             List<Long> oldGroupIds = new ArrayList<>();
             ArrayList<Map<String, Object>> groups = (ArrayList<Map<String, Object>>) payload.get("groups");
@@ -102,8 +104,6 @@ public class ConfigurationController {
 
     private void createNewGroupFromJSonForConfiguration(Configuration configuration, Map<String, Object> group, List<Long> oldGroupIds) {
 
-        Set<ConfigurationGroup> groups = new HashSet<>();
-
         if( group!=null && group.get("isNew")!=null && Boolean.parseBoolean(group.get("isNew").toString())) {
             ConfigurationGroup c = new ConfigurationGroup();
             c.setCategory(Long.parseLong(group.get("category").toString()));
@@ -118,17 +118,16 @@ public class ConfigurationController {
             }
             c.setLevel(Integer.parseInt(group.get("level").toString()));
             c.setConfiguration(configuration);
-            groups.add(c);
+            configuration.getGroups().add(c);
         }
         else {
             if(group!=null && group.get("id")!=null) {
                 Long groupId = Long.parseLong(group.get("id").toString());
                 ConfigurationGroup c = configurationGroupRepository.findById(groupId).orElse(null);
-                groups.add(c);
+                configuration.getGroups().add(c);
                 oldGroupIds.add(groupId);
             }
         }
-        configuration.setGroups(groups);
     }
 
     private void removeDeletedGroups(Set<ConfigurationGroup> configurationGroups,  List<Long> oldGroupIds) {
@@ -143,5 +142,24 @@ public class ConfigurationController {
         }
     }
 
+    // for debugging:
+    private void printGroup(Map<String, Object> group) {
+        System.out.println("Group passed from frontend:");
+        if(group.get("isNew")!=null) {
+            System.out.println("\tisNew: " + Boolean.parseBoolean(group.get("isNew").toString()));
+        }
+        if(group.get("category")!=null) {
+            System.out.println("\tcategory: " + Long.parseLong(group.get("category").toString()));
+        }
+        if(group.get("count")!=null) {
+            System.out.println("\tcount: " + Integer.parseInt(group.get("count").toString()));
+        }
+        if(group.get("level")!=null) {
+            System.out.println("\tlevel: " + Integer.parseInt(group.get("level").toString()));
+        }
+        if(group.get("language")!=null) {
+            System.out.println("\tlanguage: " + Integer.parseInt(group.get("language").toString()));
+        }
+    }
 
 }
