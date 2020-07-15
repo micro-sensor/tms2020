@@ -14,13 +14,15 @@ public class QuestionSingleCodeDto {
     private String body;
     private Code code;
     private List<Choice> choices = new ArrayList<>();
+    private String questionType;
 
-    public QuestionSingleCodeDto(String title, Integer level, String body, Code code, List<Choice> choices) {
+    public QuestionSingleCodeDto(String title, Integer level, String body, Code code, List<Choice> choices, String questionType) {
         this.title = title;
         this.level = level;
         this.body = body;
         this.code = code;
         this.choices = choices;
+        this.questionType = questionType;
     }
 
     public String getTitle() {
@@ -61,5 +63,13 @@ public class QuestionSingleCodeDto {
 
     public void setChoices(List<Choice> choices) {
         this.choices = choices;
+    }
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
     }
 }

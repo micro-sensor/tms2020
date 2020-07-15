@@ -7,6 +7,7 @@ public class SelectedChoiceEmsDto {
     private Integer questionId;
     private boolean flagged;
     private List<ChoiceEmsDto> choiceEmsDtos;
+    private String textAnswer;
 
     public SelectedChoiceEmsDto(){}
 
@@ -40,5 +41,13 @@ public class SelectedChoiceEmsDto {
 
     public void setFlagged(boolean flagged) {
         this.flagged = flagged;
+    }
+
+    public String getTextAnswer() {
+        return textAnswer;
+    }
+
+    public void setTextAnswer(String textAnswer) {
+        this.textAnswer = textAnswer;
     }
 }

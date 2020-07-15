@@ -18,10 +18,18 @@
           <div class="content">
             <div [innerHTML]="questions[qIndex].body"></div>
             <form #heroForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+              <div class="control" *ngIf = "questions[qIndex].questionType=='TEXT'">
+                <div class="row"><label for="answer">Your answer: </label></div>
+                <div class="row"><textarea id="answer" name="answer" type="text" [(ngModel)]="textAnswer"> </textarea></div>
+              </div>
               <div class="control">
-                <div *ngFor="let ch of questions[qIndex].choices; index as i;" >
-                  <label class="radio" style="display: inline-flex">
+                <div *ngFor="let ch of questions[qIndex].choices; index as i;">
+                  <label *ngIf = "questions[qIndex].questionType=='SELECT_MANY'" class="radio" style="display: inline-flex">
                     <input type="checkbox" (click)="choose(i)" [checked]="questions[qIndex].choices[i].chosen">
+                    <div [innerHTML]="ch.body"></div>
+                  </label>
+                  <label *ngIf = "questions[qIndex].questionType=='SELECT_ONE'" class="radio" style="display: inline-flex">
+                    <input name = "question-radio" type="radio" (click)="chooseRadio(i)" [checked]="questions[qIndex].choices[i].chosen">
                     <div [innerHTML]="ch.body"></div>
                   </label>
                 </div>

@@ -27,6 +27,7 @@ export class ExamComponent implements OnInit {
   private examId: number;
   public exam: Exam;
   public diff: any;
+  private textAnswer: string;
 
   isLoading: boolean = true;
 
@@ -47,7 +48,6 @@ export class ExamComponent implements OnInit {
         this.examManager.getExam(params['id']).subscribe( (data) => {
           this.isLoading = false;
           this.exam = data;
-
           this.counter$ = timer(0,60000).pipe(
             take(this.count),
             map(() => this.count = this.count - this.minute),
@@ -79,6 +79,14 @@ export class ExamComponent implements OnInit {
   choose(value: string) {
 
     this.questions[this.qIndex].choices[value].chosen = !this.questions[this.qIndex].choices[value].chosen;
+  }
+
+  chooseRadio(value: string){
+    this.questions[this.qIndex].choices.forEach(e=>{
+        e.chosen = false
+    })
+    this.questions[this.qIndex].choices[value].chosen = true;
+
   }
 
   ngOnInit() {
@@ -131,7 +139,9 @@ export class ExamComponent implements OnInit {
     questionSubmission.questionId = this.questions[this.qIndex].id;
     questionSubmission.choiceEmsDtos = this.questions[this.qIndex].choices;
     questionSubmission.flagged = this.questions[this.qIndex].flagged;
-    console.log(questionSubmission);
+    if (this.questions[this.qIndex].questionType=="TEXT"){
+      questionSubmission.textAnswer = this.textAnswer;
+    }
     return this.examManager.submitQuestion(questionSubmission);
   }
 

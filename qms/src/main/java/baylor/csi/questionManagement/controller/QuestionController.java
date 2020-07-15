@@ -3,6 +3,7 @@ package baylor.csi.questionManagement.controller;
 import baylor.csi.questionManagement.Exception.JPAException;
 import baylor.csi.questionManagement.Exception.ParsingException;
 import baylor.csi.questionManagement.Exception.ResourceNotFoundException;
+import baylor.csi.questionManagement.enums.QuestionTypeEnum;
 import baylor.csi.questionManagement.model.*;
 import baylor.csi.questionManagement.model.dto.QuestionDto;
 import baylor.csi.questionManagement.model.dto.QuestionListDto;
@@ -107,6 +108,20 @@ public class QuestionController {
                 createNewCodeFromJsonForQuestion(question, code);
 
             }
+
+            String questionType = (String) payload.get("type");
+
+            if (questionType.equals("SingleChoice")){
+                question.setQuestionType(QuestionTypeEnum.SELECT_ONE);
+            }
+            else if (questionType.equals("TextInput")){
+                question.setQuestionType(QuestionTypeEnum.TEXT);
+            }
+            else{
+                question.setQuestionType(QuestionTypeEnum.SELECT_MANY);
+            }
+
+
             return questionRepository.save(question);
 
         } catch (Exception e) {

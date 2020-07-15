@@ -47,6 +47,7 @@ public class ChoiceService {
         Integer correct = 0;
 
         for (Question q: questions) {
+
             boolean isQuestionCorrect = true;
             for (Choice ch: q.getChoices()
                  ) {
@@ -58,6 +59,9 @@ public class ChoiceService {
                 correct = correct + 1;
             }
             if (q.getId().equals(selectedChoiceEmsDto.getQuestionId())) {
+                if (selectedChoiceEmsDto.getTextAnswer()!=null){
+                    q.setTextAnswer(selectedChoiceEmsDto.getTextAnswer());
+                }
                 q.setFlagged(selectedChoiceEmsDto.isFlagged());
             }
         }

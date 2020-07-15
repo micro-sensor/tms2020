@@ -16,6 +16,8 @@ public class QuestionQmsDto {
 
     private CodeDto code;
 
+    private String questionType;
+
     public QuestionQmsDto(){}
 
     public Integer getId() {
@@ -66,4 +68,11 @@ public class QuestionQmsDto {
         this.code = code;
     }
 
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
 }

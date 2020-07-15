@@ -6,4 +6,6 @@ export class Question {
     choices: Choice[];
     code: string;
     flagged: boolean;
+    questionType: string;
+    textAnswer: string;
 }

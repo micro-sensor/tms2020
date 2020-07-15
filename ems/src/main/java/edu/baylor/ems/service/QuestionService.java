@@ -8,6 +8,7 @@ import edu.baylor.ems.repository.ChoiceRepository;
 import edu.baylor.ems.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import edu.baylor.ems.enums.QuestionTypeEnum;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -60,6 +61,7 @@ public class QuestionService {
             questionEmsDto.setBody(q.getBody());
             questionEmsDto.setCode(q.getCode());
             questionEmsDto.setFlagged(q.isFlagged());
+            questionEmsDto.setQuestionType(q.getQuestionType().toString());
             List<ChoiceEmsDto> choiceEmsDtos = choicesFromModelToEms(q.getChoices());
             questionEmsDto.setChoices(choiceEmsDtos);
             questionEmsDtos.add(questionEmsDto);
@@ -85,6 +87,7 @@ public class QuestionService {
             question.setBody(q.getBody());
             question.setCode(q.getCode() != null ? q.getCode().getBody() : "");
             question.setExam(exam);
+            question.setQuestionType(QuestionTypeEnum.valueOf(q.getQuestionType()));
             question = this.questionRepository.save(question);
             Set<Choice> choices = choicesFromQmsToModel(q.getChoices(), question);
             //choiceRepository.saveAll(choices);

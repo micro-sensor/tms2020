@@ -5,6 +5,7 @@ import edu.baylor.ems.dto.ChoiceQmsDto;
 import edu.baylor.ems.dto.QuestionQmsDto;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import edu.baylor.ems.enums.QuestionTypeEnum;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -39,6 +40,13 @@ public class Question implements Serializable {
 
     @Column(name = "flagged")
     private boolean flagged;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "questionType")
+    private QuestionTypeEnum questionType;
+
+    @Column(name = "textAnswer", columnDefinition="TEXT")
+    private String textAnswer;
 
     public Question(){}
 
@@ -88,5 +96,21 @@ public class Question implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public QuestionTypeEnum getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(QuestionTypeEnum questionType) {
+        this.questionType = questionType;
+    }
+
+    public String getTextAnswer() {
+        return textAnswer;
+    }
+
+    public void setTextAnswer(String textAnswer) {
+        this.textAnswer = textAnswer;
     }
 }

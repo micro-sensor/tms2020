@@ -1,5 +1,6 @@
 package baylor.csi.questionManagement.model;
 
+import baylor.csi.questionManagement.enums.QuestionTypeEnum;
 import baylor.csi.questionManagement.model.supermodel.UUIDHashedEntityObject;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -38,6 +39,7 @@ public class Question extends UUIDHashedEntityObject {
     private Set<Choice> choices = new HashSet<>();
     private Set<Code> codes = new HashSet<>();
     private Set<Category> categories = new HashSet<>();
+    private QuestionTypeEnum questionType;
 
 
     @NotNull
@@ -106,5 +108,16 @@ public class Question extends UUIDHashedEntityObject {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, name="questionType")
+    public QuestionTypeEnum getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(QuestionTypeEnum questionType) {
+        this.questionType = questionType;
     }
 }

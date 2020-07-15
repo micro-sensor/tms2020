@@ -5,4 +5,5 @@ export class QuestionSubmission {
     questionId: number;
     flagged: boolean;
     choiceEmsDtos: Choice[];
+    textAnswer: string;
 }

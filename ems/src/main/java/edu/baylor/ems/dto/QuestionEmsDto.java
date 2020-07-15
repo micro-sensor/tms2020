@@ -15,6 +15,8 @@ public class QuestionEmsDto {
 
     private boolean flagged;
 
+    private String questionType;
+
     public QuestionEmsDto(){}
 
     public Integer getId() {
@@ -55,5 +57,13 @@ public class QuestionEmsDto {
 
     public void setFlagged(boolean flagged) {
         this.flagged = flagged;
+    }
+
+    public String getQuestionType() {
+        return questionType;
+    }
+
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
     }
 }
