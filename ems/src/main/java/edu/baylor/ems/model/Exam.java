@@ -48,10 +48,10 @@ public class Exam implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss", timezone="US/Central")
     private Date submissionDate;
 
-    @JsonFormat(pattern="yyyy-MM-dd", timezone="US/Central")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date examDateFrom;
 
-    @JsonFormat(pattern="yyyy-MM-dd", timezone="US/Central")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date examDateTo;
 
     @Column(name="status")

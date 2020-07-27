@@ -14,9 +14,9 @@ public class ExamDto {
     private Date examDate;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone="US/Central")
     private Date submissionDate;
-    @JsonFormat(pattern="yyyy-MM-dd", timezone="US/Central")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date examDateFrom;
-    @JsonFormat(pattern="yyyy-MM-dd", timezone="US/Central")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date examDateTo;
 
     public ExamDto() {

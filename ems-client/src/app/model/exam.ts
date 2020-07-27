@@ -6,6 +6,8 @@ export class Exam {
     examinee: string;
     examDate: Date;
     submissionDate: Date;
+    examDateFrom: Date;
+    examDateTo: Date;
     configurationName: string;
     status: string;
     correct: number;
