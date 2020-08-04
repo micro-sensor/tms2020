@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import baylor.csi.questionManagement.enums.QuestionTypeEnum;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -298,6 +299,14 @@ public class XmlParserService {
         if( codeNodeList.getLength() > 0) {
             codeList = parseCodeNodeList(codeNodeList, question);
             question.setCodes(codeList);
+        }
+
+        if( questionElement.getElementsByTagName("type").getLength() > 0) {
+            String typeFromFile = questionElement.getElementsByTagName("type").item(0).getTextContent();
+            question.setQuestionType(QuestionTypeEnum.valueOf(typeFromFile));
+        }
+        else{
+            question.setQuestionType(QuestionTypeEnum.SELECT_MANY);
         }
 
         return question;
