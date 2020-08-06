@@ -47,9 +47,9 @@ public class CategoryController {
     }
 
     @CrossOrigin
-    @GetMapping("/{cateogryId}")
-    public Category findCategoriesById(@PathVariable Long cateogryId) {
-        return categoryRepository.findById(cateogryId).orElse(null);
+    @GetMapping("/{categoryId}")
+    public Category findCategoriesById(@PathVariable Long categoryId) {
+        return categoryRepository.findById(categoryId).orElse(null);
     }
 
     @CrossOrigin
@@ -59,23 +59,23 @@ public class CategoryController {
     }
 
     @CrossOrigin
-    @PutMapping("/{cateogryId}")
-    public Category updateCategory(@PathVariable Long cateogryId, @Valid @RequestBody Category categoryRequest) {
-        return categoryRepository.findById(cateogryId)
+    @PutMapping("/{categoryId}")
+    public Category updateCategory(@PathVariable Long categoryId, @Valid @RequestBody Category categoryRequest) {
+        return categoryRepository.findById(categoryId)
                 .map(category -> {
                     category.setName(categoryRequest.getName());
                     category.setDescription(categoryRequest.getDescription());
                     return categoryRepository.save(category);
-                }).orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + cateogryId));
+                }).orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + categoryId));
     }
 
     @CrossOrigin
-    @DeleteMapping("/{cateogryId}")
-    public ResponseEntity<?> deleteCateogry(@PathVariable Long cateogryId) {
-        return categoryRepository.findById(cateogryId)
+    @DeleteMapping("/{categoryId}")
+    public ResponseEntity<?> deleteCateogry(@PathVariable Long categoryId) {
+        return categoryRepository.findById(categoryId)
                 .map(category -> {
                     category.getQuestions().clear();
-                    List<Question> questions = questionRepository.findByCategoryId(cateogryId);
+                    List<Question> questions = questionRepository.findByCategoryId(categoryId);
                     for (Question question:questions) {
                         question.getCategories().remove(category);
                         questionRepository.save(question);
@@ -83,7 +83,7 @@ public class CategoryController {
                     categoryRepository.save(category);
                     categoryRepository.delete(category);
                     return ResponseEntity.ok().build();
-                }).orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + cateogryId));
+                }).orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + categoryId));
     }
 
     @CrossOrigin

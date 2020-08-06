@@ -268,29 +268,47 @@ public class XmlParserService {
             throw new ParsingException("New question must have title, body and level");
         }
         // categories:
+        // TODO: what if no Category was chosen? (question.getCategories().size() == 0)
         Set<Category> categoryList = null;
         NodeList categoryNodeList = questionElement.getElementsByTagName("category");
         if( categoryNodeList.getLength() > 0) {
             categoryList = parseCategoryNodeList(categoryNodeList, question);
             question.setCategories(categoryList);
         }
-        // TODO: what if no Category was chosen? (question.getCategories().size() == 0)
+        //type:
+        if( questionElement.getElementsByTagName("type").getLength() > 0) {
+            String typeFromFile = questionElement.getElementsByTagName("type").item(0).getTextContent();
+            question.setQuestionType(QuestionTypeEnum.valueOfLabel(typeFromFile));
+        }
+        else{
+            question.setQuestionType(QuestionTypeEnum.SELECT_MANY);
+        }
         // choices:
         Set<Choice> choiceList = null;
         NodeList choiceNodeList = questionElement.getElementsByTagName("choice");
         if( choiceNodeList.getLength() > 0) {
             choiceList = parseChoiceNodeList(choiceNodeList, question);
             // check that there is at least one correct answer choice:
-            boolean correctChoiceExists = false;
+            int numOfCorrectChoices = 0;
             for( Choice ch : choiceList) {
                 if( ch.getCorrect()) {
-                    correctChoiceExists = true;
+                    numOfCorrectChoices++;
                 }
             }
-            if( !correctChoiceExists) {
+            if( numOfCorrectChoices == 0) {
                 throw new ParsingException("There must be at least one correct choice for Question with title '" + question.getTitle() + "'");
             }
+            else if( numOfCorrectChoices > 1) {
+                if(question.getQuestionType() == QuestionTypeEnum.SELECT_ONE) {
+                    throw new ParsingException("Question with type SELECT_ONE can't have more than one correct answer choice for Question with title '" + question.getTitle() + "'");
+                }
+            }
             question.setChoices(choiceList);
+        }
+        else if (choiceNodeList.getLength() == 0) {
+            if( question.getQuestionType() != QuestionTypeEnum.TEXT) {
+                throw new ParsingException("Questions that are not type of TextInput should have at least one answer choice. Question with title '" + question.getTitle() + "'");
+            }
         }
         // TODO: what if no Answer Choice was added? (question.getChoices().size() == 0)
         // codes:
@@ -299,14 +317,6 @@ public class XmlParserService {
         if( codeNodeList.getLength() > 0) {
             codeList = parseCodeNodeList(codeNodeList, question);
             question.setCodes(codeList);
-        }
-
-        if( questionElement.getElementsByTagName("type").getLength() > 0) {
-            String typeFromFile = questionElement.getElementsByTagName("type").item(0).getTextContent();
-            question.setQuestionType(QuestionTypeEnum.valueOf(typeFromFile));
-        }
-        else{
-            question.setQuestionType(QuestionTypeEnum.SELECT_MANY);
         }
 
         return question;

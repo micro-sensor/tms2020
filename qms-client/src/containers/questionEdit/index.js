@@ -34,6 +34,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import * as api from "../question/api";
 import alertify from 'alertifyjs';
 import Select from "@material-ui/core/Select";
+import hljs from "highlight.js";
+import Card from "@material-ui/core/Card";
 
 type Props = {
   question: Question,
@@ -68,6 +70,17 @@ class QuestionEdit extends React.Component<Props, State> {
 
   componentDidMount = () => {
     this.loadCategories();
+    this.updateCodeSyntaxHighlighting();
+  };
+
+  componentDidUpdate() {
+    this.updateCodeSyntaxHighlighting();
+  }
+
+  updateCodeSyntaxHighlighting = () => {
+    document.querySelectorAll("pre code").forEach(block => {
+      hljs.highlightBlock(block);
+    });
   };
 
   loadCategories = () => {
@@ -148,14 +161,15 @@ class QuestionEdit extends React.Component<Props, State> {
         this.setState({
           loadComplete: true
         });
+        this.updateQuestionType(null);
       });
     } else {
       this.props.resetQuestion();
       this.setState({
         loadComplete: true
       });
+      this.updateQuestionType(null);
     }
-    this.updateQuestionType(null);
   };
 
   change = (property, event) => {
@@ -165,30 +179,29 @@ class QuestionEdit extends React.Component<Props, State> {
   };
 
   updateQuestionType = (event) => {
-    let questionType = this.props.question.type;
+    let questionType = this.props.question.questionType;
     if( event != null) {
       questionType = event.target ? event.target.value : event.getData();
     }
-    console.log("updateQuestionType() => questionType: ", questionType);
-    if(questionType === "TextInput") {
+    // console.log("updateQuestionType() => questionType: ", questionType);
+    if(questionType === "TEXT") {
       this.setState( {
         isAddOptionDisabled: true,
       });
       let newQuestion = Object.assign({}, this.props.question);
-      newQuestion.type = questionType;
+      newQuestion.questionType = questionType;
       newQuestion.choices = [];
       this.props.updateQuestion(newQuestion);
     }
-    else if(questionType === "SingleChoice"){
+    else if(questionType === "SELECT_ONE"){
       this.setState( {
         isAddOptionDisabled: false,
       });
       let newQuestion = Object.assign({}, this.props.question);
-      newQuestion.type = questionType;
-      console.log("newQuestion.choices.some( o => o.correct===true):", newQuestion.choices.some( o => o.correct===true));
+      newQuestion.questionType = questionType;
       if( newQuestion.choices.some( o => o.correct===true)) {
         const c = newQuestion.choices.find( o => o.correct===true);
-        const updatedChoices = this.setInArrayForCorrectness(c, newQuestion.choices, "uuid", "SingleChoice");
+        const updatedChoices = this.setInArrayForCorrectness(c, newQuestion.choices, "uuid", "SELECT_ONE");
         newQuestion.choices = updatedChoices;
         this.props.updateQuestion(newQuestion);
         return;
@@ -225,7 +238,7 @@ class QuestionEdit extends React.Component<Props, State> {
     const c = this.findOption(uuid);
     c.correct = event.target.checked;
     const newQuestion = Object.assign({}, this.props.question);
-    const newChoices = this.setInArrayForCorrectness(c, newQuestion.choices, "uuid", this.props.question.type);
+    const newChoices = this.setInArrayForCorrectness(c, newQuestion.choices, "uuid", this.props.question.questionType);
     newQuestion.choices = newChoices;
     this.props.updateQuestion(newQuestion);
   };
@@ -253,7 +266,7 @@ class QuestionEdit extends React.Component<Props, State> {
 
   setInArrayForCorrectness = (obj: any, arr: Array<any>, idtype: string, questionType: string): Array<any> => {
     const newArray = [];
-    if( questionType === "SingleChoice") {
+    if( questionType === "SELECT_ONE") {
       arr.forEach(o => {
         if (o[idtype] != obj[idtype]) {
           o.correct = false;
@@ -270,7 +283,7 @@ class QuestionEdit extends React.Component<Props, State> {
   };
 
   checkAtLeastOneCorrectAnswer = () => {
-    if( this.props.question.type === "TextInput") {
+    if( this.props.question.questionType === "TEXT") {
       return true;
     }
     const answerChoices = this.props.question.choices;
@@ -333,10 +346,37 @@ class QuestionEdit extends React.Component<Props, State> {
     const newQuestion = Object.assign({}, this.props.question);
     const newCodes = newQuestion.codes.concat({
       languageId: id,
-      body: ""
+      body: "",
+      showSyntaxCheck: false,
+      syntaxCheckMessage: "",
     });
     newQuestion.codes = newCodes;
     this.props.updateQuestion(newQuestion);
+  };
+
+  checkCode = (id: number) => () => {
+    const code = this.getCode(id);
+    const codeBody = code.body;
+    code.showSyntaxCheck = !code.showSyntaxCheck;
+    const newQuestion = Object.assign({}, this.props.question);
+    const newCodes = this.setInArray(code, newQuestion.codes, "languageId");
+    newQuestion.codes = newCodes;
+    this.props.updateQuestion(newQuestion);
+    if(code.showSyntaxCheck) {
+      api
+          .checkSyntax(codeBody)
+          .then(msg => {
+            code.syntaxCheckMessage = msg.data;
+            const newQuestion = Object.assign({}, this.props.question);
+            const newCodes = this.setInArray(code, newQuestion.codes, "languageId");
+            newQuestion.codes = newCodes;
+            this.props.updateQuestion(newQuestion);
+          })
+          .catch(e => {
+            alertify.error("Syntax check error", false);
+            console.log(e);
+          });
+    }
   };
 
   deleteCode = (id: number) => () => {
@@ -441,7 +481,13 @@ class QuestionEdit extends React.Component<Props, State> {
   render() {
     const { question, updateQuestion } = this.props;
 
-    const questionAnswerTypes = ["SingleChoice","MultipleChoice", "TextInput"];
+    const questionAnswerTypes = ["SELECT_ONE","SELECT_MANY", "TEXT"];
+    let langListLowerCase = [];
+    if (this.state.langList && this.state.langList.length > 0) {
+      langListLowerCase = this.state.langList.map(l => {
+        return { language: l.name.toLowerCase(), label: l.name };
+      });
+    }
     let classicEditorConfiguration = {
       toolbar: {
         items: [
@@ -450,7 +496,7 @@ class QuestionEdit extends React.Component<Props, State> {
           "code", "codeBlock", "|" ,
           "numberedList", "bulletedList", "|" ,
           "alignment", "indent", "outdent", "|" ,
-          "specialCharacters","insertTable", "link", "mediaEmbed",  "|" ,
+          "specialCharacters","insertTable", "link", "imageUpload", "mediaEmbed",  "|" ,
           "removeFormat"
         ],
         // viewportTopOffset: 500,
@@ -462,8 +508,21 @@ class QuestionEdit extends React.Component<Props, State> {
         transformations: {include: [ 'symbols', 'mathematical',],}
       },
       codeBlock: {
-        languages: [{ language: 'plaintext', label: 'CodeBlock'}]
-      }
+        // languages: [{ language: 'plaintext', label: 'CodeBlock'}],
+        languages: [{ language: 'plaintext', label: 'CodeBlock'}].concat(langListLowerCase),
+      },
+      // extraPlugins: [MyCustomUploadAdapterPlugin],
+      // simpleUpload: {
+      //   uploadUrl:  api.uploadImage,
+      //   // headers: {
+      //   //   Authorization: 'Bearer ',
+      //   // },
+      // },
+      image: {
+        upload: {
+          types: ['jpeg', 'png', 'gif', 'bmp', 'webp', 'tiff' ],
+        }
+      },
     };
     const inlineEditorConfiguration = {
       toolbar: {
@@ -482,9 +541,9 @@ class QuestionEdit extends React.Component<Props, State> {
         transformations: {include: [ 'symbols', 'mathematical',],}
       },
       codeBlock: {
-        languages: [{ language: 'plaintext', label: 'CodeBlock'}]
-      }
-    }
+        languages: [{ language: 'plaintext', label: 'CodeBlock'}, { language: 'java', label: 'Java' },],
+      },
+    };
     let codeEditorConfiguration = Object.assign({}, classicEditorConfiguration);
     codeEditorConfiguration.placeholder = "Code snippet body";
 
@@ -556,9 +615,9 @@ class QuestionEdit extends React.Component<Props, State> {
                 <Select
                     label="Answer type"
                     style={{ width: 135 }}
-                    value={question.type}
+                    value={question.questionType}
                     onChange={event => {
-                      this.change("type", event);
+                      this.change("questionType", event);
                       this.updateQuestionType(event);
                     }}
                 >
@@ -775,7 +834,8 @@ class QuestionEdit extends React.Component<Props, State> {
                                   editor={ ClassicEditor }
                                   config={codeEditorConfiguration}
                                   onInit={ editor => {
-                                    editor.setData(code.body);
+                                    const languageLowerCase = this.getLanguage(code.languageId).name.toLowerCase();
+                                    editor.setData(`<pre><code class=\"language-${languageLowerCase}\">${code.body}</code></pre>`);
                                     console.log( 'Editor init() function (Code snippet Body)');
                                   }}
                                   onChange={( event, editor ) => this.changeCodeBody(code.languageId, editor)}
@@ -788,6 +848,13 @@ class QuestionEdit extends React.Component<Props, State> {
                             </Grid>
                             <Grid item xs={12}>
                               <Grid container justify="flex-end">
+                                <Button
+                                    color="primary"
+                                    size="small"
+                                    onClick={this.checkCode(code.languageId)}
+                                >
+                                  Syntax Check
+                                </Button>
                                 <IconButton
                                     aria-label="Delete"
                                     onClick={this.deleteCode(code.languageId)}
@@ -796,6 +863,20 @@ class QuestionEdit extends React.Component<Props, State> {
                                 </IconButton>
                               </Grid>
                             </Grid>
+                            { code.showSyntaxCheck ?
+                                (<Grid container spacing={3}>
+                                  <link rel="stylesheet" href="https://unpkg.com/highlight.js@10.1.2/styles/default.css"/>
+                                  <Grid item xs={12}>
+                                    <Card style={{backgroundColor: '#f8f8f8'}} dangerouslySetInnerHTML={{__html: code.body}}/>
+                                  </Grid>
+                                  { code.syntaxCheckMessage && code.syntaxCheckMessage.length > 0 ?
+                                      (
+                                          <Grid item xs={12}>
+                                            <Card style={{whiteSpace: 'pre-wrap'}}> {code.syntaxCheckMessage} </Card>
+                                          </Grid>
+                                      ) : null
+                                  }
+                                </Grid>) : null }
                           </Grid>
                         </ExpansionPanelDetails>
                       </ExpansionPanel>

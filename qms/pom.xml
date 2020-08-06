@@ -67,6 +67,12 @@
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<version>2.9.8</version>
 		</dependency>
+		<!-- for Java Code snippet syntax check -->
+		<dependency>
+			<groupId>org.eclipse.jdt</groupId>
+			<artifactId>core</artifactId>
+			<version>3.3.0-v_771</version>
+		</dependency>
 
 	</dependencies>
 

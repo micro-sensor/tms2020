@@ -46,3 +46,10 @@ export const search = (id: number, text: string) => {
     );
   }
 };
+
+
+export const uploadImage = configuration.questionsUrl + "/image";
+
+export const checkSyntax = (codeBody: string) => {
+  return api.post(configuration.backend + "/question/checkSyntax", {codeBody: codeBody});
+};

@@ -8,6 +8,7 @@ import baylor.csi.questionManagement.model.*;
 import baylor.csi.questionManagement.model.dto.QuestionDto;
 import baylor.csi.questionManagement.model.dto.QuestionListDto;
 import baylor.csi.questionManagement.repository.*;
+import baylor.csi.questionManagement.service.JavaSyntaxCheckService;
 import baylor.csi.questionManagement.service.XmlParserService;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -18,16 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,6 +47,8 @@ public class QuestionController {
     private LanguageRepository languageRepository;
     @Autowired
     private XmlParserService xmlParserService;
+    @Autowired
+    private JavaSyntaxCheckService javaSyntaxCheckService;
 
     @CrossOrigin
     @GetMapping("/all")
@@ -111,10 +112,10 @@ public class QuestionController {
 
             String questionType = (String) payload.get("type");
 
-            if (questionType.equals("SingleChoice")){
+            if (questionType.equals("SELECT_ONE")){
                 question.setQuestionType(QuestionTypeEnum.SELECT_ONE);
             }
-            else if (questionType.equals("TextInput")){
+            else if (questionType.equals("TEXT")){
                 question.setQuestionType(QuestionTypeEnum.TEXT);
             }
             else{
@@ -426,6 +427,31 @@ public class QuestionController {
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @CrossOrigin
+    @PostMapping("/checkSyntax")
+    public String checkCodeSnippet(@Valid @RequestBody Map<String, Object> payload) throws ParserConfigurationException, IOException, SAXException {
+
+        String codeBody = (String) payload.get("codeBody");
+
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        InputSource is = new InputSource(new StringReader(codeBody));
+        Document doc =  builder.parse(is);
+        doc.getDocumentElement().normalize();
+        // get NodeList with "code" tag
+        NodeList codeNodeList = doc.getElementsByTagName("code");
+        if(codeNodeList.getLength() > 1) {
+            throw new ParsingException("Code snippet body should contain only one code block");
+        }
+        else if( codeNodeList.getLength() == 1 ) {
+            codeBody = codeNodeList.item(0).getTextContent();
+        }
+
+        System.out.println("Code body: " + codeBody);
+//        return codeBody;
+        return javaSyntaxCheckService.check(codeBody);
     }
 
 

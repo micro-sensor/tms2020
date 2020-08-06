@@ -67,7 +67,7 @@ $ cat /etc/hosts
 
 - Test email sending on local:
     - Download fakeSMTP and run it on any port you like on your computer.
-    - in `ems/src/main/resources/application.properties` set `spring.mail.host` to your computer email and `spring.mail.port` to the port you used for fakeSMTP
+    - in `ems/src/main/resources/application.properties` set `spring.mail.host` to your computer ip address and `spring.mail.port` to the port you used for fakeSMTP
 
 ## Production Redeploy
 
