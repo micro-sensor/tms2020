@@ -79,6 +79,10 @@ export class ConfigurationService {
     return this.http.get(this.EMS_URL + "exam", { headers: this.headers });
   }
 
+  getExamsByStatus(status){
+    return this.http.get(this.EMS_URL + "exam/status/" + status, { headers: this.headers });
+  }
+
   getQuestions(id){
     return this.http.delete(this.EMS_URL + "exam/" + id, { headers: this.headers });
   }

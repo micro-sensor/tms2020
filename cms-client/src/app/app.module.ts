@@ -24,6 +24,8 @@ import { ExamResultsComponent } from './exam-results/exam-results.component';
 import { ConfigurationsComponent } from './configurations/configurations.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from 'ng-pick-datetime';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ExamAssignmentListComponent } from './exam-assignment-list/exam-assignment-list.component';
+import { ExamAssignmentEditComponent } from './exam-assignment-edit/exam-assignment-edit.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ExamCardComponent,
     ExamResultsComponent,
     ConfigurationsComponent,
+    ExamAssignmentListComponent,
+    ExamAssignmentEditComponent,
   ],
   imports: [
     BrowserModule,

@@ -35,6 +35,16 @@ public class ExamController {
         return new ResponseEntity<>(exams, HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "*")
+    @RequestMapping(value = "/status/{status}", method = RequestMethod.GET)
+    public ResponseEntity<List<Exam>> getExamsByStatus(@PathVariable("status") String status) {
+        List<Exam> exams = examService.findAllExamsByStatus(status);
+        if(exams.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(exams, HttpStatus.OK);
+    }
+
     //From CMS
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")

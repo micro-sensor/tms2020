@@ -1,0 +1,81 @@
+<div class="columns">
+  <div class="column is-6-desktop">
+    <!-- <h3>New exams</h3>
+    <p class="help">All exams that have not been taken yet.</p>
+    <app-exam-list [type]="'new'" [predicate]="predicate" [exams]="exams" (deleted)="onDeleted($event)" [configurations]="configurations" [users]="users"></app-exam-list> -->
+    <p>
+      In order to assign a configuration to a examinee, insert the email of the examinee and  select a configuration from the drop-down.
+      Note: examinee must be registered to the system beforehand.
+    </p>
+  </div>
+
+  <div class="column is-6-desktop">
+    <h3>Create new exam assignment</h3>
+
+    <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()" novalidate>
+
+
+      <!-- <div class="field">
+        <label class="label">Examinee email</label>
+        <div class="control">
+          <input class="input" type="text" placeholder="Examinee" formControlName="examinee">
+        </div>
+        <p class="help is-success" *ngIf="id">Email is valid</p>
+      </div> -->
+
+      <div class="field">
+        <label class="label">Examinee</label>
+        <div class="control">
+          <ng-select [items]="users"
+                     [loading]="isUsersLoading"
+                     bindLabel="email"
+                     autofocus
+                     bindValue="email"
+                     placeholder="Select Examinee"
+                     formControlName="examinee"
+                     [(ngModel)]="currentExaminee">
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Configuration</label>
+        <div class="control">
+          <ng-select [items]="configurations"
+                     [loading]="isConfigurationsLoading"
+                     bindLabel="name"
+                     autofocus
+                     placeholder="Select Configuration"
+                     formControlName="configurationId"
+                     [(ngModel)]="currentConfig">
+          </ng-select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Exam Valid From</label>
+        <div class="control">
+          <input type="date" id="dateFrom" formControlName="examDateFrom" [(ngModel)]="fromDate">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="label">Exam valid Till</label>
+        <div class="control">
+          <input type="date" id="dateTo" formControlName="examDateTo" [(ngModel)]="toDate">
+        </div>
+      </div>
+
+      <div class="field is-grouped">
+        <div class="control">
+          <button class="button is-link" type="submit" [disabled]="reviewForm.pristine">Save</button>
+        </div>
+        <div class="control">
+          <button class="button is-text" type="reset" (click)="revert()" [disabled]="reviewForm.pristine">Revert</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+
+</div>

@@ -18,12 +18,15 @@ import java.util.Objects;
                 query = "select e from exam e where YEAR(e.examDateFrom) = ?1 and MONTH(e.examDateFrom) = ?2 and DAY(e.examDateFrom) = ?3"),
         @NamedQuery(name = Exam.FIND_BY_EXAM_DATE_TO,
                 query = "select e from exam e where YEAR(e.examDateTo) = ?1 and MONTH(e.examDateTo) = ?2 and DAY(e.examDateTo) = ?3"),
+        @NamedQuery(name = Exam.FIND_BY_STATUS,
+                query = "select e from exam e where e.status=:statusOrdinal"),
 })
 public class Exam implements Serializable {
 
     public static final String FIND_BY_EXAMINEE = "FIND_BY_EXAMINEE";
     public static final String FIND_BY_EXAM_DATE_FROM = "FIND_BY_EXAM_DATE_FROM";
     public static final String FIND_BY_EXAM_DATE_TO = "FIND_BY_EXAM_DATE_TO";
+    public static final String FIND_BY_STATUS = "FIND_BY_STATUS";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

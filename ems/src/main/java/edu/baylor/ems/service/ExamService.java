@@ -39,6 +39,14 @@ public class ExamService {
         return this.examRepository.findAll();
     }
 
+    public List<Exam> findAllExamsByStatus(String status) {
+
+        List<Exam> allExams = findAllExams();
+        List<Exam> filteredExams = allExams.stream().filter(item -> item.getStatus()==ExamStatus.valueOf(status)).collect(Collectors.toList());
+
+        return filteredExams;
+    }
+
     public boolean isExamExist(Integer examId, Integer examineeId) {
         return this.examRepository.existsByExamineeAndId(examineeId, examId);
     }
@@ -66,10 +74,12 @@ public class ExamService {
         exam.getExamDateTo().setHours(23);
         exam.getExamDateTo().setMinutes(59);
         exam.getExamDateTo().setSeconds(59);
+        if (examDto.getId()!=null){
+            exam.setId(examDto.getId());
+        }
 
         return this.examRepository.saveAndFlush(exam);
     }
-
 
     public ResponseEntity<List<QuestionEmsDto>> takeExam(Integer id) {
         Optional<Exam> optionalExam = this.findById(id);
@@ -193,10 +203,14 @@ public class ExamService {
         List<Question> questions = this.questionService.getAllByExam(exam.getId());
 
         ExamReviewDto examReview = new ExamReviewDto();
+        examReview.setConfigurationName(exam.getConfigurationName());
+        examReview.setExaminee(exam.getExaminee());
         examReview.setCorrect(exam.getCorrect());
         examReview.setSum(exam.getSum());
         examReview.setExamDate(exam.getExamDate());
         examReview.setQuestions(questions);
+        examReview.setExamDateFrom(exam.getExamDateFrom());
+        examReview.setExamDateTo(exam.getExamDateTo());
 
         return examReview;
     }

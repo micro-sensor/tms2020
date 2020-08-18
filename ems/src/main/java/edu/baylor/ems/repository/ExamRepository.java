@@ -19,4 +19,7 @@ public interface ExamRepository extends JpaRepository<Exam, Integer> {
 
     @Query(name = Exam.FIND_BY_EXAM_DATE_TO)
     List<Exam> findByExamDateTo(int year, int month, int day);
+
+    @Query(name = Exam.FIND_BY_STATUS)
+    List<Exam> findByStatus(Integer statusOrdinal);
 }

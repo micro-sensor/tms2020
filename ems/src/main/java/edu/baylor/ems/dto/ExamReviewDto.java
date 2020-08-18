@@ -15,6 +15,11 @@ public class ExamReviewDto {
   private Date examDate;
   private String configurationName;
   private List<Question> questions;
+  @JsonFormat(pattern="yyyy-MM-dd")
+  private Date examDateFrom;
+  @JsonFormat(pattern="yyyy-MM-dd")
+  private Date examDateTo;
+  private String examinee;
 
   public ExamReviewDto() {
   }
@@ -65,5 +70,29 @@ public class ExamReviewDto {
 
   public void setConfigurationName(String configurationName) {
     this.configurationName = configurationName;
+  }
+
+  public Date getExamDateFrom() {
+    return examDateFrom;
+  }
+
+  public void setExamDateFrom(Date examDateFrom) {
+    this.examDateFrom = examDateFrom;
+  }
+
+  public Date getExamDateTo() {
+    return examDateTo;
+  }
+
+  public void setExamDateTo(Date examDateTo) {
+    this.examDateTo = examDateTo;
+  }
+
+  public String getExaminee() {
+    return examinee;
+  }
+
+  public void setExaminee(String examinee) {
+    this.examinee = examinee;
   }
 }

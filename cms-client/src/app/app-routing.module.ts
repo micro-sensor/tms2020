@@ -7,6 +7,8 @@ import {ExamResultsComponent} from './exam-results/exam-results.component';
 import {ConfigurationsComponent} from './configurations/configurations.component';
 import {ExamDetailComponent} from './exam-detail/exam-detail.component';
 import {ConfWrapperEditComponent} from "./conf-wrapper-edit/conf-wrapper-edit.component";
+import {ExamAssignmentListComponent} from "./exam-assignment-list/exam-assignment-list.component";
+import {ExamAssignmentEditComponent} from "./exam-assignment-edit/exam-assignment-edit.component";
 
 const routes: Routes = [
   { path: '', component: WlayoutComponent, children: [
@@ -15,7 +17,10 @@ const routes: Routes = [
       { path: 'exam', component: ExamAssignmentComponent},
       { path: 'results', component: ExamResultsComponent},
       { path: 'results/:id', component: ExamDetailComponent},
-      { path: 'configurations', component: ConfigurationsComponent}
+      { path: 'configurations', component: ConfigurationsComponent},
+      { path: 'assignments', component: ExamAssignmentListComponent},
+      { path: 'assignment-edit/:id', component: ExamAssignmentEditComponent}
+
     ]
   },
 ];

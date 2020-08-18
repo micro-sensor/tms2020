@@ -16,8 +16,11 @@
       <a class="navbar-item" href="https://tcs.ecs.baylor.edu/">
         Home
       </a>
-      <a class="navbar-item" [routerLink]="['/exam']" *ngIf="isAdmin">
+      <a class="navbar-item" [routerLink]="['/assignments']" *ngIf="isAdmin">
         Exam assignments
+      </a>
+      <a class="navbar-item" [routerLink]="['/exam']" *ngIf="isAdmin">
+        Create exam assignments
       </a>
       <a class="navbar-item" [routerLink]="['/results']" *ngIf="isAdmin">
         Exam Results
