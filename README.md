@@ -2,7 +2,7 @@
 
 ## Local deployment
 
-- Copy certificates into `ssl` folder in following structure
+- Copy certificates into `ssl` folder in following structure. Contact authors for the SSL files.
 
 ```
 $ ls -R ssl
