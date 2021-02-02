@@ -65,6 +65,13 @@ $ cat /etc/hosts
 127.0.0.1 tcs.ecs.baylor.edu
 ```
 
+- Add users:
+    - Visit Keycloak admin page `https://tcs.ecs.baylor.edu/auth`. 
+    - Login with deafult username/password: `admin`/`password`. 
+    - Add new user, credential, and roles.
+    
+- Visit homepage `https://tcs.ecs.baylor.edu` and login with the created username and password.
+
 - Test email sending on local:
     - Download fakeSMTP and run it on any port you like on your computer.
     - in `ems/src/main/resources/application.properties` set `spring.mail.host` to your computer ip address and `spring.mail.port` to the port you used for fakeSMTP
