@@ -2,7 +2,7 @@
 
 ## Local deployment
 
-- Copy certificates into `ssl` folder in following structure
+- Copy certificates into `ssl` folder in following structure. Contact authors for the SSL files.
 
 ```
 $ ls -R ssl
@@ -145,6 +145,56 @@ $ ssh -L 1234:127.0.0.1:443 das@tcs.ecs.baylor.edu
 $ cat /etc/hosts
 
 127.0.0.1 tcs.ecs.baylor.edu
+```
+
+## Deploy in kubernetes (minikube)
+
+Build images inside minikube,
+
+```bash
+$ eval $(minikube docker-env)
+$ ./build.sh
+```
+
+Edit core-dns config file,
+```bash
+$ kubectl edit configmap coredns -n kube-system
+ 11 apiVersion: v1
+ 10 data:
+  9   Corefile: |
+  8     .:53 {
+  7         errors
+  6         health {
+  5            lameduck 5s
+  4         }
+  3         ready
+  2         rewrite stop {
+                name regex (.*)\.my\.domain\.$ {1}.default.svc.cluster.local
+                answer name (.*)\.default\.svc\.cluster\.local\.$ {1}.my.domain
+             }  
+    rewrite stop {
+      name regex (.*)\.baylor.edu\.$ {1}.default.svc.cluster.local
+      answer name (.*)\.default\.svc\.cluster\.local\.$ {1}.baylor.edu
+    }  
+  1         kubernetes cluster.local in-addr.arpa ip6.arpa {
+16             pods insecure
+  1            fallthrough in-addr.arpa ip6.arpa
+  2            ttl 30
+  3         }
+  4         prometheus :9153
+  5         forward . /etc/resolv.conf {
+  6            max_concurrent 1000
+  7         }
+  8         cache 30
+  9         loop
+ 10         reload
+ 11         loadbalance
+ 12     }
+```
+
+Trigger core-dns pod restart,
+```bash
+$ kubectl -n kube-system delete pod <coredns_pod_1> <coredns_pod_2>
 ```
 
 ## Development note: React subdirectory

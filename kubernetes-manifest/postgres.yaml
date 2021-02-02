@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-headless
+  labels:
+    name: postgres
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+  clusterIP: None
+  selector:
+    app: postgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: postgres-headless
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+      environment: test
+      replicaset: MainRepSet
+  template:
+    metadata:
+      labels:
+        app: postgres
+        environment: test
+        replicaset: MainRepSet
+    spec:
+      containers:
+        - name: postgres-container
+          image: cloudhubs2/tms-postgres
+          ports:
+            - containerPort: 5432
+          env:
+            - name: "POSTGRES_MULTIPLE_DATABASES"
+              value: "keycloak,cms,ems,qms"
+            - name: "POSTGRES_USER"
+              value: "pguser"
+            - name: "POSTGRES_PASSWORD"
+              value: "pgpass"
+          volumeMounts:
+            - name: postgres-persistent-storage-claim
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-persistent-storage-claim
+        annotations:
+          volume.beta.kubernetes.io/storage-class: "standard"
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 1Gi

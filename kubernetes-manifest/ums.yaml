@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ums
+spec:
+  selector:
+    app: ums
+  ports:
+    - port: 10001
+  type: NodePort
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ums
+  labels:
+    app: ums
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: ums
+      labels:
+        app: ums
+    spec:
+      containers:
+        - name: ums
+          image: cloudhubs2/tms-ums
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 10001
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: ums

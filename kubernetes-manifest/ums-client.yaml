@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ums-client
+spec:
+  selector:
+    app: ums-client
+  ports:
+    - port: 80
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ums-client
+  labels:
+    app: ums-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: ums-client
+      labels:
+        app: ums-client
+    spec:
+      containers:
+        - name: ums-client
+          image: cloudhubs2/tms-ums-client
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: ums-client

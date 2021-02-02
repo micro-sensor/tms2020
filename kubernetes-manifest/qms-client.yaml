@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: qms-client
+spec:
+  selector:
+    app: qms-client
+  ports:
+    - port: 80
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qms-client
+  labels:
+    app: qms-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: qms-client
+      labels:
+        app: qms-client
+    spec:
+      containers:
+        - name: qms-client
+          image: cloudhubs2/tms-qms-client
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: qms-client
