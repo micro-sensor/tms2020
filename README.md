@@ -15,7 +15,7 @@ ssl/keys:
 tcs_ecs_baylor_edu.key
 ```
 
-- Specify `extra_hosts` in `docker-compose.yml`. The IP addresses in the `extra_hosts` fields must be matched to the host machine's IP in `ifconfig`.
+- (Optional, if default does not work) Specify `extra_hosts` in `docker-compose.yml`. The IP addresses in the `extra_hosts` fields must be matched to the host machine's IP in `ifconfig`.
 
 - Build images
 
