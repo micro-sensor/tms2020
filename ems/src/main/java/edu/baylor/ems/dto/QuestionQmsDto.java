@@ -18,7 +18,8 @@ public class QuestionQmsDto {
 
     private String questionType;
 
-    public QuestionQmsDto(){}
+    public QuestionQmsDto() {
+    }
 
     public Integer getId() {
         return id;

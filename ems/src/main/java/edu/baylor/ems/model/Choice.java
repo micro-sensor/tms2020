@@ -1,7 +1,6 @@
 package edu.baylor.ems.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import edu.baylor.ems.dto.ChoiceQmsDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,13 +14,13 @@ public class Choice implements Serializable {
     @Column(columnDefinition = "serial")
     private Integer id;
 
-    @Column(name="body", columnDefinition="TEXT")
+    @Column(name = "body", columnDefinition = "TEXT")
     private String body;
 
-    @Column(name="correct")
+    @Column(name = "correct")
     private boolean correct;
 
-    @Column(name="chosen")
+    @Column(name = "chosen")
     private boolean chosen;
 
     @JsonIgnore
@@ -30,7 +29,8 @@ public class Choice implements Serializable {
     @JoinColumn(updatable = false)
     private Question question;
 
-    public Choice(){}
+    public Choice() {
+    }
 
     public Integer getId() {
         return id;

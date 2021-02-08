@@ -1,7 +1,6 @@
 package edu.baylor.ems.service;
 
 import edu.baylor.ems.dto.ChoiceEmsDto;
-import edu.baylor.ems.dto.ExamSubmissionDto;
 import edu.baylor.ems.dto.SelectedChoiceEmsDto;
 import edu.baylor.ems.model.Choice;
 import edu.baylor.ems.model.Exam;
@@ -9,32 +8,34 @@ import edu.baylor.ems.model.Question;
 import edu.baylor.ems.repository.ChoiceRepository;
 import edu.baylor.ems.repository.ExamRepository;
 import edu.baylor.ems.repository.QuestionRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ChoiceService {
+    private static final Logger logger = LogManager.getLogger(ChoiceService.class.getName());
     @Autowired
     private ChoiceRepository choiceRepository;
 
     @Autowired
     private QuestionRepository questionRepository;
 
-
     @Autowired
     private ExamRepository examRepository;
 
     public List<Choice> selectChoices(SelectedChoiceEmsDto selectedChoiceEmsDto) {
+        logger.info(Thread.currentThread().getId() + ":" + "selectChoices" + "(" + selectedChoiceEmsDto + ")");
         // Find choices by question id
         List<Choice> choices = this.choiceRepository.findByQuestionId(selectedChoiceEmsDto.getQuestionId());
         //Select choices and unselect choices
-        for (Choice ch: choices) {
-            for (ChoiceEmsDto chEms: selectedChoiceEmsDto.getChoiceEmsDtos()
-                 ) {
-                if (ch.getId().equals(chEms.getId())){
+        for (Choice ch : choices) {
+            for (ChoiceEmsDto chEms : selectedChoiceEmsDto.getChoiceEmsDtos()
+            ) {
+                if (ch.getId().equals(chEms.getId())) {
                     ch.setChosen(chEms.isChosen());
                 }
             }
@@ -46,20 +47,20 @@ public class ChoiceService {
 
         Integer correct = 0;
 
-        for (Question q: questions) {
+        for (Question q : questions) {
 
             boolean isQuestionCorrect = true;
-            for (Choice ch: q.getChoices()
-                 ) {
-                if ( (ch.isCorrect() && !ch.isChosen()) || (!ch.isCorrect() && ch.isChosen()) ){
+            for (Choice ch : q.getChoices()
+            ) {
+                if ((ch.isCorrect() && !ch.isChosen()) || (!ch.isCorrect() && ch.isChosen())) {
                     isQuestionCorrect = false;
                 }
             }
-            if (isQuestionCorrect){
+            if (isQuestionCorrect) {
                 correct = correct + 1;
             }
             if (q.getId().equals(selectedChoiceEmsDto.getQuestionId())) {
-                if (selectedChoiceEmsDto.getTextAnswer()!=null){
+                if (selectedChoiceEmsDto.getTextAnswer() != null) {
                     q.setTextAnswer(selectedChoiceEmsDto.getTextAnswer());
                 }
                 q.setFlagged(selectedChoiceEmsDto.isFlagged());

@@ -1,42 +1,43 @@
 package edu.baylor.ems.dto;
 
 public class ChoiceReviewDto {
-  private Integer id;
-  private String body;
-  private boolean correct;
-  private boolean chosen;
+    private Integer id;
+    private String body;
+    private boolean correct;
+    private boolean chosen;
 
-  public ChoiceReviewDto(){}
+    public ChoiceReviewDto() {
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public String getBody() {
-    return body;
-  }
+    public String getBody() {
+        return body;
+    }
 
-  public void setBody(String body) {
-    this.body = body;
-  }
+    public void setBody(String body) {
+        this.body = body;
+    }
 
-  public boolean isCorrect() {
-    return correct;
-  }
+    public boolean isCorrect() {
+        return correct;
+    }
 
-  public void setCorrect(boolean correct) {
-    this.correct = correct;
-  }
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
+    }
 
-  public boolean isChosen() {
-    return chosen;
-  }
+    public boolean isChosen() {
+        return chosen;
+    }
 
-  public void setChosen(boolean chosen) {
-    this.chosen = chosen;
-  }
+    public void setChosen(boolean chosen) {
+        this.chosen = chosen;
+    }
 }

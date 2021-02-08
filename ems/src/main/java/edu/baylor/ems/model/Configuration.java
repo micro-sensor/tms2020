@@ -1,16 +1,16 @@
 package edu.baylor.ems.model;
 
 public class Configuration {
-  private String name;
+    private String name;
 
-  public Configuration() {
-  }
+    public Configuration() {
+    }
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 }

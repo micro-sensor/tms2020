@@ -1,6 +1,5 @@
 package edu.baylor.ems.dto;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class QuestionEmsDto {
@@ -17,7 +16,8 @@ public class QuestionEmsDto {
 
     private String questionType;
 
-    public QuestionEmsDto(){}
+    public QuestionEmsDto() {
+    }
 
     public Integer getId() {
         return id;

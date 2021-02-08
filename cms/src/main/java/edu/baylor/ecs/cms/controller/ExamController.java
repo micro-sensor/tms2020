@@ -4,6 +4,8 @@ import edu.baylor.ecs.cms.dto.EmailDto;
 import edu.baylor.ecs.cms.dto.ExamDto;
 import edu.baylor.ecs.cms.service.EmsService;
 import edu.baylor.ecs.cms.service.UmsService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/exam")
 public class ExamController {
+    private static final Logger logger = LogManager.getLogger(ExamController.class.getName());
     @Autowired
     private EmsService emsService;
 
@@ -20,12 +23,18 @@ public class ExamController {
     @CrossOrigin
     @PostMapping("/create")
     public ResponseEntity<Object> createExam(@RequestBody ExamDto object) {
+
+        logger.info(Thread.currentThread().getId() + ":" + "createExam" + "(" + object + ")");
+
         return emsService.createExam(object);
     }
 
     @CrossOrigin
     @GetMapping("/{email}")
     public ResponseEntity<EmailDto> isEmailValid(@PathVariable String email, @RequestHeader("Authorization") String authorication) {
+
+        logger.info(Thread.currentThread().getId() + ":" + "isEmailValid" + "(" + email + "," + authorication + ")");
+
         return umsService.isEmailValid(email, authorication);
     }
 

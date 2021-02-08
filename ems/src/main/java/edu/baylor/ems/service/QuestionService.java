@@ -1,14 +1,19 @@
 package edu.baylor.ems.service;
 
-import edu.baylor.ems.dto.*;
+import edu.baylor.ems.dto.ChoiceEmsDto;
+import edu.baylor.ems.dto.ChoiceQmsDto;
+import edu.baylor.ems.dto.QuestionEmsDto;
+import edu.baylor.ems.dto.QuestionQmsDto;
+import edu.baylor.ems.enums.QuestionTypeEnum;
 import edu.baylor.ems.model.Choice;
 import edu.baylor.ems.model.Exam;
 import edu.baylor.ems.model.Question;
 import edu.baylor.ems.repository.ChoiceRepository;
 import edu.baylor.ems.repository.QuestionRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.baylor.ems.enums.QuestionTypeEnum;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -17,7 +22,7 @@ import java.util.Set;
 
 @Service
 public class QuestionService {
-
+    private static final Logger logger = LogManager.getLogger(QuestionService.class.getName());
     @Autowired
     private QuestionRepository questionRepository;
 
@@ -26,18 +31,20 @@ public class QuestionService {
 
 
     public List<Question> getAllByExam(Integer examId) {
+        logger.info(Thread.currentThread().getId() + ":" + "getAllByExam" + "(" + examId + ")");
         return this.questionRepository.getAllByExam_Id(examId);
     }
 
     public List<QuestionEmsDto> saveAllQuestionQmsDtos(List<QuestionQmsDto> questionQmsDtos, Exam exam) {
+        logger.info(Thread.currentThread().getId() + ":" + "saveAllQuestionQmsDtos" + "(" + questionQmsDtos + "," + exam + ")");
 
         //QuestionQmsDto -> Question
         this.questionsFromQmsToModel(questionQmsDtos, exam);
 
         // Save Questions
         List<Question> questions = this.questionRepository.getAllByExam_Id(exam.getId());
-        for (Question q: questions
-             ) {
+        for (Question q : questions
+        ) {
             q.setChoices(choiceRepository.findByQuestionId(q.getId()));
         }
 
@@ -48,14 +55,16 @@ public class QuestionService {
     }
 
     public List<QuestionEmsDto> getAllByExamPruned(Exam exam) {
+        logger.info(Thread.currentThread().getId() + ":" + "getAllByExamPruned" + "(" + exam + ")");
         List<Question> questions = this.questionRepository.getAllByExam_Id(exam.getId());
         return questionsFromModelToEms(questions);
     }
 
 
-    public List<QuestionEmsDto> questionsFromModelToEms(List<Question> questions){
+    public List<QuestionEmsDto> questionsFromModelToEms(List<Question> questions) {
+        logger.info(Thread.currentThread().getId() + ":" + "questionsFromModelToEms" + "(" + questions + ")");
         List<QuestionEmsDto> questionEmsDtos = new ArrayList<>();
-        for (Question q: questions) {
+        for (Question q : questions) {
             QuestionEmsDto questionEmsDto = new QuestionEmsDto();
             questionEmsDto.setId(q.getId());
             questionEmsDto.setBody(q.getBody());
@@ -70,18 +79,21 @@ public class QuestionService {
     }
 
     private List<ChoiceEmsDto> choicesFromModelToEms(List<Choice> choices) {
+        logger.info(Thread.currentThread().getId() + ":" + "choicesFromModelToEms" + "(" + choices + ")");
         //Erase correct
         List<ChoiceEmsDto> choiceEmsDtos = new ArrayList<>();
-        for (Choice ch: choices) {
+        for (Choice ch : choices) {
             ChoiceEmsDto choiceEmsDto = new ChoiceEmsDto(ch);
             choiceEmsDtos.add(choiceEmsDto);
         }
         return choiceEmsDtos;
     }
 
-    public List<Question> questionsFromQmsToModel(List<QuestionQmsDto> questionQmsDtos, Exam exam){
+    public List<Question> questionsFromQmsToModel(List<QuestionQmsDto> questionQmsDtos, Exam exam) {
+        logger.info(Thread.currentThread().getId() + ":" + "questionsFromQmsToModel" + "(" + questionQmsDtos + "," + exam +
+                ")");
         List<Question> questions = new ArrayList<>();
-        for (QuestionQmsDto q: questionQmsDtos
+        for (QuestionQmsDto q : questionQmsDtos
         ) {
             Question question = new Question();
             question.setBody(q.getBody());
@@ -102,9 +114,10 @@ public class QuestionService {
     }
 
     private Set<Choice> choicesFromQmsToModel(List<ChoiceQmsDto> choiceQmsDtos, Question question) {
+        logger.info(Thread.currentThread().getId() + ":" + "choicesFromQmsToModel" + "(" + choiceQmsDtos + "," + question + ")");
         Set<Choice> choices = new HashSet<>();
-        for (ChoiceQmsDto ch: choiceQmsDtos
-             ) {
+        for (ChoiceQmsDto ch : choiceQmsDtos
+        ) {
             Choice choice = new Choice();
             choice.setId(ch.getId());
             choice.setCorrect(ch.isCorrect());
@@ -114,7 +127,6 @@ public class QuestionService {
         }
         return choices;
     }
-
 
 
 }

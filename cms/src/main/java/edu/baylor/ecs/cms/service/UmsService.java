@@ -2,6 +2,8 @@ package edu.baylor.ecs.cms.service;
 
 import edu.baylor.ecs.cms.dto.EmailDto;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -11,23 +13,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 @Service
 public class UmsService {
-
+    private static final Logger logger = LogManager.getLogger(UmsService.class.getName());
+    private final RestTemplate restTemplate;
     @Value("${ums.ip}")
     private String umsIp;
-
     @Value("${ums.id}")
     private String id;
-
     @Value("${ums.email}")
     private String email;
 
-    private final RestTemplate restTemplate;
-
     public UmsService(RestTemplateBuilder restTemplateBuilder) {
+
+        logger.info(Thread.currentThread().getId() + ":" + "UmsService" + "(" + restTemplateBuilder + ")");
         this.restTemplate = restTemplateBuilder.build();
     }
 
@@ -43,6 +44,7 @@ public class UmsService {
 //    }
 
     public ResponseEntity<EmailDto> isEmailValid(String email, String auth) {
+        logger.info(Thread.currentThread().getId() + ":" + "isEmailValid" + "(" + email + "," + auth + ")");
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(umsIp);
@@ -65,17 +67,19 @@ public class UmsService {
     }
 
     public HttpHeaders createHeaders(String username, String password) {
+        logger.info(Thread.currentThread().getId() + ":" + "createHeaders" + "(" + username + "," + password + ")");
         return new HttpHeaders() {{
             String auth = username + ":" + password;
             byte[] encodedAuth = Base64.encodeBase64(
-                    auth.getBytes(Charset.forName("US-ASCII")));
+                    auth.getBytes(StandardCharsets.US_ASCII));
             String authHeader = "Basic " + new String(encodedAuth);
             set("Authorization", authHeader);
         }};
     }
 
 
-    public Boolean isExamineeIdValid(Integer id){
+    public Boolean isExamineeIdValid(Integer id) {
+        logger.info(Thread.currentThread().getId() + ":" + "isExamineeIdValid" + "(" + id + ")");
 //        StringBuilder stringBuilder = new StringBuilder();
 //        stringBuilder.append(umsIp);
 //        stringBuilder.append(id);
@@ -86,7 +90,7 @@ public class UmsService {
     }
 
 
-    public Integer getCurrentLoggedInUser(){
+    public Integer getCurrentLoggedInUser() {
         return 1;
     }
 

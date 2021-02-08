@@ -5,7 +5,8 @@ public class ChoiceQmsDto {
     private String body;
     private boolean correct;
 
-    public ChoiceQmsDto(){}
+    public ChoiceQmsDto() {
+    }
 
     public Integer getId() {
         return id;

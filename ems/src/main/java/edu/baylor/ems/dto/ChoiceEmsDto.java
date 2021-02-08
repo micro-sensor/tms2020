@@ -7,7 +7,8 @@ public class ChoiceEmsDto {
     private String body;
     private boolean chosen;
 
-    public ChoiceEmsDto(){}
+    public ChoiceEmsDto() {
+    }
 
     public ChoiceEmsDto(Choice choice) {
         this.id = choice.getId();

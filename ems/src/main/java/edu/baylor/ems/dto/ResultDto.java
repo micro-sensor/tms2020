@@ -6,7 +6,8 @@ public class ResultDto {
 
     private Integer wrong;
 
-    public ResultDto(){}
+    public ResultDto() {
+    }
 
     public Integer getCorrect() {
         return correct;

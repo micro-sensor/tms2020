@@ -5,8 +5,6 @@ import edu.baylor.ems.dto.ExamDto;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Objects;
 
@@ -33,31 +31,31 @@ public class Exam implements Serializable {
     @Column(columnDefinition = "serial")
     private Integer id;
 
-    @Column(name="examinee")
+    @Column(name = "examinee")
     private String examinee;
 
-    @Column(name="issuer")
+    @Column(name = "issuer")
     private Integer issuer;
 
-    @Column(name="configuration_id")
+    @Column(name = "configuration_id")
     private Integer configurationId;
 
-    @Column(name="configuration_name")
+    @Column(name = "configuration_name")
     private String configurationName;
 
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss", timezone="US/Central")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "US/Central")
     private Date examDate;
 
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss", timezone="US/Central")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "US/Central")
     private Date submissionDate;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date examDateFrom;
 
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date examDateTo;
 
-    @Column(name="status")
+    @Column(name = "status")
     private ExamStatus status;
 
     @Column(name = "correct")
@@ -66,9 +64,10 @@ public class Exam implements Serializable {
     @Column(name = "sum")
     private Integer sum;
 
-    public Exam(){}
+    public Exam() {
+    }
 
-    public Exam(ExamDto examDto){
+    public Exam(ExamDto examDto) {
         this.examinee = examDto.getExaminee();
         this.examDate = examDto.getExamDate();
         this.issuer = examDto.getIssuer();

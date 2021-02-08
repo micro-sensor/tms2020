@@ -1,21 +1,15 @@
 package edu.baylor.ems.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import edu.baylor.ems.dto.ChoiceQmsDto;
-import edu.baylor.ems.dto.QuestionQmsDto;
+import edu.baylor.ems.enums.QuestionTypeEnum;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import edu.baylor.ems.enums.QuestionTypeEnum;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-@Entity(name="answers")
+@Entity(name = "answers")
 public class Question implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,11 +25,11 @@ public class Question implements Serializable {
     @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     private List<Choice> choices;
 
-    @Column(name = "body", columnDefinition="TEXT")
+    @Column(name = "body", columnDefinition = "TEXT")
 //    @Size(max = 1024)
     private String body;
 
-    @Column(name = "code", columnDefinition="TEXT")
+    @Column(name = "code", columnDefinition = "TEXT")
     private String code;
 
     @Column(name = "flagged")
@@ -45,10 +39,11 @@ public class Question implements Serializable {
     @Column(name = "questionType")
     private QuestionTypeEnum questionType;
 
-    @Column(name = "textAnswer", columnDefinition="TEXT")
+    @Column(name = "textAnswer", columnDefinition = "TEXT")
     private String textAnswer;
 
-    public Question(){}
+    public Question() {
+    }
 
     public Integer getId() {
         return id;

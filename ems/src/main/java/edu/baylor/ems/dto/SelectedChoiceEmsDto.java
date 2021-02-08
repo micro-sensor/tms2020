@@ -9,7 +9,8 @@ public class SelectedChoiceEmsDto {
     private List<ChoiceEmsDto> choiceEmsDtos;
     private String textAnswer;
 
-    public SelectedChoiceEmsDto(){}
+    public SelectedChoiceEmsDto() {
+    }
 
     public Integer getExamId() {
         return examId;

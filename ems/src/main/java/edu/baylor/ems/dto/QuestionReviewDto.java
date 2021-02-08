@@ -3,45 +3,46 @@ package edu.baylor.ems.dto;
 import java.util.List;
 
 public class QuestionReviewDto {
-  private Integer id;
+    private Integer id;
 
-  private String body;
+    private String body;
 
-  private List<ChoiceReviewDto> choices;
+    private List<ChoiceReviewDto> choices;
 
-  private String code;
+    private String code;
 
-  public QuestionReviewDto(){}
+    public QuestionReviewDto() {
+    }
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public String getBody() {
-    return body;
-  }
+    public String getBody() {
+        return body;
+    }
 
-  public void setBody(String body) {
-    this.body = body;
-  }
+    public void setBody(String body) {
+        this.body = body;
+    }
 
-  public List<ChoiceReviewDto> getChoices() {
-    return choices;
-  }
+    public List<ChoiceReviewDto> getChoices() {
+        return choices;
+    }
 
-  public void setChoices(List<ChoiceReviewDto> choices) {
-    this.choices = choices;
-  }
+    public void setChoices(List<ChoiceReviewDto> choices) {
+        this.choices = choices;
+    }
 
-  public String getCode() {
-    return code;
-  }
+    public String getCode() {
+        return code;
+    }
 
-  public void setCode(String code) {
-    this.code = code;
-  }
+    public void setCode(String code) {
+        this.code = code;
+    }
 }

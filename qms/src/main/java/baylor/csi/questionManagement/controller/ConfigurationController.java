@@ -8,6 +8,8 @@ import baylor.csi.questionManagement.model.Language;
 import baylor.csi.questionManagement.repository.ConfigurationGroupRepository;
 import baylor.csi.questionManagement.repository.ConfigurationRepository;
 import baylor.csi.questionManagement.repository.LanguageRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/configuration")
 public class ConfigurationController {
+    private static final Logger logger = LogManager.getLogger(ConfigurationController.class.getName());
 
     @Autowired
     private ConfigurationRepository configurationRepository;
@@ -31,20 +34,22 @@ public class ConfigurationController {
     @CrossOrigin
     @GetMapping("")
     public List<Configuration> findAllConfigurations() {
+        logger.info(Thread.currentThread().getId() + ":" + "findAllConfigurations" + "()");
         return configurationRepository.findAll();
     }
 
     @CrossOrigin
     @GetMapping("/{configurationId}")
     public Configuration findConfigurationsById(@PathVariable Long configurationId) {
+        logger.info(Thread.currentThread().getId() + ":" + "findConfigurationsById" + "(" + configurationId + ")");
         return configurationRepository.findById(configurationId).orElse(null);
     }
-
 
 
     @CrossOrigin
     @DeleteMapping("/{configurationId}")
     public ResponseEntity<?> deleteConfiguration(@PathVariable Long configurationId) {
+        logger.info(Thread.currentThread().getId() + ":" + "deleteConfiguration" + "(" + configurationId + ")");
         return configurationRepository.findById(configurationId)
                 .map(configuration -> {
                     configurationRepository.delete(configuration);
@@ -55,6 +60,7 @@ public class ConfigurationController {
     @CrossOrigin
     @PostMapping("")
     public Configuration createConfiguration(@Valid @RequestBody Map<String, Object> payload) {
+        logger.info(Thread.currentThread().getId() + ":" + "createConfiguration" + "(" + payload + ")");
         try {
             Configuration configuration = new Configuration();
             configuration.setName((String) payload.get("name"));
@@ -77,6 +83,7 @@ public class ConfigurationController {
     @CrossOrigin
     @PutMapping("/{configurationId}")
     public Configuration updateConfiguration(@PathVariable Long configurationId, @Valid @RequestBody Map<String, Object> payload) {
+        logger.info(Thread.currentThread().getId() + ":" + "updateConfiguration" + "(" + configurationId + "," + payload + ")");
         try {
             Configuration configuration = configurationRepository.findById(configurationId).orElse(null);
             Set<ConfigurationGroup> configurationGroups = configuration.getGroups();
@@ -104,7 +111,8 @@ public class ConfigurationController {
 
     private void createNewGroupFromJSonForConfiguration(Configuration configuration, Map<String, Object> group, List<Long> oldGroupIds) {
 
-        if( group!=null && group.get("isNew")!=null && Boolean.parseBoolean(group.get("isNew").toString())) {
+        logger.info(Thread.currentThread().getId() + ":" + "createNewGroupFromJSonForConfigurations" + "(" + configuration + "," + group + "," + oldGroupIds + ")");
+        if (group != null && group.get("isNew") != null && Boolean.parseBoolean(group.get("isNew").toString())) {
             ConfigurationGroup c = new ConfigurationGroup();
             c.setCategory(Long.parseLong(group.get("category").toString()));
             c.setCount(Integer.parseInt(group.get("count").toString()));
@@ -119,9 +127,8 @@ public class ConfigurationController {
             c.setLevel(Integer.parseInt(group.get("level").toString()));
             c.setConfiguration(configuration);
             configuration.getGroups().add(c);
-        }
-        else {
-            if(group!=null && group.get("id")!=null) {
+        } else {
+            if (group != null && group.get("id") != null) {
                 Long groupId = Long.parseLong(group.get("id").toString());
                 ConfigurationGroup c = configurationGroupRepository.findById(groupId).orElse(null);
                 configuration.getGroups().add(c);
@@ -130,12 +137,13 @@ public class ConfigurationController {
         }
     }
 
-    private void removeDeletedGroups(Set<ConfigurationGroup> configurationGroups,  List<Long> oldGroupIds) {
+    private void removeDeletedGroups(Set<ConfigurationGroup> configurationGroups, List<Long> oldGroupIds) {
+        logger.info(Thread.currentThread().getId() + ":" + "removeDeletedGroups" + "(" + configurationGroups + "," + oldGroupIds + ")");
         System.out.println("oldGroupIds: " + oldGroupIds);
-        for( ConfigurationGroup configurationGroup : configurationGroups) {
-            System.out.println("\t"+configurationGroup);
-            if( !oldGroupIds.contains(configurationGroup.getId()) ){
-                System.out.println("deleting "+configurationGroup.getId());
+        for (ConfigurationGroup configurationGroup : configurationGroups) {
+            System.out.println("\t" + configurationGroup);
+            if (!oldGroupIds.contains(configurationGroup.getId())) {
+                System.out.println("deleting " + configurationGroup.getId());
                 ConfigurationGroup c = configurationGroupRepository.findById(configurationGroup.getId()).orElse(null);
                 configurationGroupRepository.delete(c);
             }
@@ -145,19 +153,19 @@ public class ConfigurationController {
     // for debugging:
     private void printGroup(Map<String, Object> group) {
         System.out.println("Group passed from frontend:");
-        if(group.get("isNew")!=null) {
+        if (group.get("isNew") != null) {
             System.out.println("\tisNew: " + Boolean.parseBoolean(group.get("isNew").toString()));
         }
-        if(group.get("category")!=null) {
+        if (group.get("category") != null) {
             System.out.println("\tcategory: " + Long.parseLong(group.get("category").toString()));
         }
-        if(group.get("count")!=null) {
+        if (group.get("count") != null) {
             System.out.println("\tcount: " + Integer.parseInt(group.get("count").toString()));
         }
-        if(group.get("level")!=null) {
+        if (group.get("level") != null) {
             System.out.println("\tlevel: " + Integer.parseInt(group.get("level").toString()));
         }
-        if(group.get("language")!=null) {
+        if (group.get("language") != null) {
             System.out.println("\tlanguage: " + Integer.parseInt(group.get("language").toString()));
         }
     }

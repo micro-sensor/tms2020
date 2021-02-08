@@ -3,14 +3,14 @@ package baylor.csi.questionManagement.controller;
 import baylor.csi.questionManagement.Exception.JPAException;
 import baylor.csi.questionManagement.Exception.ParsingException;
 import baylor.csi.questionManagement.Exception.ResourceNotFoundException;
-import baylor.csi.questionManagement.model.Category;
 import baylor.csi.questionManagement.model.Language;
-import baylor.csi.questionManagement.model.dto.CategoryListDto;
 import baylor.csi.questionManagement.model.dto.LanguageListDto;
 import baylor.csi.questionManagement.repository.LanguageRepository;
 import baylor.csi.questionManagement.service.XmlParserService;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +32,7 @@ import java.util.Set;
 @RestController
 @RequestMapping("/language")
 public class LanguageController {
+    private static final Logger logger = LogManager.getLogger(CategoryInfoController.class.getName());
     @Autowired
     private LanguageRepository languageRepository;
     @Autowired
@@ -40,24 +41,29 @@ public class LanguageController {
     @CrossOrigin
     @GetMapping("")
     public List<Language> findAllLanguages() {
+
+        logger.info(Thread.currentThread().getId() + ":" + "findAllLanguages" + "()");
         return languageRepository.findAll();
     }
 
     @CrossOrigin
     @GetMapping("/{languageId}")
     public Language findLanguageById(@PathVariable Long languageId) {
+        logger.info(Thread.currentThread().getId() + ":" + "findLanguageById" + "(" + languageId + ")");
         return languageRepository.findById(languageId).orElse(null);
     }
 
     @CrossOrigin
     @PostMapping("")
     public Language createLanguage(@Valid @RequestBody Language language) {
+        logger.info(Thread.currentThread().getId() + ":" + "createLanguage" + "(" + language + ")");
         return languageRepository.save(language);
     }
 
     @CrossOrigin
     @PutMapping("/{languageId}")
     public Language updateLanguage(@PathVariable Long languageId, @Valid @RequestBody Language languageRequest) {
+        logger.info(Thread.currentThread().getId() + ":" + "updateLanguage" + "(" + languageId + "," + languageRequest + ")");
         return languageRepository.findById(languageId)
                 .map(language -> {
                     language.setName(languageRequest.getName());
@@ -68,6 +74,7 @@ public class LanguageController {
     @CrossOrigin
     @DeleteMapping("/{languageId}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Long languageId) {
+        logger.info(Thread.currentThread().getId() + ":" + "deleteQuestion" + "(" + languageId + ")");
         return languageRepository.findById(languageId)
                 .map(language -> {
                     languageRepository.delete(language);
@@ -78,6 +85,7 @@ public class LanguageController {
     @CrossOrigin
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllLanguages() {
+        logger.info(Thread.currentThread().getId() + ":" + "deleteAllLanguages" + "()");
         try {
             languageRepository.deleteAll();
         } catch (Exception e) {
@@ -90,13 +98,14 @@ public class LanguageController {
     @GetMapping("/export")
     public String exportAllLanguages() throws IOException {
 
+        logger.info(Thread.currentThread().getId() + ":" + "exportAllLanguages" + "()");
         List<Language> languageList = languageRepository.findAll();
         LanguageListDto languageListDto = new LanguageListDto(languageList);
 
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        if( languageListDto != null)
+        if (languageListDto != null)
             return xmlMapper.writeValueAsString(languageListDto);
 
         return "Failed to export";
@@ -105,6 +114,7 @@ public class LanguageController {
     @CrossOrigin
     @PostMapping(value = "/import")
     public ResponseEntity<?> uploadLanguages(@RequestParam("file") MultipartFile file) throws IOException, ParserConfigurationException, SAXException {
+        logger.info(Thread.currentThread().getId() + ":" + "uploadLanguages" + "(" + file + ")");
 
         if (file.isEmpty()) {
             throw new ResourceNotFoundException("File upload failed when importing language(s)");
@@ -123,13 +133,12 @@ public class LanguageController {
         doc.getDocumentElement().normalize();
         // get NodeList with "language" tag
         NodeList languageNodeList = doc.getElementsByTagName("language");
-        if(languageNodeList.getLength() == 0) {
+        if (languageNodeList.getLength() == 0) {
             throw new ParsingException("XML document doesn't contain tags with name language");
         }
         languageList = xmlParserService.parseLanguageNodeList(languageNodeList);
 
-        if( languageList != null)
-        {
+        if (languageList != null) {
             try {
                 languageRepository.saveAll(languageList);
             } catch (Exception e) {
