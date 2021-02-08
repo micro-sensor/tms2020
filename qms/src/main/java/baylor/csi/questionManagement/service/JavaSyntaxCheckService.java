@@ -6,10 +6,7 @@ import org.eclipse.jdt.core.dom.*;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.text.edits.TextEdit;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-
-import java.util.*;
 
 @Service
 public class JavaSyntaxCheckService {
@@ -19,10 +16,9 @@ public class JavaSyntaxCheckService {
         String message = "";
 
         int codeBlockType = ASTParser.K_STATEMENTS;
-        if(codeBlock.contains("class ")) {
+        if (codeBlock.contains("class ")) {
             codeBlockType = ASTParser.K_COMPILATION_UNIT;
-        }
-        else {
+        } else {
             throw new SyntaxCheckException("Java code should be inside class");
         }
         ASTParser codeBlockParser = ASTParser.newParser(AST.JLS3);
@@ -31,13 +27,12 @@ public class JavaSyntaxCheckService {
         codeBlockParser.setResolveBindings(true);
         ASTNode astNode = codeBlockParser.createAST(null);
 
-        if( codeBlockType == ASTParser.K_COMPILATION_UNIT) {
+        if (codeBlockType == ASTParser.K_COMPILATION_UNIT) {
             System.out.println("type: ASTParser.K_COMPILATION_UNIT");
             CompilationUnit compilationUnit = (CompilationUnit) astNode;
             compilationUnit.recordModifications();
             return printErrors(compilationUnit);
-        }
-        else if (codeBlockType == ASTParser.K_STATEMENTS) {
+        } else if (codeBlockType == ASTParser.K_STATEMENTS) {
             System.out.println("type: ASTParser.K_STATEMENTS");
             Block block_of_code = (Block) astNode;
 
@@ -66,12 +61,11 @@ public class JavaSyntaxCheckService {
 
         IProblem[] problems = cu.getProblems();
         AST ast = cu.getAST();
-        for(IProblem problem : problems) {
-            if(problem.isError()) {
+        for (IProblem problem : problems) {
+            if (problem.isError()) {
                 message += "ERROR: Line [" + problem.getSourceLineNumber() + "] - " + problem.getMessage() + problem.getSourceStart() + "\n";
                 System.out.println("ERROR: Line [" + problem.getSourceLineNumber() + "] - " + problem.getMessage() + problem.getSourceStart());
-            }
-            else if (problem.isWarning()) {
+            } else if (problem.isWarning()) {
                 message += "WARNING: Line [" + problem.getSourceLineNumber() + "] - " + problem.getMessage() + problem.getSourceStart() + "\n";
                 System.out.println("WARNING: Line [" + problem.getSourceLineNumber() + "] - " + problem.getMessage() + problem.getSourceStart());
             }

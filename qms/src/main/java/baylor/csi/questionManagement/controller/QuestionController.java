@@ -12,12 +12,13 @@ import baylor.csi.questionManagement.service.JavaSyntaxCheckService;
 import baylor.csi.questionManagement.service.XmlParserService;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -26,15 +27,17 @@ import javax.validation.Valid;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
+    private static final Logger logger = LogManager.getLogger(QuestionController.class.getName());
     @Autowired
     private QuestionRepository questionRepository;
     @Autowired
@@ -53,18 +56,21 @@ public class QuestionController {
     @CrossOrigin
     @GetMapping("/all")
     public List<Question> findAllQuestions() {
+        logger.info(Thread.currentThread().getId() + ":" + "findAllQuestions" + "()");
         return questionRepository.findAll();
     }
 
     @CrossOrigin
     @GetMapping("/{questionId}")
     public Question findQuestionById(@PathVariable Long questionId) {
+        logger.info(Thread.currentThread().getId() + ":" + "findQuestionById" + "(" + questionId + ")");
         return questionRepository.findById(questionId).orElse(null);
     }
 
     @CrossOrigin
     @GetMapping("")
     public List<QuestionDto> findQuestionByCateogryIdAndName(@RequestParam Map<String, Object> customQuery) {
+        logger.info(Thread.currentThread().getId() + ":" + "findQuestionByCategoryIdAndName" + "(" + customQuery + ")");
 
         String name = "";
         if (customQuery.containsKey("name")) {
@@ -72,7 +78,7 @@ public class QuestionController {
         }
 
         List<QuestionDto> dtos = new ArrayList<>();
-        if(customQuery.containsKey("categoryId")) {
+        if (customQuery.containsKey("categoryId")) {
             Long categoryId = Long.parseLong(customQuery.get("categoryId").toString());
             dtos = questionRepository.findByCategoryIdAndName(categoryId, "%" + name + "%");
         } else {
@@ -88,6 +94,7 @@ public class QuestionController {
     @CrossOrigin
     @PostMapping("")
     public Question createQuestion(@Valid @RequestBody Map<String, Object> payload) {
+        logger.info(Thread.currentThread().getId() + ":" + "createQuestion" + "(" + payload + ")");
         try {
             Question question = new Question();
             question.setBody((String) payload.get("body"));
@@ -112,13 +119,11 @@ public class QuestionController {
 
             String questionType = (String) payload.get("type");
 
-            if (questionType.equals("SELECT_ONE")){
+            if (questionType.equals("SELECT_ONE")) {
                 question.setQuestionType(QuestionTypeEnum.SELECT_ONE);
-            }
-            else if (questionType.equals("TEXT")){
+            } else if (questionType.equals("TEXT")) {
                 question.setQuestionType(QuestionTypeEnum.TEXT);
-            }
-            else{
+            } else {
                 question.setQuestionType(QuestionTypeEnum.SELECT_MANY);
             }
 
@@ -135,6 +140,7 @@ public class QuestionController {
     @CrossOrigin
     @PutMapping("/{questionId}")
     public Question updateQuestion(@PathVariable Long questionId, @Valid @RequestBody Map<String, Object> payload) {
+        logger.info(Thread.currentThread().getId() + ":" + "updateQuestion" + "(" + questionId + "," + payload + ")");
         try {
             Question question = questionRepository.findById(questionId).orElse(null);
             if (question == null) {
@@ -166,7 +172,7 @@ public class QuestionController {
                     it.remove();
                 }
             }
-            for(Choice c: deleteChoices) {
+            for (Choice c : deleteChoices) {
                 question.getChoices().remove(c);
                 choiceRepository.delete(c);
             }
@@ -174,8 +180,7 @@ public class QuestionController {
             for (Map<String, Object> choice : choices) {
                 if (!choice.containsKey("id")) {
                     createNewChoiceFromJSonForQuestion(question, choice);
-                }
-                else if (choicesInDBIds.add(Long.parseLong(choice.get("id").toString()))) {
+                } else if (choicesInDBIds.add(Long.parseLong(choice.get("id").toString()))) {
                     createNewChoiceFromJSonForQuestion(question, choice);
                 } else {
                     updateChoiceFromJSonForQuestion(choicesInDB, choice);
@@ -192,7 +197,7 @@ public class QuestionController {
 
             HashSet<Long> updatedcodesId = new HashSet<>();
             for (Map<String, Object> code : codes) {
-                if(code.containsKey("id")) {
+                if (code.containsKey("id")) {
                     updatedcodesId.add(Long.parseLong(code.get("id").toString()));
                 }
             }
@@ -206,7 +211,7 @@ public class QuestionController {
                 }
             }
 
-            for(Code c:deleteCodes) {
+            for (Code c : deleteCodes) {
                 question.getCodes().remove(c);
                 codeRepository.delete(c);
             }
@@ -215,8 +220,7 @@ public class QuestionController {
             for (Map<String, Object> code : codes) {
                 if (!code.containsKey("id")) {
                     createNewCodeFromJsonForQuestion(question, code);
-                }
-                else if (codesInDBIds.add(Long.parseLong(code.get("id").toString()))) {
+                } else if (codesInDBIds.add(Long.parseLong(code.get("id").toString()))) {
                     createNewCodeFromJsonForQuestion(question, code);
                 } else {
                     updateCodeFromJsonForQuestion(codesInDB, code);
@@ -228,30 +232,30 @@ public class QuestionController {
             Set<Category> categoriesInDB = question.getCategories();
             HashSet<Long> categoriesIdsInDB = new HashSet<>();
             ArrayList<Object> categoryIds = (ArrayList<Object>) payload.get("categories");
-            ArrayList<Long> categoryIdsLong = categoryIds.stream().map(c->Long.parseLong(c.toString())).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<Long> categoryIdsLong = categoryIds.stream().map(c -> Long.parseLong(c.toString())).collect(Collectors.toCollection(ArrayList::new));
 
             Iterator<Category> catIter = categoriesInDB.iterator();
             ArrayList<Category> deleteCategories = new ArrayList<>();
             while (catIter.hasNext()) {
                 Category c = catIter.next();
-                if(!categoryIdsLong.contains(c.getId())){
+                if (!categoryIdsLong.contains(c.getId())) {
                     deleteCategories.add(c);
                     catIter.remove();
                 }
             }
-            for(Category c:deleteCategories) {
+            for (Category c : deleteCategories) {
                 question.getCategories().remove(c);
             }
 
 
-            for(Category c:categoriesInDB) {
+            for (Category c : categoriesInDB) {
                 categoriesIdsInDB.add(c.getId());
             }
 
-            for(Long id:categoryIdsLong) {
-                if(categoriesIdsInDB.add(id)) {
+            for (Long id : categoryIdsLong) {
+                if (categoriesIdsInDB.add(id)) {
                     Category c = categoryRepository.findById(id).orElse(null);
-                    if(c!=null){
+                    if (c != null) {
                         question.getCategories().add(c);
                     }
 
@@ -271,6 +275,7 @@ public class QuestionController {
     }
 
     private void createNewCodeFromJsonForQuestion(Question question, Map<String, Object> code) {
+        logger.info(Thread.currentThread().getId() + ":" + "createNewCodeFromJsonForQuestion" + "(" + question + "," + code + ")");
         Long languageId = Long.parseLong(code.get("languageId").toString());
         Language language = languageRepository.findById(languageId).orElse(null);
         if (language != null) {
@@ -283,8 +288,9 @@ public class QuestionController {
     }
 
     private void updateCodeFromJsonForQuestion(Set<Code> codesInDB, Map<String, Object> code) {
+        logger.info(Thread.currentThread().getId() + ":" + "updateCodeFromJsonForQuestion" + "(" + codesInDB + "," + code + ")");
         for (Code c : codesInDB) {
-            if(c.getId()==null) {
+            if (c.getId() == null) {
                 continue;
             }
             if (c.getId().equals(Long.parseLong(code.get("id").toString()))) {
@@ -299,6 +305,8 @@ public class QuestionController {
     }
 
     private void createNewChoiceFromJSonForQuestion(Question question, Map<String, Object> choice) {
+        logger.info(Thread.currentThread().getId() + ":" + "createNewChoiceFromJSonForQuestion" + "(" + question +
+                "," + choice + ")");
         Choice c = new Choice();
         c.setBody(choice.get("body").toString());
         c.setCorrect(Boolean.parseBoolean(choice.get("correct").toString()));
@@ -307,8 +315,9 @@ public class QuestionController {
     }
 
     private void updateChoiceFromJSonForQuestion(Set<Choice> choicesInDB, Map<String, Object> choice) {
+        logger.info(Thread.currentThread().getId() + ":" + "updateChoiceFromJsonForQuestion" + "(" + choicesInDB + "," + choice + ")");
         for (Choice c : choicesInDB) {
-            if(c.getId()==null) {
+            if (c.getId() == null) {
                 continue;
             }
             if (c.getId().equals(Long.parseLong(choice.get("id").toString()))) {
@@ -321,6 +330,7 @@ public class QuestionController {
     @CrossOrigin
     @DeleteMapping("/{questionId}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Long questionId) {
+        logger.info(Thread.currentThread().getId() + ":" + "deleteQuestion" + "(" + questionId + ")");
         return questionRepository.findById(questionId)
                 .map(question -> {
                     questionRepository.delete(question);
@@ -331,6 +341,7 @@ public class QuestionController {
     @CrossOrigin
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllQuestions() {
+        logger.info(Thread.currentThread().getId() + ":" + "deleteAllQuestions" + "()");
         questionRepository.deleteAll();
         return ResponseEntity.ok().build();
     }
@@ -338,6 +349,7 @@ public class QuestionController {
     @CrossOrigin
     @GetMapping("/export")
     public String exportAllQuestions() throws IOException {
+        logger.info(Thread.currentThread().getId() + ":" + "exportAllQuestions" + "()");
 
         List<Question> questionsList = questionRepository.findAll();
         QuestionListDto questions = new QuestionListDto(questionsList);
@@ -347,7 +359,7 @@ public class QuestionController {
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 
-        if( questions != null)
+        if (questions != null)
             return xmlMapper.writeValueAsString(questions);
 
         return "Failed to export";
@@ -356,8 +368,9 @@ public class QuestionController {
     @CrossOrigin
     @PostMapping("/exportFiltered")
     public String exportFilteredQuestions(@RequestParam("questionIdList") List<Long> idList) throws IOException {
+        logger.info(Thread.currentThread().getId() + ":" + "exportFilteredQuestions" + "(" + idList + ")");
 
-        for(Long i : idList ) {
+        for (Long i : idList) {
             System.out.println(i);
         }
 
@@ -368,7 +381,7 @@ public class QuestionController {
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        if( questions != null)
+        if (questions != null)
             return xmlMapper.writeValueAsString(questions);
 
         return "Failed to export";
@@ -377,13 +390,14 @@ public class QuestionController {
     @CrossOrigin
     @GetMapping("/export/{questionId}")
     public String exportQuestionById(@PathVariable Long questionId) throws IOException {
+        logger.info(Thread.currentThread().getId() + ":" + "exportQuestionById" + "(" + questionId + ")");
         Question question = questionRepository.findById(questionId).orElse(null);
 
         System.out.println("Exporting the question " + questionId);
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        if( question != null)
+        if (question != null)
             return xmlMapper.writeValueAsString(question);
 
         return "Failed to export";
@@ -393,6 +407,7 @@ public class QuestionController {
     @PostMapping(value = "/import")
 //    public ResponseEntity<?> uploadQuestions(@RequestParam("file") MultipartFile file) throws IOException {
     public ResponseEntity<?> uploadQuestions(@RequestParam("file") MultipartFile file) throws IOException, ParserConfigurationException, SAXException {
+        logger.info(Thread.currentThread().getId() + ":" + "uploadQuestions" + "(" + file + ")");
 
         if (file.isEmpty()) {
             throw new ResourceNotFoundException("File upload fail when importing question(s)");
@@ -411,13 +426,12 @@ public class QuestionController {
         doc.getDocumentElement().normalize();
         // get NodeList with "question" tag
         NodeList questionNodeList = doc.getElementsByTagName("question");
-        if(questionNodeList.getLength() == 0) {
+        if (questionNodeList.getLength() == 0) {
             throw new ParsingException("XML document doesn't contain tags with name question");
         }
         questionList = xmlParserService.parseQuestionNodeList(questionNodeList);
 
-        if( questionList != null)
-        {
+        if (questionList != null) {
             try {
                 questionRepository.saveAll(questionList);
             } catch (Exception e) {
@@ -432,20 +446,20 @@ public class QuestionController {
     @CrossOrigin
     @PostMapping("/checkSyntax")
     public String checkCodeSnippet(@Valid @RequestBody Map<String, Object> payload) throws ParserConfigurationException, IOException, SAXException {
+        logger.info(Thread.currentThread().getId() + ":" + "chechCodeSnippet" + "(" + payload + ")");
 
         String codeBody = (String) payload.get("codeBody");
 
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
         InputSource is = new InputSource(new StringReader(codeBody));
-        Document doc =  builder.parse(is);
+        Document doc = builder.parse(is);
         doc.getDocumentElement().normalize();
         // get NodeList with "code" tag
         NodeList codeNodeList = doc.getElementsByTagName("code");
-        if(codeNodeList.getLength() > 1) {
+        if (codeNodeList.getLength() > 1) {
             throw new ParsingException("Code snippet body should contain only one code block");
-        }
-        else if( codeNodeList.getLength() == 1 ) {
+        } else if (codeNodeList.getLength() == 1) {
             codeBody = codeNodeList.item(0).getTextContent();
         }
 

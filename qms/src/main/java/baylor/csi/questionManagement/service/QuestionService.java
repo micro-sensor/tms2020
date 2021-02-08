@@ -27,6 +27,21 @@ public class QuestionService {
     @Autowired
     private LanguageRepository languageRepository;
 
+    private static Integer[] getRandomNumList(int nums, int start, int end) {
+        List<Integer> list = new ArrayList<>();
+
+        Random r = new Random();
+
+        while (list.size() != nums) {
+            int num = r.nextInt(end - start) + start;
+            if (!list.contains(num)) {
+                list.add(num);
+            }
+        }
+
+        return list.stream().toArray(Integer[]::new);
+    }
+
     public List<QuestionSingleCodeDto> getQuestionSingleCodeDtosByConfigGroup(ConfigurationGroup group) {
         Integer[] indexs = new Integer[group.getCount()];
         List<QuestionSingleCodeDto> questionSingleCodeDtos = new ArrayList<>();
@@ -42,11 +57,11 @@ public class QuestionService {
         if (tempQuestions.size() < group.getCount()) {
             throw new JPAException("Questions for " + group.getCategory() + " " + group.getLevel() + " " + group.getLanguageId() + " are not enough, please check the configuration ");
         } else if (tempQuestions.size() == group.getCount()) {
-            for(int i=0;i<group.getCount();i++) {
+            for (int i = 0; i < group.getCount(); i++) {
                 indexs[i] = i;
             }
         } else {
-            indexs=getRandomNumList(group.getCount(),0,tempQuestions.size());
+            indexs = getRandomNumList(group.getCount(), 0, tempQuestions.size());
         }
 
 
@@ -62,21 +77,6 @@ public class QuestionService {
         return questionSingleCodeDtos;
 
 
-    }
-
-    private static Integer[] getRandomNumList(int nums,int start,int end){
-        List<Integer> list = new ArrayList<>();
-
-        Random r = new Random();
-
-        while(list.size() != nums){
-            int num = r.nextInt(end-start) + start;
-            if(!list.contains(num)){
-                list.add(num);
-            }
-        }
-
-        return list.stream().toArray(Integer[]::new);
     }
 
 

@@ -1,5 +1,7 @@
 package edu.baylor.ecs.seer.usermanagement.config;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
@@ -23,8 +25,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
- * This provides the security configuration for integration with keycloak.
- * It relies on the values defined in application.yml for config.
+ * This provides the security configuration for integration with keycloak. It relies on the values defined in
+ * application.yml for config.
  *
  * @author J.R. Diehl
  * @version 0.1
@@ -33,11 +35,12 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 @ComponentScan(basePackageClasses = KeycloakSecurityComponents.class)
 class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+    private static final Logger logger = LogManager.getLogger(SecurityConfig.class.getName());
 
     @Autowired
     public void configureGlobal(
             AuthenticationManagerBuilder auth) throws Exception {
-
+        logger.info(Thread.currentThread().getId() + ":" + "AutenticationManagerBuilder" + "(" + auth + ")");
         KeycloakAuthenticationProvider keycloakAuthenticationProvider
                 = keycloakAuthenticationProvider();
         keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(
@@ -47,18 +50,21 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Bean
     public KeycloakSpringBootConfigResolver KeycloakConfigResolver() {
+        logger.info(Thread.currentThread().getId() + ":" + "KeycloakConfigResolver" + "()");
         return new KeycloakSpringBootConfigResolver();
     }
 
     @Bean
     @Override
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+        logger.info(Thread.currentThread().getId() + ":" + "sesstionAuthenticationStrategy" + "()");
         return new RegisterSessionAuthenticationStrategy(
                 new SessionRegistryImpl());
     }
 
     @Bean
     public OAuth2RestTemplate oauth2RestTemplate(OAuth2ProtectedResourceDetails details) {
+        logger.info(Thread.currentThread().getId() + ":" + "oath2RestTemplate" + "(" + details+ ")");
         OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(details);
 
         //Prepare by getting access token once
@@ -69,6 +75,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         super.configure(http);
+        logger.info(Thread.currentThread().getId() + ":" + "configure" + "(" + http+ ")");
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/userinfo*")
@@ -79,6 +86,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
     @Bean
     public FilterRegistrationBean corsFilter() {
+        logger.info(Thread.currentThread().getId() + ":" + "corsFilter" + "()");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);

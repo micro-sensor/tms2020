@@ -13,13 +13,17 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query(name = Question.FIND_BY_CATEGORYID_AND_NAME)
-    List<QuestionDto> findByCategoryIdAndName (Long categoryId, String name);
+    List<QuestionDto> findByCategoryIdAndName(Long categoryId, String name);
+
     @Query(name = Question.FIND_DTO_BY_NAME)
     List<QuestionDto> findQuestionDtoByName(String name);
+
     @Query(name = Question.FIND_BY_CATEGORYID)
     List<Question> findByCategoryId(Long categoryId);
+
     @Query(name = Question.FIND_BY_CATEGORYID_LEVEL_LANGUAGE)
     List<Question> findByCategoryIdAndLevelAndLanguage(Long categoryId, Integer level, Long languageId);
+
     @Query(name = Question.FIND_BY_CATEGORYID_LEVEL)
     List<Question> findByCategoryIdAndLevel(Long categoryId, Integer level);
 }

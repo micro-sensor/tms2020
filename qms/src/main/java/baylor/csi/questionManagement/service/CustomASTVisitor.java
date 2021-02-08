@@ -5,8 +5,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.Type;
 
-import java.util.concurrent.CyclicBarrier;
-
 public class CustomASTVisitor extends ASTVisitor {
 
     public String message = "";
@@ -22,15 +20,13 @@ public class CustomASTVisitor extends ASTVisitor {
 
         String errorMessage = "";
 
-        if( node.resolveBinding() == null)
-        {
-            if( node.getParent() instanceof Type) {
+        if (node.resolveBinding() == null) {
+            if (node.getParent() instanceof Type) {
 //                        System.out.println("\n\tSimpleName, resolveBinding==null, node.getParent() instanceof Type");
 //                        System.out.println("\tnode getFullyQualifiedName: " + node.getFullyQualifiedName());
 //                        System.out.println("\tnode toString: " + node.toString());
 //                        System.out.println("\tnode getNodeType: " + node.getNodeType());
-            }
-            else {
+            } else {
 //                        System.out.println("\n\tSimpleName, resolveBinding==null, node.getParent() NOT instanceof Type");
 //                        System.out.println("\tnode getFullyQualifiedName: " + node.getFullyQualifiedName());
 //                        System.out.println("\tnode getIdentifier: " + node.getIdentifier());
@@ -40,14 +36,13 @@ public class CustomASTVisitor extends ASTVisitor {
 //                        System.out.println("\tnode getLocationInParent: " + node.getLocationInParent());
 //                        System.out.println("\tnode getStartPosition: " + node.getStartPosition());
 //                        System.out.println("\tnode cu.getLineNumber(node.getStartPosition()): " + cu.getLineNumber(node.getStartPosition()));
-                if(! node.isDeclaration()) {
-                    errorMessage += "ERROR: Line [" + this.cu.getLineNumber(node.getStartPosition())+ "] - Variable " + node.getIdentifier() + " was not declared\n";
-                    System.out.println("ERROR: Line [" + this.cu.getLineNumber(node.getStartPosition())+ "] - Variable " + node.getIdentifier() + " was not declared");
+                if (!node.isDeclaration()) {
+                    errorMessage += "ERROR: Line [" + this.cu.getLineNumber(node.getStartPosition()) + "] - Variable " + node.getIdentifier() + " was not declared\n";
+                    System.out.println("ERROR: Line [" + this.cu.getLineNumber(node.getStartPosition()) + "] - Variable " + node.getIdentifier() + " was not declared");
                 }
 
             }
-        }
-        else {
+        } else {
 //            System.out.println("\n\tName, resolveBinding!=null");
         }
 

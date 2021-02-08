@@ -1,23 +1,14 @@
 package baylor.csi.questionManagement.enums;
 
-public enum QuestionTypeEnum{
+public enum QuestionTypeEnum {
     SELECT_ONE("SELECT_ONE"),
     SELECT_MANY("SELECT_MANY"),
     TEXT("TEXT");
 
     private final String name;
 
-    private QuestionTypeEnum(String s) {
+    QuestionTypeEnum(String s) {
         name = s;
-    }
-
-    public boolean equalsName(String otherName) {
-        // (otherName == null) check is not needed because name.equals(null) returns false
-        return name.equals(otherName);
-    }
-
-    public String toString() {
-        return this.name;
     }
 
     public static QuestionTypeEnum valueOfLabel(String name) {
@@ -27,6 +18,15 @@ public enum QuestionTypeEnum{
             }
         }
         return null;
+    }
+
+    public boolean equalsName(String otherName) {
+        // (otherName == null) check is not needed because name.equals(null) returns false
+        return name.equals(otherName);
+    }
+
+    public String toString() {
+        return this.name;
     }
 
 }

@@ -4,6 +4,8 @@ package edu.baylor.ecs.seer.usermanagement.controller;
 import edu.baylor.ecs.seer.usermanagement.entity.Role;
 import edu.baylor.ecs.seer.usermanagement.entity.User;
 import edu.baylor.ecs.seer.usermanagement.service.UserAccessService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.keycloak.KeycloakPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,14 +16,12 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.ws.rs.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This is the REST controller for the UMS backend. It exposes a variety
- * of endpoints which allow access to basic CRUD for keycloak users, as
- * well as other more fine-grained features.
+ * This is the REST controller for the UMS backend. It exposes a variety of endpoints which allow access to basic CRUD
+ * for keycloak users, as well as other more fine-grained features.
  *
  * @author J.R. Diehl
  * @version 0.1
@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
 @RequestMapping("/userinfo")
 public class UserInfoController {
 
+    private static final Logger logger = LogManager.getLogger(UserInfoController.class.getName());
+
     @Autowired
     private UserAccessService userAccessService;
 
@@ -37,6 +39,7 @@ public class UserInfoController {
     @GetMapping(path = "/users")
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<List<User>> getAllUsers() {
+        logger.info(Thread.currentThread().getId() + ":" + "getAllUsers" + "()");
         return ResponseEntity.ok(userAccessService.getUsers());
     }
 
@@ -44,6 +47,7 @@ public class UserInfoController {
     @GetMapping(path = "/usernames")
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<List<String>> getAllUsernames() {
+        logger.info(Thread.currentThread().getId() + ":" + "getAllUserNames" + "()");
         return ResponseEntity.ok(userAccessService.getUsers()
                 .stream()
                 .map(User::getUsername)
@@ -54,6 +58,7 @@ public class UserInfoController {
     @GetMapping(path = "/usernamesLike")
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<List<String>> getUsernamesLike(@RequestParam String username) {
+        logger.info(Thread.currentThread().getId() + ":" + "getUsernamesLike" + "(" + username + ")");
         return ResponseEntity.ok(userAccessService.getUsersLikeName(username)
                 .stream()
                 .map(User::getUsername)
@@ -65,6 +70,7 @@ public class UserInfoController {
     @GetMapping(path = "/userRoles/{username}")
     @PreAuthorize("hasAnyAuthority('ROLE_user', 'ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<List<String>> getUserRoles(@PathVariable String username) {
+        logger.info(Thread.currentThread().getId() + ":" + "getUserRoles" + "(" + username + ")");
         return ResponseEntity.ok(userAccessService.getUserRoleNames(username));
     }
 
@@ -72,6 +78,7 @@ public class UserInfoController {
     @GetMapping(path = "/validId/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_user', 'ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<Boolean> isValidId(@PathVariable String id) {
+        logger.info(Thread.currentThread().getId() + ":" + "isValidId" + "(" + id + ")");
         return ResponseEntity.ok(userAccessService.getUsers()
                 .stream()
                 .anyMatch(x -> x.getId().equals(id)));
@@ -81,6 +88,7 @@ public class UserInfoController {
     @GetMapping(path = "/emailInUse/{email}")
     @PreAuthorize("hasAnyAuthority('ROLE_user', 'ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<String> isEmailInUse(@PathVariable String email) {
+        logger.info(Thread.currentThread().getId() + ":" + "isEmailInUse" + "(" + email + ")");
         List<User> users = userAccessService.getUsers();
         return ResponseEntity.ok(users
                 .stream()
@@ -92,6 +100,7 @@ public class UserInfoController {
     @GetMapping(path = "/userById/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_user', 'ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<User> getUserById(@PathVariable String id) {
+        logger.info(Thread.currentThread().getId() + ":" + "getUserById" + "(" + id + ")");
         List<User> users = userAccessService.getUsers();
         return ResponseEntity.ok(users
                 .stream()
@@ -103,6 +112,7 @@ public class UserInfoController {
     @GetMapping(path = "/userByUsername/{username}")
     @PreAuthorize("hasAnyAuthority('ROLE_user', 'ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        logger.info(Thread.currentThread().getId() + ":" + "getUserByUsername" + "(" + username + ")");
         List<User> users = userAccessService.getUsers();
         return ResponseEntity.ok(users
                 .stream()
@@ -114,6 +124,7 @@ public class UserInfoController {
     @GetMapping(path = "/userIdByUsername/{username}")
     @PreAuthorize("hasAnyAuthority('ROLE_user', 'ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<String> getIdByUsername(@PathVariable String username) {
+        logger.info(Thread.currentThread().getId() + ":" + "getIdByUsername" + "(" + username + ")");
         List<User> users = userAccessService.getUsers();
         return ResponseEntity.ok(users
                 .stream()
@@ -125,6 +136,7 @@ public class UserInfoController {
     @PostMapping(path = "/addUser")
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<User> addNewUser(@RequestBody User user) {
+        logger.info(Thread.currentThread().getId() + ":" + "addNewUser" + "(" + user + ")");
         return ResponseEntity.ok(userAccessService.addNewUser(user));
     }
 
@@ -132,6 +144,7 @@ public class UserInfoController {
     @PostMapping(path = "/addUsers", consumes = "application/json")
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<?> addNewUsers(@RequestBody User[] users) {
+        logger.info(Thread.currentThread().getId() + ":" + "addNewUsers" + "(" + users + ")");
         return userAccessService.addNewUsers(users);
     }
 
@@ -139,6 +152,7 @@ public class UserInfoController {
     @PostMapping(path = "/addUserRoles/{username}")
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<List<Role>> addUserRoles(@PathVariable String username, @RequestBody Role[] roles) {
+        logger.info(Thread.currentThread().getId() + ":" + "addUserRoles" + "(" + username +"," +roles + ")");
         return ResponseEntity.ok(userAccessService.addUserRoles(username, roles));
     }
 
@@ -146,14 +160,15 @@ public class UserInfoController {
     @PutMapping(path = "/updateUser")
     @PreAuthorize("hasAnyAuthority('ROLE_user', 'ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<String> updateUser(@RequestBody User user) {
+        logger.info(Thread.currentThread().getId() + ":" + "updateUser" + "(" + user + ")");
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication auth = context.getAuthentication();
         KeycloakPrincipal principal = (KeycloakPrincipal) auth.getPrincipal();
 
         if (user.getUsername().equals(principal.getName())
                 || auth.getAuthorities()
-                    .stream()
-                    .anyMatch(x -> x.getAuthority().equals("ROLE_admin")
+                .stream()
+                .anyMatch(x -> x.getAuthority().equals("ROLE_admin")
                         || (x.getAuthority().equals("ROLE_superadmin")))) {
             userAccessService.updateUser(user);
             return ResponseEntity.noContent().build();
@@ -166,6 +181,7 @@ public class UserInfoController {
     @PutMapping(path = "/changePassword/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_user', 'ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<String> changePassword(@PathVariable String id, @RequestBody String newPassword) {
+        logger.info(Thread.currentThread().getId() + ":" + "changePassword" + "(" + id + "," + newPassword + ")");
         SecurityContext context = SecurityContextHolder.getContext();
         Authentication auth = context.getAuthentication();
         KeycloakPrincipal principal = (KeycloakPrincipal) auth.getPrincipal();
@@ -199,6 +215,7 @@ public class UserInfoController {
     @DeleteMapping(path = "/deleteUser/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<String> removeUser(@PathVariable String id) {
+        logger.info(Thread.currentThread().getId() + ":" + "removeUser" + "(" + id + ")");
         if (userAccessService.getUsers().stream().noneMatch(x -> id.equals(x.getId()))) {
             return ResponseEntity.status(404).body("No user with that id");
         }
@@ -210,6 +227,7 @@ public class UserInfoController {
     @DeleteMapping(path = "/deleteUserByUsername/{username}")
     @PreAuthorize("hasAnyAuthority('ROLE_admin', 'ROLE_superadmin')")
     public ResponseEntity<String> removeUserByUsername(@PathVariable String username) {
+        logger.info(Thread.currentThread().getId() + ":" + "removeUserByUsername" + "(" + username + ")");
         String id = userAccessService.getUsers()
                 .stream()
                 .filter(x -> username.equals(x.getUsername()))

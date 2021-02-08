@@ -11,7 +11,7 @@ import java.util.Set;
 @NamedQueries({
         @NamedQuery(name = Configuration.FIND_ALL_GROUPS_BY_ID,
                 query = "select g from Configuration c join c.groups g where c.id = ?1")
-        })
+})
 @SequenceGenerator(initialValue = 1, allocationSize = 1, name = "idgen", sequenceName = "configuration_id_seq")
 public class Configuration extends UUIDHashedEntityObject {
 

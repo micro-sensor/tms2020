@@ -1,6 +1,5 @@
 package baylor.csi.questionManagement.repository;
 
-import baylor.csi.questionManagement.model.Category;
 import baylor.csi.questionManagement.model.Choice;
 import baylor.csi.questionManagement.model.Question;
 import org.springframework.data.jpa.repository.JpaRepository;

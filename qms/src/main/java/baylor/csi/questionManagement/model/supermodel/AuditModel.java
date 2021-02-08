@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.Date;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(
-        value = {"createdwhen", "modifiedwhen", "createdby","modifiedby"},
+        value = {"createdwhen", "modifiedwhen", "createdby", "modifiedby"},
         allowGetters = true
 )
 public abstract class AuditModel implements Serializable {
@@ -81,10 +82,6 @@ public abstract class AuditModel implements Serializable {
         clone.setModifiedWhen(null);
         return clone;
     }
-
-
-
-
 
 
 }

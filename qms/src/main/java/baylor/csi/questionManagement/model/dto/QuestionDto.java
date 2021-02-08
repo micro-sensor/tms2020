@@ -1,9 +1,6 @@
 package baylor.csi.questionManagement.model.dto;
 
-import baylor.csi.questionManagement.model.Category;
-
 import java.util.List;
-import java.util.Set;
 
 public class QuestionDto {
     private Long id;

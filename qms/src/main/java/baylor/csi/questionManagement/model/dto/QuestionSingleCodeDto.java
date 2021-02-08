@@ -4,9 +4,7 @@ import baylor.csi.questionManagement.model.Choice;
 import baylor.csi.questionManagement.model.Code;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class QuestionSingleCodeDto {
     private String title;

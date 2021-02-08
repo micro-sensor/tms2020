@@ -7,7 +7,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,7 +58,8 @@ public class Question extends UUIDHashedEntityObject {
 
     @NotNull
     @Column(nullable = false)
-    @Min(1)@Max(5)
+    @Min(1)
+    @Max(5)
     public Integer getLevel() {
         return level;
     }
@@ -65,7 +69,7 @@ public class Question extends UUIDHashedEntityObject {
     }
 
     @NotNull
-    @Column(nullable = false, columnDefinition="TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     @Size(min = 3)
     public String getBody() {
         return body;
@@ -112,7 +116,7 @@ public class Question extends UUIDHashedEntityObject {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, name="questionType")
+    @Column(nullable = false, name = "questionType")
     public QuestionTypeEnum getQuestionType() {
         return questionType;
     }

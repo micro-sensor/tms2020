@@ -18,9 +18,8 @@ public abstract class UUIDHashedEntityObject extends IdEntityObject implements C
     private static final long serialVersionUID = -8116216227510729282L;
 
     /**
-     * The key. Uninitialized at beginning. It is initialized automatically when one
-     * of the methods {@link #getUUID()}, {@link #hashCode()} or {@link #equals(Object)}
-     * is called.
+     * The key. Uninitialized at beginning. It is initialized automatically when one of the methods {@link #getUUID()},
+     * {@link #hashCode()} or {@link #equals(Object)} is called.
      */
     private UUID uuid;
 
@@ -42,9 +41,8 @@ public abstract class UUIDHashedEntityObject extends IdEntityObject implements C
     }
 
     /**
-     * Sets the new value of UUID. Note that setting UUID to null will cause this value
-     * to be overwritten with first call of {@link #getUUID()}, {@link #hashCode()} or
-     * {@link #equals(Object)}.
+     * Sets the new value of UUID. Note that setting UUID to null will cause this value to be overwritten with first
+     * call of {@link #getUUID()}, {@link #hashCode()} or {@link #equals(Object)}.
      *
      * @param uuid New value to set. Do not use {@code null}.
      */
@@ -71,7 +69,7 @@ public abstract class UUIDHashedEntityObject extends IdEntityObject implements C
             return false;
         //JSF compares objects with their proxies, that's why we cannot compare getClass() directly.
         //We have to make sure that obj can be compared using UUID.
-        if (!UUIDHashedEntityObject.class.isInstance(obj))
+        if (!(obj instanceof UUIDHashedEntityObject))
             return false;
 
         final UUIDHashedEntityObject other = (UUIDHashedEntityObject) obj;

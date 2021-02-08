@@ -1,5 +1,7 @@
 package baylor.csi.questionManagement.security;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.keycloak.adapters.KeycloakConfigResolver;
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration;
@@ -20,46 +22,54 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 
 @KeycloakConfiguration
 public class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
+    private static final Logger logger = LogManager.getLogger(SecurityConfig.class.getName());
+    @Autowired
+    public KeycloakClientRequestFactory keycloakClientRequestFactory;
 
-	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
-		keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
-		auth.authenticationProvider(keycloakAuthenticationProvider);
-	}
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        logger.info(Thread.currentThread().getId() + ":" + "configureGlobal" + "(" + auth + ")");
+        KeycloakAuthenticationProvider keycloakAuthenticationProvider = keycloakAuthenticationProvider();
+        keycloakAuthenticationProvider.setGrantedAuthoritiesMapper(new SimpleAuthorityMapper());
+        auth.authenticationProvider(keycloakAuthenticationProvider);
+    }
 
-	@Bean
-	@Override
-	protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
-		return new NullAuthenticatedSessionStrategy();
-	}
+    @Bean
+    @Override
+    protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
+        logger.info(Thread.currentThread().getId() + ":" + "sessionAuthenticationStrategy" + "()");
+        return new NullAuthenticatedSessionStrategy();
+    }
 
-	@Bean
-	public KeycloakConfigResolver keycloakConfigResolver(){
-		return new KeycloakSpringBootConfigResolver();
-	}
+    @Bean
+    public KeycloakConfigResolver keycloakConfigResolver() {
 
-	@Autowired
-	public KeycloakClientRequestFactory keycloakClientRequestFactory;
+        logger.info(Thread.currentThread().getId() + ":" + "keycloakConfigResolver" + "()");
+        return new KeycloakSpringBootConfigResolver();
+    }
 
-	@Bean
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-	public KeycloakRestTemplate keycloakRestTemplate(){
-		return new KeycloakRestTemplate(keycloakClientRequestFactory);
-	}
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    public KeycloakRestTemplate keycloakRestTemplate() {
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception{
-		super.configure(http);
-		http.authorizeRequests()
-				.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-				.antMatchers("/*").permitAll()
-				//.antMatchers("/category*","/categoryinfo*","/configuration*","/language*","/question*","/icpchotel/security*").hasRole("admin")
-				//.antMatchers("/test*").hasRole("user")
-				//.antMatchers("/test*").hasRole("admin")
-				.anyRequest().permitAll()
-		.and().csrf().disable();
+        logger.info(Thread.currentThread().getId() + ":" + "keycloakRestTemplate" + "()");
 
-	}
+        return new KeycloakRestTemplate(keycloakClientRequestFactory);
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        logger.info(Thread.currentThread().getId() + ":" + "configure" + "(" + http + ")");
+        super.configure(http);
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/*").permitAll()
+                //.antMatchers("/category*","/categoryinfo*","/configuration*","/language*","/question*","/icpchotel/security*").hasRole("admin")
+                //.antMatchers("/test*").hasRole("user")
+                //.antMatchers("/test*").hasRole("admin")
+                .anyRequest().permitAll()
+                .and().csrf().disable();
+
+    }
 
 }

@@ -1,6 +1,6 @@
 package baylor.csi.questionManagement.Exception;
 
-public class SyntaxCheckException extends RuntimeException{
+public class SyntaxCheckException extends RuntimeException {
 
     public SyntaxCheckException(String message) {
         super(message);
