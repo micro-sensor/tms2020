@@ -6,7 +6,8 @@ spec:
   selector:
     app: cms
   ports:
-    - port: 9081
+    - targetPort: 9081
+      port: 80
   type: NodePort
 ---
 apiVersion: apps/v1

@@ -24,7 +24,7 @@ class UpdateProfileButton extends Component {
      * @version 0.1
      */
     handleClick = () => {
-        fetch('https://tcs.ecs.baylor.edu/ums/userinfo/updateUser', {
+        fetch('http://ums/userinfo/updateUser', {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -47,7 +47,7 @@ class UpdateProfileButton extends Component {
             this.setState((state, props) => ({ response: err.toString() }))
         });
 
-        // fetch('https://tcs.ecs.baylor.edu/ums/userinfo/addUserRoles/' + this.props.profileData.username, {
+        // fetch('http://ums/userinfo/addUserRoles/' + this.props.profileData.username, {
         //     method: 'POST',
         //     headers: {
         //         'Content-Type': 'application/json',

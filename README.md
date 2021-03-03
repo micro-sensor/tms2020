@@ -66,11 +66,11 @@ $ cat /etc/hosts
 ```
 
 - Add users:
-    - Visit Keycloak admin page `https://tcs.ecs.baylor.edu/auth`. 
+    - Visit Keycloak admin page `http://keycloak`. 
     - Login with deafult username/password: `admin`/`password`. 
     - Add new user, credential, and roles.
     
-- Visit homepage `https://tcs.ecs.baylor.edu` and login with the created username and password.
+- Visit homepage `http://ums-client` and login with the created username and password.
 
 - Test email sending on local:
     - Download fakeSMTP and run it on any port you like on your computer.
@@ -202,7 +202,7 @@ $ kubectl -n kube-system delete pod <coredns_pod_1> <coredns_pod_2>
 The QMS client is deployed to the subdirectory /questions, which requires these changes:
 
 * nginx.conf: make the `location` for the subdirectory an `alias` for where the content is being served
-* package.json and package-lock.json: create the entry `"homepage": "http://tcs.ecs.baylor.edu/questions",`
+* package.json and package-lock.json: create the entry `"homepage": "http://ums-client/questions",`
 * TopLevelContainer.js: set the `basename` attribute on the router: `<Router basename={config.routerBase}>`
   * configuration.js: add the required routerBase entry for the above to work: `routerBase: "/questions"`
 * index.js: make sure the keycloak.json file is served from the correct address: `const keycloak = Keycloak(process.env.PUBLIC_URL + "/keycloak.json");`

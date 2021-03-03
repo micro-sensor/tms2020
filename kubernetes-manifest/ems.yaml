@@ -6,7 +6,9 @@ spec:
   selector:
     app: ems
   ports:
-    - port: 9001
+    - port: 80
+      targetPort: 9001
+
   type: NodePort
   
 ---

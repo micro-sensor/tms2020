@@ -1,6 +1,6 @@
 {
   "realm": "UserManagement",
-  "auth-server-url": "https://tcs.ecs.baylor.edu/auth/",
+  "auth-server-url": "http://keycloak/",
   "ssl-required": "none",
   "resource": "ums-frontend",
   "public-client": true,

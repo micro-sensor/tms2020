@@ -6,7 +6,8 @@ spec:
   selector:
     app: qms
   ports:
-    - port: 12345
+    - targetPort: 12345
+      port: 80
   type: NodePort
 ---
 apiVersion: apps/v1

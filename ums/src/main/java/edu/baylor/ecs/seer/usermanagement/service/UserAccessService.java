@@ -31,10 +31,10 @@ import java.util.stream.Collectors;
 @Service
 public class UserAccessService {
 
-    private static final String keycloakAdminRestEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms";
-    private static final String keycloakUsersEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms/UserManagement/users";
-    private static final String keycloakImportEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms/UserManagement/partialImport";
-    private static final String keycloakBaseURL = "https://tcs.ecs.baylor.edu/auth";
+    private static final String keycloakAdminRestEndpoint = "http://keycloak/admin/realms";
+    private static final String keycloakUsersEndpoint = "http://keycloak/admin/realms/UserManagement/users";
+    private static final String keycloakImportEndpoint = "http://keycloak/admin/realms/UserManagement/partialImport";
+    private static final String keycloakBaseURL = "http://keycloak";
     private static final String keycloakRealm = "UserManagement";
     private static final String keycloakClient = "ums-backend";
     private static final String keycloakClientSecret = "8d6081b8-8228-476c-8c21-0c27045bceb3";
@@ -174,7 +174,7 @@ public class UserAccessService {
             List<String> requiredActions = new ArrayList<>();
             requiredActions.add("UPDATE_PASSWORD");
             // redirect_uri and lifespan (optional) parameters are not working for now. Default values are used
-            sendEmailWithRequiredActions(isUserCreated.getId(),requiredActions , "https://tcs.ecs.baylor.edu/", 86400);
+            sendEmailWithRequiredActions(isUserCreated.getId(),requiredActions , "http://ums-client/", 86400);
         }
         if(responseBody.isEmpty()) { responseBody= "Users are created. They will receive emails to set their passwords";}
         return ResponseEntity.ok(responseBody);

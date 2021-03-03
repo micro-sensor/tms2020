@@ -20,7 +20,7 @@
     </div>
 
     <div class="navbar-end">
-      <a class="navbar-item" href="https://tcs.ecs.baylor.edu">
+      <a class="navbar-item" href="http://ums-client">
         TMS Home
       </a>
       <div class="navbar-item has-dropdown is-hoverable" *ngIf="isAdmin">
@@ -28,10 +28,10 @@
           Administration
         </a>
         <div class="navbar-dropdown is-right">
-          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/questions">
+          <a class="navbar-item" href="http://qms-client">
             Question Management
           </a>
-          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/config">
+          <a class="navbar-item" href="http://cms-client">
             Configuration Management
           </a>
         </div>
@@ -41,7 +41,7 @@
           {{userData.firstName}} {{userData.lastName}}
         </a>
         <div class="navbar-dropdown is-right">
-          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/profile">
+          <a class="navbar-item" href="http://ums-client/profile">
             My Profile
           </a>
           <hr class="navbar-divider">
@@ -62,13 +62,13 @@
           </div>
           <div class="dropdown-menu" id="dropdown-menu" role="menu">
             <div class="dropdown-content">
-              <a href="#" class="dropdown-item" href="http://tcs.ecs.baylor.edu/questions" *ngIf="isAdmin">
+              <a href="#" class="dropdown-item" href="http://ums-client/questions" *ngIf="isAdmin">
                 Question Management
               </a>
-              <a class="dropdown-item" href="http://tcs.ecs.baylor.edu/config" *ngIf="isAdmin">
+              <a class="dropdown-item" href="http://ums-client/config" *ngIf="isAdmin">
                 Configuration Management
               </a>
-              <a class="dropdown-item" href="http://tcs.ecs.baylor.edu/profile">
+              <a class="dropdown-item" href="http://ums-client/profile">
                 Profile
               </a>
               <hr class="dropdown-divider">
