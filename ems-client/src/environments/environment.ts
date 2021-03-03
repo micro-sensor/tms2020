@@ -6,7 +6,7 @@ import { KeycloakConfig } from 'keycloak-angular';
 
 let keycloakConfig: KeycloakConfig = {
   //url: 'http://ec2-3-87-186-137.compute-1.amazonaws.com:8080/auth',
-  url: 'http://keycloak/',
+  url: 'http://keycloak.test/',
   realm: 'UserManagement',
   clientId: 'ems-frontend'
 };
@@ -14,8 +14,8 @@ let keycloakConfig: KeycloakConfig = {
 export const environment = {
   production: false,
   keycloak: keycloakConfig,
-  umsFrontEndUrl: "http://ums-client/",
-  cmsBackEndUrl: "http://cms"
+  umsFrontEndUrl: "http://ums-client.test/",
+  cmsBackEndUrl: "http://cms.test"
 };
 
 /*

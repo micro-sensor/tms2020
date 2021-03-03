@@ -33,3 +33,20 @@ spec:
   selector:
     matchLabels:
       app: ums-client
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ums-client
+spec:
+  rules:
+    - host: ums-client.test
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ums-client
+                port:
+                  number: 80

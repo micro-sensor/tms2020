@@ -37,7 +37,7 @@ class UserInfo extends Component {
 
     componentDidMount() {
         const http = new XMLHttpRequest();
-        http.open('GET', 'http://ums/userinfo/userByUsername/' + this.props.nameToGet);
+        http.open('GET', 'http://ums.test/userinfo/userByUsername/' + this.props.nameToGet);
         http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http.onload = (event) => {
             if (http.response == null) return;
@@ -63,7 +63,7 @@ class UserInfo extends Component {
         const http2 = new XMLHttpRequest();
         console.log(http2.response);
         console.log("username: ", this.state.username);
-        http2.open('GET', 'http://ums/userinfo/userRoles/' + this.props.nameToGet);
+        http2.open('GET', 'http://ums.test/userinfo/userRoles/' + this.props.nameToGet);
         http2.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http2.onload = (event) => {
             if (http2.response == null || http2.response == "") {

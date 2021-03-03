@@ -34,7 +34,7 @@ public class QmsService {
     }
 
     public List<QuestionQmsDto> getQuestions(Integer configurationId) {
-        ResponseEntity<List<QuestionQmsDto>> qqd = restTemplate.exchange("http://qms:12345/qms/test?configId="+configurationId, HttpMethod.GET, null, new ParameterizedTypeReference<List<QuestionQmsDto>>() {
+        ResponseEntity<List<QuestionQmsDto>> qqd = restTemplate.exchange("http://qms.test/qms/test?configId="+configurationId, HttpMethod.GET, null, new ParameterizedTypeReference<List<QuestionQmsDto>>() {
         });
 //        List<QuestionQmsDto> qqd = new ArrayList<>();
 //        Arrays.stream(objects.getBody()).forEach(o -> {
@@ -49,7 +49,7 @@ public class QmsService {
 
 
     public String getConfigName(Long configId) {
-        ResponseEntity<Configuration> qqd = restTemplate.exchange("http://qms:12345/qms/configuration/"+configId, HttpMethod.GET, null, new ParameterizedTypeReference<Configuration>() {
+        ResponseEntity<Configuration> qqd = restTemplate.exchange("http://qms.test/qms/configuration/"+configId, HttpMethod.GET, null, new ParameterizedTypeReference<Configuration>() {
         });
         return qqd.getBody().getName();
     }

@@ -47,8 +47,8 @@ class AuthNavbar extends Component {
             return (
                 <>
                     {/* <Nav.Link href='/users'>Edit Users</Nav.Link> */}
-                    <Nav.Link href='http://cms-client'>Manage Content</Nav.Link>
-                    <Nav.Link href='http://qms-client'>Manage Questions</Nav.Link>
+                    <Nav.Link href='http://cms-client.test'>Manage Content</Nav.Link>
+                    <Nav.Link href='http://qms-client.test'>Manage Questions</Nav.Link>
                 </>
             )
         }
@@ -62,8 +62,8 @@ class AuthNavbar extends Component {
                 <Dropdown as={Nav.Item}>
                     <Dropdown.Toggle as={Nav.Link}>Administration</Dropdown.Toggle>
                     <Dropdown.Menu renderOnMount={true} alignRight={true}>
-                        <Dropdown.Item href="http://qms-client">Question Management</Dropdown.Item>
-                        <Dropdown.Item href="http://cms-client">Configuration Management</Dropdown.Item>
+                        <Dropdown.Item href="http://qms-client.test">Question Management</Dropdown.Item>
+                        <Dropdown.Item href="http://cms-client.test">Configuration Management</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             )

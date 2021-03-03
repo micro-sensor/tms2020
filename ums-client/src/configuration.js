@@ -1,13 +1,13 @@
 // @flow
 
 const configuration = {
-  backend: "http://ums",
-  keycloak: "http://keycloak",
-  dashboard: "http://ums-client/",
-  profileUrl: "http://ums-client/profile",
-  examUrl: "http://ems-client",
-  configUrl: "http://cms-client",
-  questionsUrl: "http://qms-client",
+  backend: "http://ums.test",
+  keycloak: "http://keycloak.test",
+  dashboard: "http://ums-client.test/",
+  profileUrl: "http://ums-client.test/profile",
+  examUrl: "http://ems-client.test",
+  configUrl: "http://cms-client.test",
+  questionsUrl: "http://qms-client.test",
 };
 
 export default configuration;

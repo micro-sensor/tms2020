@@ -1,6 +1,6 @@
 {
   "realm": "UserManagement",
-  "auth-server-url": "http://keycloak/",
+  "auth-server-url": "http://keycloak.test/",
   "ssl-required": "none",
   "resource": "qms-frontend",
   "public-client": true,

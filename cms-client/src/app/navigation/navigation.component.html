@@ -13,7 +13,7 @@
 
   <div id="mainNavbar" class="navbar-menu" [ngClass]="{'is-active': active == true}">
     <div class="navbar-start">
-      <a class="navbar-item" href="http://ums-client">
+      <a class="navbar-item" href="http://ums-client.test">
         Home
       </a>
       <a class="navbar-item" [routerLink]="['/assignments']" *ngIf="isAdmin">
@@ -34,7 +34,7 @@
     </div>
 
     <div class="navbar-end">
-      <a class="navbar-item" href="http://ums-client">
+      <a class="navbar-item" href="http://ums-client.test">
         TMS Home
       </a>
       <div class="navbar-item has-dropdown is-hoverable" *ngIf="isAdmin">
@@ -42,10 +42,10 @@
           Administration
         </a>
         <div class="navbar-dropdown is-right">
-          <a class="navbar-item" href="http://qms-client">
+          <a class="navbar-item" href="http://qms-client.test">
             Question Management
           </a>
-          <a class="navbar-item" href="http://cms-client">
+          <a class="navbar-item" href="http://cms-client.test">
             Configuration Management
           </a>
         </div>
@@ -55,10 +55,10 @@
           {{userData.firstName}} {{userData.lastName}}
         </a>
         <div class="navbar-dropdown is-right">
-          <a class="navbar-item" href="http://ums-client/profile">
+          <a class="navbar-item" href="http://ums-client.test/profile">
             My Profile
           </a>
-          <a class="navbar-item" href="http://ems-client">
+          <a class="navbar-item" href="http://ems-client.test">
             My Exams
           </a>
           <hr class="navbar-divider">
@@ -79,13 +79,13 @@
           </div>
           <div class="dropdown-menu" id="dropdown-menu" role="menu">
             <div class="dropdown-content">
-              <a href="#" class="dropdown-item" href="http://qms-client" *ngIf="isAdmin">
+              <a href="#" class="dropdown-item" href="http://qms-client.test" *ngIf="isAdmin">
                 Question Management
               </a>
-              <a class="dropdown-item" href="http://ems-client" *ngIf="isAdmin">
+              <a class="dropdown-item" href="http://ems-client.test" *ngIf="isAdmin">
                 Exam Management
               </a>
-              <a class="dropdown-item" href="http://ums-client/profile">
+              <a class="dropdown-item" href="http://ums-client.test/profile">
                 Profile
               </a>
               <hr class="dropdown-divider">

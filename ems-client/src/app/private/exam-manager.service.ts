@@ -21,8 +21,8 @@ export class ExamManagerService {
 
   questions: any;
 
-  private BASE_URL: string = "http://ems";
-  private CMS_URL: string = "http://cms";
+  private BASE_URL: string = "http://ems.test";
+  private CMS_URL: string = "http://cms.test";
   private EMS_URL: string = this.BASE_URL + "/exam";
   private TAKE_URL: string = this.BASE_URL + "/exam/take/";
   private CHOICE_URL: string = this.BASE_URL + "/choice";

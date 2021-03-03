@@ -4,7 +4,7 @@
 import {KeycloakConfig} from 'keycloak-angular';
 
 let keycloakConfig: KeycloakConfig = {
-  url: 'http://keycloak',
+  url: 'http://keycloak.test',
   realm: 'UserManagement',
   clientId: 'cms-frontend'
 };

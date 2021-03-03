@@ -2,7 +2,7 @@
   "name": "qms-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://ums-client/questions",
+  "homepage": "http://ums-client.test/questions",
   "dependencies": {
     "@barsbek/ckeditor5-build-baylor-tms": "1.1.3",
     "@ckeditor/ckeditor5-react": "^2.1.0",

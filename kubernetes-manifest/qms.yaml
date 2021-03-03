@@ -34,3 +34,22 @@ spec:
   selector:
     matchLabels:
       app: qms
+---
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: qms
+
+spec:
+  rules:
+    - host: qms.test
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: qms
+                port:
+                  number: 80
