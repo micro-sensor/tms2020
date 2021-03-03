@@ -6,7 +6,7 @@ import { KeycloakConfig } from 'keycloak-angular';
 
 let keycloakConfig: KeycloakConfig = {
   //url: 'http://ec2-3-87-186-137.compute-1.amazonaws.com:8080/auth',
-  url: 'http://keycloak.test/',
+  url: 'http://keycloak.test/auth/',
   realm: 'UserManagement',
   clientId: 'ems-frontend'
 };

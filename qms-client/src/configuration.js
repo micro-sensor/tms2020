@@ -2,7 +2,7 @@
 
 const configuration = {
   backend: "http://qms.test",
-  keycloak: "http://keycloak.test",
+  keycloak: "http://keycloak.test/auth",
   dashboard: "http://ums-client.test/",
   profileUrl: "http://ums-client.test/profile",
   examUrl: "http://ems-client.test",

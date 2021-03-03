@@ -41,7 +41,7 @@ ums:
 
 
 keycloak:
-  auth-server-url: http://keycloak.test
+  auth-server-url: http://keycloak.test/auth
   resource: cms-backend
   realm: UserManagement
   public-client: false
@@ -56,7 +56,7 @@ keycloak:
   credentials:
     secret: '8692de40-5258-4fed-93a7-41f5f29b5732'
 
-issuer-uri: http://keycloak.test/realms/UserManagement
+issuer-uri: http://keycloak.test/auth/realms/UserManagement
 
 #security:
 # oauth2:
