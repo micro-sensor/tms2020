@@ -146,6 +146,7 @@ services:
       build: 
         context: postgres
         dockerfile: Dockerfile
+      restart: always
       volumes:
         - postgres_data:/var/lib/postgresql/data
       expose:
@@ -166,6 +167,7 @@ services:
       build: 
         context: keycloak
         dockerfile: Dockerfile
+      restart: always
       environment:
         DB_VENDOR: POSTGRES
         DB_ADDR: postgres
