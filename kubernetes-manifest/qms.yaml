@@ -6,7 +6,7 @@ spec:
   selector:
     app: qms
   ports:
-    - targetPort: 12345
+    - targetPort: 80
       port: 80
   type: NodePort
 ---
@@ -29,7 +29,7 @@ spec:
           image: cloudhubs2/tms-qms
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 12345
+            - containerPort: 80
       restartPolicy: Always
   selector:
     matchLabels:

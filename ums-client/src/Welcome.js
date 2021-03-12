@@ -11,7 +11,7 @@ class Welcome extends Component {
                 <Row>
                     <Card style={{ width: '18rem' }}>
                         <Card.Body>
-                            <Card.Link href="http://ems-client.test">Exam Area</Card.Link>
+                            <Card.Link href="https://tcs.ecs.baylor.edu/exams">Exam Area</Card.Link>
                             <Card.Text>
                                 Take an exam or view your previous results here.
                             </Card.Text>
@@ -59,7 +59,7 @@ class Welcome extends Component {
                     <Row>
                         <Card style={{ width: '18rem' }}>
                             <Card.Body>
-                                <Card.Link href="http://qms-client.test">Questions and Categories</Card.Link>
+                                <Card.Link href="https://tcs.ecs.baylor.edu/questions">Questions and Categories</Card.Link>
                                 <Card.Text>
                                     Create and manage exam questions and categories here.
                                 </Card.Text>
@@ -67,7 +67,7 @@ class Welcome extends Component {
                         </Card>
                         <Card style={{ width: '18rem' }}>
                             <Card.Body>
-                                <Card.Link href="http://cms-client.test">Exam Configurations and Assignments</Card.Link>
+                                <Card.Link href="https://tcs.ecs.baylor.edu/config">Exam Configurations and Assignments</Card.Link>
                                 <Card.Text>
                                     Configure and assign exams here.
                                 </Card.Text>
@@ -75,7 +75,7 @@ class Welcome extends Component {
                         </Card>
                         <Card style={{ width: '18rem' }}>
                             <Card.Body>
-                                <Card.Link href="http://ums-client.test/users">User Management</Card.Link>
+                                <Card.Link href="https://tcs.ecs.baylor.edu/users">User Management</Card.Link>
                                 <Card.Text>
                                     Search and manage users here.
                                 </Card.Text>

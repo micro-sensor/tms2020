@@ -13,7 +13,7 @@
 
   <div id="mainNavbar" class="navbar-menu" [ngClass]="{'is-active': active == true}">
     <div class="navbar-start">
-      <a class="navbar-item" href="http://ums-client.test">
+      <a class="navbar-item" href="https://tcs.ecs.baylor.edu/">
         Home
       </a>
       <a class="navbar-item" [routerLink]="['/assignments']" *ngIf="isAdmin">
@@ -34,7 +34,7 @@
     </div>
 
     <div class="navbar-end">
-      <a class="navbar-item" href="http://ums-client.test">
+      <a class="navbar-item" href="https://tcs.ecs.baylor.edu">
         TMS Home
       </a>
       <div class="navbar-item has-dropdown is-hoverable" *ngIf="isAdmin">
@@ -42,10 +42,10 @@
           Administration
         </a>
         <div class="navbar-dropdown is-right">
-          <a class="navbar-item" href="http://qms-client.test">
+          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/questions">
             Question Management
           </a>
-          <a class="navbar-item" href="http://cms-client.test">
+          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/config">
             Configuration Management
           </a>
         </div>
@@ -55,10 +55,10 @@
           {{userData.firstName}} {{userData.lastName}}
         </a>
         <div class="navbar-dropdown is-right">
-          <a class="navbar-item" href="http://ums-client.test/profile">
+          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/profile">
             My Profile
           </a>
-          <a class="navbar-item" href="http://ems-client.test">
+          <a class="navbar-item" href="https://tcs.ecs.baylor.edu/exams">
             My Exams
           </a>
           <hr class="navbar-divider">
@@ -79,13 +79,13 @@
           </div>
           <div class="dropdown-menu" id="dropdown-menu" role="menu">
             <div class="dropdown-content">
-              <a href="#" class="dropdown-item" href="http://qms-client.test" *ngIf="isAdmin">
+              <a href="#" class="dropdown-item" href="https://tcs.ecs.baylor.edu/questions" *ngIf="isAdmin">
                 Question Management
               </a>
-              <a class="dropdown-item" href="http://ems-client.test" *ngIf="isAdmin">
+              <a class="dropdown-item" href="https://tcs.ecs.baylor.edu/exams" *ngIf="isAdmin">
                 Exam Management
               </a>
-              <a class="dropdown-item" href="http://ums-client.test/profile">
+              <a class="dropdown-item" href="https://tcs.ecs.baylor.edu/profile">
                 Profile
               </a>
               <hr class="dropdown-divider">

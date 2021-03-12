@@ -126,7 +126,7 @@ class EditUsers extends Component {
         const value = this.state.searchVal;
         const http = new XMLHttpRequest();
         if( value.length > 0) {
-            http.open('GET', 'http://ums.test/userinfo/usernamesLike?username=' + value);
+            http.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/usernamesLike?username=' + value);
             http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
             http.onload = (event) => {
                 if (http.response == null || http.response == "") {
@@ -148,7 +148,7 @@ class EditUsers extends Component {
     handleAll(event) {
         event.preventDefault();
         const http = new XMLHttpRequest();
-        http.open('GET', 'http://ums.test/userinfo/usernames');
+        http.open('GET', 'https://tcs.ecs.baylor.edu/ums/userinfo/usernames');
         http.setRequestHeader("Authorization", "Bearer " + this.props.keycloak.token);
         http.onload = (event) => {
             if (http.response == null || http.response == "") {

@@ -14,8 +14,8 @@ let keycloakConfig: KeycloakConfig = {
 export const environment = {
   production: false,
   keycloak: keycloakConfig,
-  umsFrontEndUrl: "http://ums-client.test/",
-  cmsBackEndUrl: "http://cms.test"
+  umsFrontEndUrl: "https://tcs.ecs.baylor.edu/",
+  cmsBackEndUrl: "https://tcs.ecs.baylor.edu/cms"
 };
 
 /*

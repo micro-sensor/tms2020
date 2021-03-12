@@ -37,7 +37,7 @@ class ChangePasswordButton extends Component {
             alertify.error('Password must be at least 6 characters long!');
             return;
         }
-        fetch('http://ums.test/userinfo/changePassword/' + this.props.id, {
+        fetch('https://tcs.ecs.baylor.edu/ums/userinfo/changePassword/' + this.props.id, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
