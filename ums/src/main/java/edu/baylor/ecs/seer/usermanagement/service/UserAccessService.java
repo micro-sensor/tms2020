@@ -31,10 +31,10 @@ import java.util.stream.Collectors;
 @Service
 public class UserAccessService {
 
-    private static final String keycloakAdminRestEndpoint = "http://keycloak.test/auth/admin/realms";
-    private static final String keycloakUsersEndpoint = "http://keycloak.test/auth/admin/realms/UserManagement/users";
-    private static final String keycloakImportEndpoint = "http://keycloak.test/auth/admin/realms/UserManagement/partialImport";
-    private static final String keycloakBaseURL = "http://keycloak.test/auth";
+    private static final String keycloakAdminRestEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms";
+    private static final String keycloakUsersEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms/UserManagement/users";
+    private static final String keycloakImportEndpoint = "https://tcs.ecs.baylor.edu/auth/admin/realms/UserManagement/partialImport";
+    private static final String keycloakBaseURL = "https://tcs.ecs.baylor.edu/auth";
     private static final String keycloakRealm = "UserManagement";
     private static final String keycloakClient = "ums-backend";
     private static final String keycloakClientSecret = "8d6081b8-8228-476c-8c21-0c27045bceb3";

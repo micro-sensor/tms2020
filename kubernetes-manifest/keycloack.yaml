@@ -7,7 +7,8 @@ spec:
     app: keycloak
   ports:
     - port: 80
-      targetPort: 8080
+      targetPort: 80
+      name: http
   type: NodePort
 
 ---
@@ -25,12 +26,17 @@ spec:
       labels:
         app: keycloak
     spec:
+      hostAliases:
+        - ip: "172.17.0.9"
+          hostnames:
+            - "tcs.ecs.baylor.edu"
       containers:
         - name: keycloak
           image: cloudhubs2/tms-keycloak
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8080
+            - containerPort: 80
+              name: http
           env:
             - name: "DB_VENDOR"
               value: "POSTGRES"

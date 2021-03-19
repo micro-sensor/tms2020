@@ -8,6 +8,7 @@ spec:
   ports:
     - targetPort: 9081
       port: 80
+      name: http
   type: NodePort
 ---
 apiVersion: apps/v1
@@ -24,6 +25,10 @@ spec:
       labels:
         app: cms
     spec:
+      hostAliases:
+        - ip: "172.17.0.9"
+          hostnames:
+            - "tcs.ecs.baylor.edu"
       containers:
         - name: cms
           image: cloudhubs2/tms-cms

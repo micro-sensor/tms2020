@@ -8,7 +8,7 @@ spec:
   ports:
     - port: 80
       targetPort: 9001
-
+      name: http
   type: NodePort
   
 ---
@@ -26,6 +26,10 @@ spec:
       labels:
         app: ems
     spec:
+      hostAliases:
+        - ip: "172.17.0.9"
+          hostnames:
+            - "tcs.ecs.baylor.edu"
       containers:
         - name: ems
           image: cloudhubs2/tms-ems

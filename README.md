@@ -66,7 +66,7 @@ $ cat /etc/hosts
 ```
 
 - Add users:
-    - Visit Keycloak admin page `http://keycloak.test`. 
+    - Visit Keycloak admin page `http://tcs.ecs.baylor.edu`. 
     - Login with deafult username/password: `admin`/`password`. 
     - Add new user, credential, and roles.
     
