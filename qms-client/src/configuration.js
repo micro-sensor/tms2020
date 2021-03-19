@@ -2,7 +2,7 @@
 
 const configuration = {
   backend: "https://tcs.ecs.baylor.edu/qms",
-  keycloak: "http://keycloak.test/auth",
+  keycloak: "https://tcs.ecs.baylor.edu/auth",
   dashboard: "https://tcs.ecs.baylor.edu/",
   profileUrl: "https://tcs.ecs.baylor.edu/profile",
   examUrl: "https://tcs.ecs.baylor.edu/exams",
