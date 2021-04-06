@@ -1,6 +1,6 @@
 # Run Selenium Simulation
 
-- Install Selenium IDE Google Chrome IDE
+- Install Selenium IDE extension for Google Chrome
 - Chrome > Manage Extension > Selenium IDE > Allow access to file URLs
 - Replace `/users/das/downloads/question.xml` with your local path in `tms2020.side`
 - Pull master > `build.sh` > remove volume > deploy (see Local deployment)
