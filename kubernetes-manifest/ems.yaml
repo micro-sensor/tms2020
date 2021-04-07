@@ -27,7 +27,7 @@ spec:
         app: ems
     spec:
       hostAliases:
-        - ip: "172.17.0.9"
+        - ip: "192.168.64.5"
           hostnames:
             - "tcs.ecs.baylor.edu"
       containers:
