@@ -1,87 +1,87 @@
-apiVersion: networking.k8s.io/v1beta1
-kind: IngressClass
-metadata:
-  name: istio
-spec:
-  controller: istio.io/ingress-controller
-
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
-    ingress.kubernetes.io/rewrite-target: /
-    kubernetes.io/ingress.class: istio
-  name: ums-client
-spec:
-  tls:
-    - hosts:
-        - tcs.ecs.baylor.edu
-      secretName: mkcert
-  rules:
-    - host: tcs.ecs.baylor.edu
-      http:
-        paths:
-          - path: /auth
-            pathType: Prefix
-            backend:
-              service:
-                name: keycloak
-                port:
-                  number: 80
-          - path: /config
-            pathType: Prefix
-            backend:
-              service:
-                name: cms-client
-                port:
-                  number: 80
-          - path: /exams
-            pathType: Prefix
-            backend:
-              service:
-                name: ems-client
-                port:
-                  number: 80
-          - path: /questions
-            pathType: Prefix
-            backend:
-              service:
-                name: qms-client
-                port:
-                  number: 80
-          - path: /cms
-            pathType: Prefix
-            backend:
-              service:
-                name: cms
-                port:
-                  number: 80
-          - path: /ems
-            pathType: Prefix
-            backend:
-              service:
-                name: ems
-                port:
-                  number: 80
-          - path: /qms
-            pathType: Prefix
-            backend:
-              service:
-                name: qms
-                port:
-                  number: 80
-          - path: /ums
-            pathType: Prefix
-            backend:
-              service:
-                name: ums
-                port:
-                  number: 80
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: ums-client
-                port:
-                  number: 80
+#apiVersion: networking.k8s.io/v1beta1
+#kind: IngressClass
+#metadata:
+#  name: istio
+#spec:
+#  controller: istio.io/ingress-controller
+#
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  annotations:
+#    ingress.kubernetes.io/rewrite-target: /
+#    kubernetes.io/ingress.class: istio
+#  name: ums-client
+#spec:
+#  tls:
+#    - hosts:
+#        - tcs.ecs.baylor.edu
+#      secretName: mkcert
+#  rules:
+#    - host: tcs.ecs.baylor.edu
+#      http:
+#        paths:
+#          - path: /auth
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: keycloak
+#                port:
+#                  number: 80
+#          - path: /config
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: cms-client
+#                port:
+#                  number: 80
+#          - path: /exams
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: ems-client
+#                port:
+#                  number: 80
+#          - path: /questions
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: qms-client
+#                port:
+#                  number: 80
+#          - path: /cms
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: cms
+#                port:
+#                  number: 80
+#          - path: /ems
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: ems
+#                port:
+#                  number: 80
+#          - path: /qms
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: qms
+#                port:
+#                  number: 80
+#          - path: /ums
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: ums
+#                port:
+#                  number: 80
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: ums-client
+#                port:
+#                  number: 80
