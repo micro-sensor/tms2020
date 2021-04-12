@@ -1,0 +1,30 @@
+<question>
+  <id>5</id>
+  <title>Java output</title>
+  <level>1</level>
+  <body>&lt;p>What is the output of the program?&lt;/p></body>
+  <questionType>SELECT_ONE</questionType>
+  <choice>
+    <id>7</id>
+    <body>&lt;p>Hello&lt;/p></body>
+    <correct>true</correct>
+  </choice>
+  <choice>
+    <id>8</id>
+    <body>&lt;p>Hello World&lt;/p></body>
+    <correct>false</correct>
+  </choice>
+  <code>
+    <id>4</id>
+    <language>
+      <id>1</id>
+      <name>Java</name>
+    </language>
+    <body>&lt;pre>&lt;code class="language-java">System.out.println("Hello");&lt;/code>&lt;/pre></body>
+  </code>
+  <category>
+    <id>4</id>
+    <name>Basic Java</name>
+    <description>Basic Java</description>
+  </category>
+</question>

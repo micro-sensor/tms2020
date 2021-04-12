@@ -110,7 +110,7 @@ public class QuestionController {
 
             }
 
-            String questionType = (String) payload.get("type");
+            String questionType = (String) payload.get("questionType");
 
             if (questionType.equals("SELECT_ONE")){
                 question.setQuestionType(QuestionTypeEnum.SELECT_ONE);

@@ -68,9 +68,18 @@ public class ExamService {
         exam.setExamDate(new Date());
         exam.setConfigurationName(qmsService.getConfigName(Integer.toUnsignedLong(examDto.getConfigurationId())));
         exam.setStatus(ExamStatus.INIT);
+        if(exam.getExamDateFrom() == null) {
+            exam.setExamDateFrom(new Date());
+            exam.getExamDateFrom().setYear(exam.getExamDateFrom().getYear() - 1);
+        }
         exam.getExamDateFrom().setHours(0);
         exam.getExamDateFrom().setMinutes(0);
         exam.getExamDateFrom().setSeconds(0);
+
+        if(exam.getExamDateTo() == null) {
+            exam.setExamDateTo(new Date());
+            exam.getExamDateTo().setYear(exam.getExamDateTo().getYear() + 1);
+        }
         exam.getExamDateTo().setHours(23);
         exam.getExamDateTo().setMinutes(59);
         exam.getExamDateTo().setSeconds(59);
