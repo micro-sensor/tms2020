@@ -41,20 +41,20 @@ spec:
     matchLabels:
       app: ems
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: ems
-
-spec:
-  rules:
-    - host: ems.test
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: ems
-                port:
-                  number: 80
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: ems
+#
+#spec:
+#  rules:
+#    - host: ems.test
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: ems
+#                port:
+#                  number: 80

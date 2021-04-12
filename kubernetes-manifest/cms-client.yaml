@@ -39,21 +39,21 @@ spec:
     matchLabels:
       app: cms-client
 ---
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: cms-client
-
-spec:
-  rules:
-    - host: cms-client.test
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: cms-client
-                port:
-                  number: 80
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: cms-client
+#
+#spec:
+#  rules:
+#    - host: cms-client.test
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: cms-client
+#                port:
+#                  number: 80
