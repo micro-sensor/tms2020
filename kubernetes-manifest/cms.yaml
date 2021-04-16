@@ -8,8 +8,7 @@ spec:
   ports:
     - targetPort: 9081
       port: 80
-      name: http
-  type: NodePort
+      name: http-web
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -26,7 +25,7 @@ spec:
         app: cms
     spec:
       hostAliases:
-        - ip: "192.168.64.5"
+        - ip: "192.168.64.6"
           hostnames:
             - "tcs.ecs.baylor.edu"
       containers:

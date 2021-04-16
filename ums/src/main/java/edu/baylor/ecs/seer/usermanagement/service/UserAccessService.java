@@ -174,7 +174,7 @@ public class UserAccessService {
             List<String> requiredActions = new ArrayList<>();
             requiredActions.add("UPDATE_PASSWORD");
             // redirect_uri and lifespan (optional) parameters are not working for now. Default values are used
-            sendEmailWithRequiredActions(isUserCreated.getId(),requiredActions , "http://ums-client.test/", 86400);
+            sendEmailWithRequiredActions(isUserCreated.getId(),requiredActions , "https://tcs.ecs.baylor.edu/", 86400);
         }
         if(responseBody.isEmpty()) { responseBody= "Users are created. They will receive emails to set their passwords";}
         return ResponseEntity.ok(responseBody);

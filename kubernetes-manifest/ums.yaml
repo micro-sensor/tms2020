@@ -8,8 +8,7 @@ spec:
   ports:
     - targetPort: 10001
       port: 80
-      name: http
-  type: NodePort
+      name: http-web
   
 ---
 apiVersion: apps/v1
@@ -27,7 +26,7 @@ spec:
         app: ums
     spec:
       hostAliases:
-        - ip: "192.168.64.5"
+        - ip: "192.168.64.6"
           hostnames:
             - "tcs.ecs.baylor.edu"
       containers:
