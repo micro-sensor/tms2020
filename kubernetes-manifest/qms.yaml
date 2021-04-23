@@ -25,7 +25,7 @@ spec:
         app: qms
     spec:
       hostAliases:
-        - ip: "192.168.64.6"
+        - ip: "192.168.64.7"
           hostnames:
             - "tcs.ecs.baylor.edu"
       containers:
@@ -39,21 +39,21 @@ spec:
     matchLabels:
       app: qms
 ---
-#---
-#apiVersion: networking.k8s.io/v1
-#kind: Ingress
-#metadata:
-#  name: qms
-#
-#spec:
-#  rules:
-#    - host: qms.test
-#      http:
-#        paths:
-#          - path: /
-#            pathType: Prefix
-#            backend:
-#              service:
-#                name: qms
-#                port:
-#                  number: 80
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: qms
+spec:
+  hosts:
+    - qms
+  http:
+    - route:
+        - destination:
+            host: cms
+            port:
+              number: 80
+          headers:
+            response:
+              remove:
+                - "transfer-encoding"
+                - "Transfer-Encoding"

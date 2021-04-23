@@ -33,12 +33,12 @@ spec:
         credentialName: mkcert # must be the same as secret
       hosts:
         - tcs.ecs.baylor.edu
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-        - tcs.ecs.baylor.edu
+#    - port:
+#        number: 80
+#        name: http
+#        protocol: HTTP
+#      hosts:
+#        - tcs.ecs.baylor.edu
 
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -62,12 +62,16 @@ spec:
     - match:
         - uri:
             prefix: /cms
-      timeout: 30s
+      timeout: 2s
       route:
         - destination:
             host: cms
             port:
               number: 80
+          headers:
+            response:
+              remove:
+                - "transfer-encoding"
     - match:
         - uri:
             prefix: /ems

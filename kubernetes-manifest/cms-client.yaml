@@ -24,7 +24,7 @@ spec:
         app: cms-client
     spec:
       hostAliases:
-        - ip: "192.168.64.6"
+        - ip: "192.168.64.7"
           hostnames:
             - "tcs.ecs.baylor.edu"
       containers:
