@@ -1,18 +1,14 @@
 package edu.baylor.ecs.cms.service;
 
-import edu.baylor.ecs.cms.exception.JPAException;
-import edu.baylor.ecs.cms.exception.ResourceNotFoundException;
-import org.apache.http.client.methods.HttpDelete;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 
 @Service
@@ -33,9 +29,9 @@ public class QmsService {
         this.restTemplate = restTemplateBuilder.build();
     }
 
-    public ResponseEntity<Object[]> getCategoryInfoDtos(){
-        String categoryInfoPath = qmsIp + categoryInfoContext;
-        return restTemplate.getForEntity(categoryInfoPath, Object[].class);
+    public ResponseEntity<Object[]> getCategoryInfoDtos() {
+        ResponseEntity<Object[]> response = restTemplate.getForEntity(qmsIp + categoryInfoContext, Object[].class);
+        return ResponseEntity.ok(response.getBody());
     }
 
     public ResponseEntity<Object> createConfiguration(Object object) {
@@ -44,16 +40,18 @@ public class QmsService {
     }
 
     public ResponseEntity<Object> updateConfiguration(Long configurationId, Object object) {
-        restTemplate.put(qmsIp + configurationContext+ "/"+configurationId.toString(), object);
+        restTemplate.put(qmsIp + configurationContext + "/" + configurationId.toString(), object);
         return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<Object[]> getConfigurations() {
-        return restTemplate.getForEntity(qmsIp + configurationContext, Object[].class);
+        ResponseEntity<Object[]> response = restTemplate.getForEntity(qmsIp + configurationContext, Object[].class);
+        return ResponseEntity.ok(Objects.requireNonNull(response.getBody()));
     }
 
     public ResponseEntity<Object> getConfiguration(Long configurationId) {
-        return restTemplate.getForEntity(qmsIp + configurationContext + "/"+configurationId.toString(), Object.class);
+        ResponseEntity<Object> response = restTemplate.getForEntity(qmsIp + configurationContext + "/" + configurationId.toString(), Object.class);
+        return ResponseEntity.ok(response.getBody());
     }
 
     public ResponseEntity<?> deleteConfiguration(Long configurationId) {
