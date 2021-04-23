@@ -38,22 +38,3 @@ spec:
   selector:
     matchLabels:
       app: qms
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: qms
-spec:
-  hosts:
-    - qms
-  http:
-    - route:
-        - destination:
-            host: cms
-            port:
-              number: 80
-          headers:
-            response:
-              remove:
-                - "transfer-encoding"
-                - "Transfer-Encoding"
