@@ -119,7 +119,7 @@ services:
       - app-internal
       
   nginx:
-    image: cloudhubs2/tms-nginx
+    image: cloudhubs2/tms-nginx:0.1.0
     build:
       context: nginx
       dockerfile: Dockerfile
