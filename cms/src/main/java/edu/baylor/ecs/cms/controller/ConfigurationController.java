@@ -17,36 +17,35 @@ public class ConfigurationController {
     @CrossOrigin
     @PostMapping("")
     public ResponseEntity<Object> createConfiguration(@RequestBody Object object) {
-        logger.info(Thread.currentThread().getId() + ":" + "createConfiguration" + "(" + object + ")");
+        logger.info("HTTP request comes for creating new configuration");
         return qmsService.createConfiguration(object);
     }
 
     @CrossOrigin
     @PutMapping("/{configurationId}")
     public ResponseEntity<?> updateConfiguration(@PathVariable Long configurationId, @RequestBody Object object) {
-        logger.info(Thread.currentThread().getId() + ":" + "updateConfiguration" + "(" + configurationId + "," + object +
-                ")");
+        logger.info("HTTP request comes for updating exisisting configuration ");
         return qmsService.updateConfiguration(configurationId, object);
     }
 
     @CrossOrigin
     @GetMapping("")
     public ResponseEntity<Object[]> getConfigurations() {
-        logger.info(Thread.currentThread().getId() + ":" + "getConfigurations" + "()");
+        logger.info("HTTP request comes for getting all configurations");
         return qmsService.getConfigurations();
     }
 
     @CrossOrigin
     @GetMapping("/{configurationId}")
     public ResponseEntity<Object> getConfiguration(@PathVariable Long configurationId) {
-        logger.info(Thread.currentThread().getId() + ":" + "getConfiguration" + "(" + configurationId + ")");
+        logger.info("HTTP request comes for getting specific configuration using id");
         return qmsService.getConfiguration(configurationId);
     }
 
     @CrossOrigin
     @DeleteMapping("/{configurationId}")
     public ResponseEntity<?> deleteConfiguration(@PathVariable Long configurationId) {
-        logger.info(Thread.currentThread().getId() + ":" + "deleteConfiguration" + "(" + configurationId + ")");
+        logger.info("HTTP request comes for deleting existing configuration");
         return qmsService.deleteConfiguration(configurationId);
     }
 

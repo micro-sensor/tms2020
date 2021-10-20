@@ -24,7 +24,7 @@ public class ExamController {
     @PostMapping("/create")
     public ResponseEntity<Object> createExam(@RequestBody ExamDto object) {
 
-        logger.info(Thread.currentThread().getId() + ":" + "createExam" + "(" + object + ")");
+        logger.info("HTTP request comes for creating a new exam");
 
         return emsService.createExam(object);
     }
@@ -32,8 +32,7 @@ public class ExamController {
     @CrossOrigin
     @GetMapping("/{email}")
     public ResponseEntity<EmailDto> isEmailValid(@PathVariable String email, @RequestHeader("Authorization") String authorication) {
-
-        logger.info(Thread.currentThread().getId() + ":" + "isEmailValid" + "(" + email + "," + authorication + ")");
+        logger.info("HTTP request for cheking the validity of email");
 
         return umsService.isEmailValid(email, authorication);
     }

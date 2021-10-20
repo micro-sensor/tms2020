@@ -12,12 +12,10 @@ public class EmailDto {
     }
 
     public String getEmail() {
-        logger.info(Thread.currentThread().getId() + ":" + "getEmail" + "()");
         return email;
     }
 
     public void setEmail(String email) {
-        logger.info(Thread.currentThread().getId() + ":" + "setEmail" + "(" + email + ")");
         this.email = email;
     }
 }

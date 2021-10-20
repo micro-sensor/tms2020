@@ -47,28 +47,36 @@ public class CategoryController {
     @GetMapping("")
     public List<Category> findAllCategories() {
 
-        logger.info(Thread.currentThread().getId() + ":" + "findAllCategories" + "()");
+        logger.info("Request comes for finding all categories");
+        logger.info("Repository called for database query");
+        logger.info("Returning the result");
         return categoryRepository.findAll();
     }
 
     @CrossOrigin
     @GetMapping("/{categoryId}")
     public Category findCategoriesById(@PathVariable Long categoryId) {
-        logger.info(Thread.currentThread().getId() + ":" + "findCategoriesById" + "(" + categoryId + ")");
+        logger.info("Request comes for finding specific category with id");
+        logger.info("Repository called for database query");
+        logger.info("Returning the result");
         return categoryRepository.findById(categoryId).orElse(null);
     }
 
     @CrossOrigin
     @PostMapping("")
     public Category createCategory(@Valid @RequestBody Category category) {
-        logger.info(Thread.currentThread().getId() + ":" + "createCategory" + "(" + category + ")");
+        logger.info("Request comes for creating category");
+        logger.info("Repository called for creating new category");
+        logger.info("Returning the new category");
         return categoryRepository.save(category);
     }
 
     @CrossOrigin
     @PutMapping("/{categoryId}")
     public Category updateCategory(@PathVariable Long categoryId, @Valid @RequestBody Category categoryRequest) {
-        logger.info(Thread.currentThread().getId() + ":" + "updateCategory" + "(" + categoryId + "," + categoryRequest + ")");
+        logger.info("Request comes for updating new category");
+        logger.info("Repository called for updating existing category");
+        logger.info("Returning the updated category");
         return categoryRepository.findById(categoryId)
                 .map(category -> {
                     category.setName(categoryRequest.getName());
@@ -80,7 +88,9 @@ public class CategoryController {
     @CrossOrigin
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<?> deleteCateogry(@PathVariable Long categoryId) {
-        logger.info(Thread.currentThread().getId() + ":" + "deleteCategory" + "(" + categoryId + ")");
+        logger.info("Request comes for deleting new category");
+        logger.info("Repository called for deleting existing category");
+        logger.info("Returning the success/error notification");
         return categoryRepository.findById(categoryId)
                 .map(category -> {
                     category.getQuestions().clear();
@@ -98,9 +108,11 @@ public class CategoryController {
     @CrossOrigin
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllCategories() {
-        logger.info(Thread.currentThread().getId() + ":" + "deleteAllCategories" + "()");
+        logger.info("Request comes for deleting all categories");
         try {
+            logger.info("Repository method called to delete all categories");
             categoryRepository.deleteAll();
+            logger.info("Returning the success notification");
         } catch (Exception e) {
             throw new JPAException("Deletion of some categories violate database constraints");
         }
@@ -110,13 +122,15 @@ public class CategoryController {
     @CrossOrigin
     @GetMapping("/export")
     public String exportAllCategories() throws IOException {
-        logger.info(Thread.currentThread().getId() + ":" + "exportAllCategories" + "()");
+        logger.info("Request come for exporting all categories");
+        logger.info("Repository called for finding all categories");
         List<Category> categoryList = categoryRepository.findAll();
+        logger.info("Creating database object");
         CategoryListDto categoryListDto = new CategoryListDto(categoryList);
 
         XmlMapper xmlMapper = new XmlMapper();
         xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
-
+        logger.info("Returning export result");
         if (categoryListDto != null)
             return xmlMapper.writeValueAsString(categoryListDto);
 
@@ -127,10 +141,11 @@ public class CategoryController {
     @PostMapping(value = "/import")
     public ResponseEntity<?> uploadCategories(@RequestParam("file") MultipartFile file) throws IOException, ParserConfigurationException, SAXException {
 
-        logger.info(Thread.currentThread().getId() + ":" + "uploadCategories" + "(" + file + ")");
+        logger.info("Request comes for import upload categories from XML file");
         if (file.isEmpty()) {
             throw new ResourceNotFoundException("File upload fail when importing category(s)");
         }
+        logger.info("Configuring update procedure");
 
         Set<Category> categoryList = null;
 
@@ -148,16 +163,20 @@ public class CategoryController {
         if (categoryNodeList.getLength() == 0) {
             throw new ParsingException("XML document doesn't contain tags with name category");
         }
+        logger.info("Parsing XML file");
         categoryList = xmlParserService.parseCategoryNodeList(categoryNodeList, null);
 
         if (categoryList != null) {
             try {
+                logger.info("Repository called for persisting all category");
+                logger.info("Repository perform db query to persist category list");
                 categoryRepository.saveAll(categoryList);
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new JPAException("Category import failed. Reason: " + e.getMessage());
             }
         }
+        logger.info("Returning success notification");
 
         return ResponseEntity.ok().build();
     }

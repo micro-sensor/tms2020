@@ -15,34 +15,26 @@ public class ConfigurationDto {
     }
 
     public String getName() {
-        logger.info(Thread.currentThread().getId() + ":" + "getName" + "()");
         return name;
     }
 
     public void setName(String name) {
-
-        logger.info(Thread.currentThread().getId() + ":" + "setName" + "(" + name + ")");
         this.name = name;
     }
 
     public String getDescription() {
-        logger.info(Thread.currentThread().getId() + ":" + "getDescription" + "()");
         return description;
     }
 
     public void setDescription(String description) {
-        logger.info(Thread.currentThread().getId() + ":" + "setDescription" + "(" + description + ")");
         this.description = description;
     }
 
     public List<GroupDto> getGroups() {
-
-        logger.info(Thread.currentThread().getId() + ":" + "getGroups" + "()");
         return groups;
     }
 
     public void setGroups(List<GroupDto> groups) {
-        logger.info(Thread.currentThread().getId() + ":" + "setGroups" + "(" + groups + ")");
         this.groups = groups;
     }
 }

@@ -24,11 +24,13 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     public void sendExamStartDateReminder(Exam exam) {
-        logger.info(Thread.currentThread().getId() + ":" + "sendExamStartDateReminder" + "(" + exam + ")");
+        logger.info("Serevice called for sending exam start date reminder");
         String subject = "Texas Teacher Training exam start date reminder";
         DateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        logger.info("Creating email");
         String emailContent = String.format(EXAM_START_DATE_REMINDER_TEMPLATE, exam.getConfigurationName(), dateFormat.format(exam.getExamDateFrom()));
         try {
+            logger.info("sending email");
             sendEmail(subject, exam.getExaminee(), emailContent);
         } catch (MessagingException e) {
             // change later to custom exception
@@ -37,11 +39,13 @@ public class EmailService {
     }
 
     public void sendExamEndDateReminder(Exam exam) {
-        logger.info(Thread.currentThread().getId() + ":" + "sendExamEndDateReminder" + "(" + exam + ")");
+        logger.info("Service called for exam end date reminder");
         String subject = "Texas Teacher Training exam end date reminder";
         DateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        logger.info("Creating email");
         String emailContent = String.format(EXAM_END_DATE_REMINDER_TEMPLATE, dateFormat.format(exam.getExamDateTo()), exam.getConfigurationName());
         try {
+            logger.info("sending email");
             sendEmail(subject, exam.getExaminee(), emailContent);
         } catch (MessagingException e) {
             // change later to custom exception
@@ -50,12 +54,14 @@ public class EmailService {
     }
 
     public void sendExamAssignmentNotification(Exam exam) {
-        logger.info(Thread.currentThread().getId() + ":" + "sendExamAssignmentNotification" + "(" + exam + ")");
+        logger.info("Service called for sending exam assignment notification");
         String subject = "Texas Teacher Training exam assignment";
         DateFormat dateFormat = new SimpleDateFormat("MMMM d, yyyy");
+        logger.info("Email created");
         String emailContent = String.format(EXAM_ASSIGNED_NOTIFICATION_TEMPLATE, exam.getConfigurationName(), dateFormat.format(exam.getExamDateFrom()), dateFormat.format(exam.getExamDateTo()));
         try {
             sendEmail(subject, exam.getExaminee(), emailContent);
+            logger.info("Sending email");
         } catch (MessagingException e) {
             // change later to custom exception
             e.printStackTrace();
@@ -63,8 +69,7 @@ public class EmailService {
     }
 
     private void sendEmail(String subject, String sendTo, String emailContent) throws MessagingException {
-        logger.info(Thread.currentThread().getId() + ":" + "sendEmail" + "(" + subject + "," + sendTo + "emailContent" +
-                ")");
+        logger.info("Service called for sending email");
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, "utf-8");
@@ -73,6 +78,8 @@ public class EmailService {
         helper.setFrom(SEND_EMAIL_FROM);
         helper.setTo(sendTo);
         helper.setSubject(subject);
+        logger.info("Configuration set up for sending eamil");
+        logger.info("Sending email");
 
         javaMailSender.send(message);
 

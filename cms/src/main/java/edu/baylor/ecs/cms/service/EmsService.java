@@ -22,20 +22,20 @@ public class EmsService {
     private UmsService umsService;
 
     public EmsService(RestTemplateBuilder restTemplateBuilder) {
-
-        logger.info(Thread.currentThread().getId() + ":" + "EmsService" + "(" + restTemplateBuilder + ")");
         this.restTemplate = restTemplateBuilder.build();
     }
 
     public ResponseEntity<Object> createExam(ExamDto examDto) {
-        logger.info(Thread.currentThread().getId() + ":" + "createExam" + "(" + examDto + ")");
+        logger.info("Service called for creating new exam");
 
 //        if (!umsService.isExamineeIdValid(examDto.getExaminee())){
 //            return ResponseEntity.badRequest().body(null);
 //        }
 //        examDto.setIssuer(umsService.getCurrentLoggedInUser());
         String uri = ip + examContext;
+        logger.info("Rest API called for creaing new exam");
         Object obj = this.restTemplate.postForObject(uri, examDto, ExamDto.class);
+        logger.info("Returning success notification");
         return ResponseEntity.ok(obj);
     }
 

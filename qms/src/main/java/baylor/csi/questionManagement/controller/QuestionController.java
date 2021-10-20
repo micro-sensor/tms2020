@@ -56,23 +56,24 @@ public class QuestionController {
     @CrossOrigin
     @GetMapping("/all")
     public List<Question> findAllQuestions() {
-        logger.info(Thread.currentThread().getId() + ":" + "findAllQuestions" + "()");
+        logger.info("Request for find all questions");
         return questionRepository.findAll();
     }
 
     @CrossOrigin
     @GetMapping("/{questionId}")
     public Question findQuestionById(@PathVariable Long questionId) {
-        logger.info(Thread.currentThread().getId() + ":" + "findQuestionById" + "(" + questionId + ")");
+        logger.info("Request for find question by Id");
         return questionRepository.findById(questionId).orElse(null);
     }
 
     @CrossOrigin
     @GetMapping("")
     public List<QuestionDto> findQuestionByCateogryIdAndName(@RequestParam Map<String, Object> customQuery) {
-        logger.info(Thread.currentThread().getId() + ":" + "findQuestionByCategoryIdAndName" + "(" + customQuery + ")");
+        logger.info("Request for find question by category Id and Name");
 
         String name = "";
+        logger.info("Validiating the custom query");
         if (customQuery.containsKey("name")) {
             name = customQuery.get("name").toString().toLowerCase();
         }
@@ -88,19 +89,22 @@ public class QuestionController {
         for (QuestionDto dto : dtos) {
             dto.setCategoriesNames(categoryRepository.getNamesByQuestionId(dto.getId()));
         }
+        logger.info("Returning the result");
         return dtos;
     }
 
     @CrossOrigin
     @PostMapping("")
     public Question createQuestion(@Valid @RequestBody Map<String, Object> payload) {
-        logger.info(Thread.currentThread().getId() + ":" + "createQuestion" + "(" + payload + ")");
+        logger.info( "Request for create question");
         try {
             Question question = new Question();
+            logger.info("creating new question");
             question.setBody((String) payload.get("body"));
             question.setLevel(Integer.parseInt(payload.get("level").toString()));
             question.setTitle((String) payload.get("title"));
             ArrayList<Object> categoryIds = (ArrayList<Object>) payload.get("categories");
+            logger.info("Setting information for new question");
             for (Object id : categoryIds) {
                 Category category = categoryRepository.findById(Long.parseLong(id.toString())).orElse(null);
                 if (category != null) {
@@ -118,6 +122,7 @@ public class QuestionController {
             }
 
             String questionType = (String) payload.get("type");
+            logger.info("Setting question type");
 
             if (questionType.equals("SELECT_ONE")) {
                 question.setQuestionType(QuestionTypeEnum.SELECT_ONE);
@@ -127,6 +132,7 @@ public class QuestionController {
                 question.setQuestionType(QuestionTypeEnum.SELECT_MANY);
             }
 
+            logger.info("Returning the result");
 
             return questionRepository.save(question);
 
@@ -140,12 +146,13 @@ public class QuestionController {
     @CrossOrigin
     @PutMapping("/{questionId}")
     public Question updateQuestion(@PathVariable Long questionId, @Valid @RequestBody Map<String, Object> payload) {
-        logger.info(Thread.currentThread().getId() + ":" + "updateQuestion" + "(" + questionId + "," + payload + ")");
+        logger.info("Request for update question");
         try {
             Question question = questionRepository.findById(questionId).orElse(null);
             if (question == null) {
                 throw new ResourceNotFoundException("Question not found with id " + questionId);
             }
+            logger.info("Setting update information for existing question")
             question.setTitle(payload.get("title").toString());
             question.setBody(payload.get("body").toString());
             question.setLevel(Integer.parseInt(payload.get("level").toString()));
@@ -155,7 +162,6 @@ public class QuestionController {
                 choicesInDBIds.add(c.getId());
             }
             ArrayList<Map<String, Object>> choices = (ArrayList<Map<String, Object>>) payload.get("choices");
-
             HashSet<Long> updatedChoicesId = new HashSet<>();
             for (Map<String, Object> choice : choices) {
                 if (choice.containsKey("id")) {
@@ -262,6 +268,7 @@ public class QuestionController {
                 }
             }
 
+            logger.info("Returning updated question");
 
             return questionRepository.save(question);
 

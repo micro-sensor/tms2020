@@ -19,7 +19,7 @@ public class CategoryInfoController {
     @CrossOrigin
     @RequestMapping("")
     public ResponseEntity<Object[]> getCategoryInfo() {
-        logger.info(Thread.currentThread().getId() + ":" + "getCategoryInfo" + "()");
+        logger.info("HTTP request comes for getting category information");
         return qmsService.getCategoryInfoDtos();
     }
 }

@@ -31,18 +31,20 @@ public class QuestionService {
 
 
     public List<Question> getAllByExam(Integer examId) {
-        logger.info(Thread.currentThread().getId() + ":" + "getAllByExam" + "(" + examId + ")");
+        logger.info("Performing database query to find all exam");
         return this.questionRepository.getAllByExam_Id(examId);
     }
 
     public List<QuestionEmsDto> saveAllQuestionQmsDtos(List<QuestionQmsDto> questionQmsDtos, Exam exam) {
-        logger.info(Thread.currentThread().getId() + ":" + "saveAllQuestionQmsDtos" + "(" + questionQmsDtos + "," + exam + ")");
+        logger.info("Service called for saving all questions");
 
         //QuestionQmsDto -> Question
         this.questionsFromQmsToModel(questionQmsDtos, exam);
 
         // Save Questions
+        logger.info("Performing database query to find all questions with exam id");
         List<Question> questions = this.questionRepository.getAllByExam_Id(exam.getId());
+        logger.info("Updating question choices");
         for (Question q : questions
         ) {
             q.setChoices(choiceRepository.findByQuestionId(q.getId()));
@@ -50,19 +52,19 @@ public class QuestionService {
 
         // Questions -> QuestionEmsDto
         List<QuestionEmsDto> questionEmsDtos = this.questionsFromModelToEms(questions);
-
+        logger.info("Returning question set");
         return questionEmsDtos;
     }
 
     public List<QuestionEmsDto> getAllByExamPruned(Exam exam) {
-        logger.info(Thread.currentThread().getId() + ":" + "getAllByExamPruned" + "(" + exam + ")");
+        logger.info("Service called for exam pruning");
         List<Question> questions = this.questionRepository.getAllByExam_Id(exam.getId());
+        logger.info("Returning the prunning result");
         return questionsFromModelToEms(questions);
     }
 
 
     public List<QuestionEmsDto> questionsFromModelToEms(List<Question> questions) {
-        logger.info(Thread.currentThread().getId() + ":" + "questionsFromModelToEms" + "(" + questions + ")");
         List<QuestionEmsDto> questionEmsDtos = new ArrayList<>();
         for (Question q : questions) {
             QuestionEmsDto questionEmsDto = new QuestionEmsDto();
@@ -79,7 +81,6 @@ public class QuestionService {
     }
 
     private List<ChoiceEmsDto> choicesFromModelToEms(List<Choice> choices) {
-        logger.info(Thread.currentThread().getId() + ":" + "choicesFromModelToEms" + "(" + choices + ")");
         //Erase correct
         List<ChoiceEmsDto> choiceEmsDtos = new ArrayList<>();
         for (Choice ch : choices) {
@@ -90,8 +91,6 @@ public class QuestionService {
     }
 
     public List<Question> questionsFromQmsToModel(List<QuestionQmsDto> questionQmsDtos, Exam exam) {
-        logger.info(Thread.currentThread().getId() + ":" + "questionsFromQmsToModel" + "(" + questionQmsDtos + "," + exam +
-                ")");
         List<Question> questions = new ArrayList<>();
         for (QuestionQmsDto q : questionQmsDtos
         ) {
@@ -114,7 +113,6 @@ public class QuestionService {
     }
 
     private Set<Choice> choicesFromQmsToModel(List<ChoiceQmsDto> choiceQmsDtos, Question question) {
-        logger.info(Thread.currentThread().getId() + ":" + "choicesFromQmsToModel" + "(" + choiceQmsDtos + "," + question + ")");
         Set<Choice> choices = new HashSet<>();
         for (ChoiceQmsDto ch : choiceQmsDtos
         ) {

@@ -44,21 +44,24 @@ public class UmsService {
 //    }
 
     public ResponseEntity<EmailDto> isEmailValid(String email, String auth) {
-        logger.info(Thread.currentThread().getId() + ":" + "isEmailValid" + "(" + email + "," + auth + ")");
+        logger.info("Service called to check the validity of email");
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(umsIp);
         stringBuilder.append(email);
         stringBuilder.append("?email=");
         stringBuilder.append(email.replace("@", "%40"));
+        logger.info("Preparing the request to check email validity");
 //        Object object = restTemplate.getForEntity(umsIp + this.email + email, Integer.class);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", auth);
         HttpEntity<String> request = new HttpEntity<String>(headers);
+        logger.info("Rest API called to find the email validity");
         ResponseEntity<String> re = restTemplate.exchange(umsIp + this.email + email, HttpMethod.GET, request, String.class);
         System.out.println(re.getBody());
         EmailDto emailDto = new EmailDto();
         emailDto.setEmail(re.getBody());
+        logger.info("Returning success notification");
         return ResponseEntity.ok(emailDto);
 //
 //        restTemplate.exchange
@@ -67,7 +70,6 @@ public class UmsService {
     }
 
     public HttpHeaders createHeaders(String username, String password) {
-        logger.info(Thread.currentThread().getId() + ":" + "createHeaders" + "(" + username + "," + password + ")");
         return new HttpHeaders() {{
             String auth = username + ":" + password;
             byte[] encodedAuth = Base64.encodeBase64(
@@ -79,7 +81,6 @@ public class UmsService {
 
 
     public Boolean isExamineeIdValid(Integer id) {
-        logger.info(Thread.currentThread().getId() + ":" + "isExamineeIdValid" + "(" + id + ")");
 //        StringBuilder stringBuilder = new StringBuilder();
 //        stringBuilder.append(umsIp);
 //        stringBuilder.append(id);

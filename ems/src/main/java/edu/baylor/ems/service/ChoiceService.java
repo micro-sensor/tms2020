@@ -28,25 +28,30 @@ public class ChoiceService {
     private ExamRepository examRepository;
 
     public List<Choice> selectChoices(SelectedChoiceEmsDto selectedChoiceEmsDto) {
-        logger.info(Thread.currentThread().getId() + ":" + "selectChoices" + "(" + selectedChoiceEmsDto + ")");
+        logger.info("Service called for select choices wtih with choice data");
         // Find choices by question id
         List<Choice> choices = this.choiceRepository.findByQuestionId(selectedChoiceEmsDto.getQuestionId());
+        logger.info("Service perform database query for finding choices with question id of choice");
         //Select choices and unselect choices
         for (Choice ch : choices) {
             for (ChoiceEmsDto chEms : selectedChoiceEmsDto.getChoiceEmsDtos()
             ) {
                 if (ch.getId().equals(chEms.getId())) {
                     ch.setChosen(chEms.isChosen());
+                    logger.info("Sevice set chosen flag on found choices");
                 }
             }
         }
 
         choices = this.choiceRepository.saveAll(choices);
+        logger.info("Service perform database persist operation with chosen choices");
 
         List<Question> questions = questionRepository.getAllByExam_Id(selectedChoiceEmsDto.getExamId());
+        logger.info("Service perform database query for finding choices with exam id of choice");
 
         Integer correct = 0;
-
+        logger.info("checking every choices for correct questions");
+        logger.info("Setting text answer to the chosen questions");
         for (Question q : questions) {
 
             boolean isQuestionCorrect = true;
@@ -68,10 +73,14 @@ public class ChoiceService {
         }
 
         questionRepository.saveAll(questions);
+        logger.info("Perform database persist operation with updated questions");
 
         Exam exam = examRepository.getOne(selectedChoiceEmsDto.getExamId());
         exam.setCorrect(correct);
         examRepository.saveAndFlush(exam);
+        logger.info("Exam marked as a valid exam");
+
+        logger.info("Returning the result");
 
         //save
         return choices;

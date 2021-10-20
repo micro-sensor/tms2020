@@ -25,13 +25,16 @@ public class CategoryInfoController {
     @GetMapping("")
     public List<CategoryInfoDto> findAllCategoryInfos() {
 
-        logger.info(Thread.currentThread().getId() + ":" + "findAllCategoryInfos" + "()");
+        logger.info("Request comes for finding all category informations");
         List<CategoryInfoDto> categoryInfoDtos = new ArrayList<>();
+        logger.info("Repository method called to find all categories");
+        logger.info("Repository performs database query");
         List<Category> categories = categoryRepository.findAll();
         for (Category category : categories) {
             CategoryInfoDto categoryInfoDto = new CategoryInfoDto(category.getId(), category.getName(), category.getDescription(), categoryRepository.getQuestionCountDtoById(category.getId()));
             categoryInfoDtos.add(categoryInfoDto);
         }
+        logger.info("Returning the result");
 
         return categoryInfoDtos;
     }

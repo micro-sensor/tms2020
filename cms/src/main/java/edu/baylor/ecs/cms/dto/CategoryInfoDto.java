@@ -16,42 +16,34 @@ public class CategoryInfoDto {
     }
 
     public Integer getId() {
-        logger.info(Thread.currentThread().getId() + ":" + "getId" + "()");
         return id;
     }
 
     public void setId(Integer id) {
-        logger.info(Thread.currentThread().getId() + ":" + "setId" + "(" + id + ")");
         this.id = id;
     }
 
     public String getName() {
-        logger.info(Thread.currentThread().getId() + ":" + "getName" + "()");
         return name;
     }
 
     public void setName(String name) {
-        logger.info(Thread.currentThread().getId() + ":" + "setName" + "(" + name + ")");
         this.name = name;
     }
 
     public String getDescription() {
-        logger.info(Thread.currentThread().getId() + ":" + "getDescription" + "()");
         return description;
     }
 
     public void setDescription(String description) {
-        logger.info(Thread.currentThread().getId() + ":" + "setDescription" + "(" + description + ")");
         this.description = description;
     }
 
     public List<CategoryInfoDto> getCategoryInfoDtos() {
-        logger.info(Thread.currentThread().getId() + ":" + "getCategoryInfoDtos" + "()");
         return categoryInfoDtos;
     }
 
     public void setCategoryInfoDtos(List<CategoryInfoDto> categoryInfoDtos) {
-        logger.info(Thread.currentThread().getId() + ":" + "setCategoryInfoDtos" + "(" + categoryInfoDtos + ")");
         this.categoryInfoDtos = categoryInfoDtos;
     }
 }

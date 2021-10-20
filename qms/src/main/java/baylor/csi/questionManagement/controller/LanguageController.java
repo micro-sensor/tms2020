@@ -42,28 +42,28 @@ public class LanguageController {
     @GetMapping("")
     public List<Language> findAllLanguages() {
 
-        logger.info(Thread.currentThread().getId() + ":" + "findAllLanguages" + "()");
+        logger.info("Request for find all languages");
         return languageRepository.findAll();
     }
 
     @CrossOrigin
     @GetMapping("/{languageId}")
     public Language findLanguageById(@PathVariable Long languageId) {
-        logger.info(Thread.currentThread().getId() + ":" + "findLanguageById" + "(" + languageId + ")");
+        logger.info("Request for find language by Id");
         return languageRepository.findById(languageId).orElse(null);
     }
 
     @CrossOrigin
     @PostMapping("")
     public Language createLanguage(@Valid @RequestBody Language language) {
-        logger.info(Thread.currentThread().getId() + ":" + "createLanguage" + "(" + language + ")");
+        logger.info("Request for create language" );
         return languageRepository.save(language);
     }
 
     @CrossOrigin
     @PutMapping("/{languageId}")
     public Language updateLanguage(@PathVariable Long languageId, @Valid @RequestBody Language languageRequest) {
-        logger.info(Thread.currentThread().getId() + ":" + "updateLanguage" + "(" + languageId + "," + languageRequest + ")");
+        logger.info(T "Request for update language");
         return languageRepository.findById(languageId)
                 .map(language -> {
                     language.setName(languageRequest.getName());
@@ -74,7 +74,7 @@ public class LanguageController {
     @CrossOrigin
     @DeleteMapping("/{languageId}")
     public ResponseEntity<?> deleteQuestion(@PathVariable Long languageId) {
-        logger.info(Thread.currentThread().getId() + ":" + "deleteQuestion" + "(" + languageId + ")");
+        logger.info("Request for delete question");
         return languageRepository.findById(languageId)
                 .map(language -> {
                     languageRepository.delete(language);
@@ -85,7 +85,7 @@ public class LanguageController {
     @CrossOrigin
     @DeleteMapping("")
     public ResponseEntity<?> deleteAllLanguages() {
-        logger.info(Thread.currentThread().getId() + ":" + "deleteAllLanguages" + "()");
+        logger.info("Request for delete all languages");
         try {
             languageRepository.deleteAll();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class LanguageController {
     @GetMapping("/export")
     public String exportAllLanguages() throws IOException {
 
-        logger.info(Thread.currentThread().getId() + ":" + "exportAllLanguages" + "()");
+        logger.info("Request for export all languages");
         List<Language> languageList = languageRepository.findAll();
         LanguageListDto languageListDto = new LanguageListDto(languageList);
 
@@ -114,14 +114,14 @@ public class LanguageController {
     @CrossOrigin
     @PostMapping(value = "/import")
     public ResponseEntity<?> uploadLanguages(@RequestParam("file") MultipartFile file) throws IOException, ParserConfigurationException, SAXException {
-        logger.info(Thread.currentThread().getId() + ":" + "uploadLanguages" + "(" + file + ")");
+        logger.info("Request for upload languages");
 
         if (file.isEmpty()) {
             throw new ResourceNotFoundException("File upload failed when importing language(s)");
         }
 
         Set<Language> languageList = null;
-
+        logger.info("Parsing uploaded language file");
         byte[] bytes = file.getBytes();
         InputStream myInputStream = new ByteArrayInputStream(bytes);
         // create a new DocumentBuilderFactory
@@ -146,7 +146,7 @@ public class LanguageController {
                 throw new JPAException("Language import failed. Reason: " + e.getMessage());
             }
         }
-
+        logger.info("Returning result");
         return ResponseEntity.ok().build();
     }
 

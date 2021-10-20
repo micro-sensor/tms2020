@@ -24,46 +24,57 @@ public class QmsService {
     private String configurationContext;
 
     public QmsService(RestTemplateBuilder restTemplateBuilder) {
-        logger.info(Thread.currentThread().getId() + ":" + "QmsService" + "(" + restTemplateBuilder + ")");
 
         this.restTemplate = restTemplateBuilder.build();
     }
 
     public ResponseEntity<Object[]> getCategoryInfoDtos() {
-        logger.info(Thread.currentThread().getId() + ":" + "GetCategoryInfoDtos" + "()");
+        logger.info("Service called for get category information");
         String categoryInfoPath = qmsIp + categoryInfoContext;
+        logger.info("Rest API called to obtain iformaiton");
+        logger.info("Returning the result");
         return restTemplate.getForEntity(categoryInfoPath, Object[].class);
     }
 
     public ResponseEntity<Object> createConfiguration(Object object) {
-        logger.info(Thread.currentThread().getId() + ":" + "createConfiguration" + "(" + object + ")");
+        logger.info("Service called for creating new configuration");
         Object obj = restTemplate.postForObject(qmsIp + configurationContext, object, Object.class);
+        logger.info("Rest API called to create new configuration");
+        logger.info("Returning success notificaiton");
         return ResponseEntity.ok(obj);
     }
 
     public ResponseEntity<Object> updateConfiguration(Long configurationId, Object object) {
-        logger.info(Thread.currentThread().getId() + ":" + "updateConfiguration" + "(" + configurationId + "," + object +
-                ")");
+        logger.info("Service called for updating existing configuration");
+        logger.info("Rest API called for updating existing configuration");
         restTemplate.put(qmsIp + configurationContext + "/" + configurationId.toString(), object);
+        logger.info("Returning success notification");
         return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<Object[]> getConfigurations() {
-        logger.info(Thread.currentThread().getId() + ":" + "getConfigurations" + "()");
+        logger.info("Service called for getting all existing configurations");
+        logger.info("Rest API called for finding all existing configurations");
+        logger.info("Returning the result");
         return restTemplate.getForEntity(qmsIp + configurationContext, Object[].class);
     }
 
     public ResponseEntity<Object> getConfiguration(Long configurationId) {
-        logger.info(Thread.currentThread().getId() + ":" + "getConfiguration" + "()");
+        logger.info("Service called for getting specific configuration");
+        logger.info("Rest API called for finding specific configuration");
+        logger.info("Returning the result");
         return restTemplate.getForEntity(qmsIp + configurationContext + "/" + configurationId.toString(), Object.class);
     }
 
     public ResponseEntity<?> deleteConfiguration(Long configurationId) {
-        logger.info(Thread.currentThread().getId() + ":" + "deleteConfiguration" + "(" + configurationId + ")");
+        logger.info("Service called for deleting existing configuration");
         String url = qmsIp + configurationContext + "/{configurationId}";
+        logger.info("URL generated");
         Map<String, String> params = new HashMap<>();
         params.put("configurationId", configurationId.toString());
+        logger.info("Rest API called for delete existing configuration");
         restTemplate.delete(url, params);
+        logger.info("Returning success notification");
         return ResponseEntity.ok().build();
     }
 }

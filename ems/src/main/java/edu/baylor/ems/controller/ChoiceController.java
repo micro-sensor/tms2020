@@ -21,7 +21,7 @@ public class ChoiceController {
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     public ResponseEntity<List<Choice>> updateChoices(@RequestBody SelectedChoiceEmsDto selectedChoiceEmsDto) {
-        logger.info(Thread.currentThread().getId() + ":" + "updateChoices" + "(" + selectedChoiceEmsDto + ")");
+        logger.info("HTTP Request come for update choice");
         return ResponseEntity.ok(choiceService.selectChoices(selectedChoiceEmsDto));
     }
 

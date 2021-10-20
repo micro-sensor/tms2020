@@ -36,49 +36,57 @@ public class ExamService {
 
     public Optional<Exam> findById(Integer id) {
 
-        logger.info(Thread.currentThread().getId() + ":" + "findById" + "(" + id + ")");
+        logger.info("Performing database query to find exam by id");
+        ogger.info("returning the result");
         return this.examRepository.findById(id);
     }
 
     public void deleteExam(Integer id) {
-        logger.info(Thread.currentThread().getId() + ":" + "deleteExam" + "(" + id + ")");
+        logger.info("Perform database query to delete exam");
+        ogger.info("returning the result");
         this.examRepository.deleteById(id);
     }
 
     public List<Exam> findAllExams() {
-        logger.info(Thread.currentThread().getId() + ":" + "findAllExams" + "()");
+        logger.info("Service perform database query to find all exams");
+        logger.info("returning the result");
         return this.examRepository.findAll();
     }
 
     public List<Exam> findAllExamsByStatus(String status) {
-        logger.info(Thread.currentThread().getId() + ":" + "findAllExamsByStatus" + "(" + status + ")");
+        logger.info("Service called for find all exam based on exam status");
 
         List<Exam> allExams = findAllExams();
+        logger.info("filtered the exams based on their stutus");
         List<Exam> filteredExams = allExams.stream().filter(item -> item.getStatus() == ExamStatus.valueOf(status)).collect(Collectors.toList());
-
+        logger.info("returning the result");
         return filteredExams;
     }
 
     public boolean isExamExist(Integer examId, Integer examineeId) {
-        logger.info(Thread.currentThread().getId() + ":" + "isExamExist" + "(" + examId + "," + examineeId + ")");
+        logger.info("Checking exam existance");
+        logger.info("returning the result");
         return this.examRepository.existsByExamineeAndId(examineeId, examId);
     }
 
     public ResponseEntity<Exam> submitExam(Integer examId) {
-        logger.info(Thread.currentThread().getId() + ":" + "submitExam" + "(" + examId + ")");
+        logger.info("Perform database query to find exam by id");
         Optional<Exam> optionalExam = this.findById(examId);
         if (!optionalExam.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Exam exam = optionalExam.get();
+        logger.info("Update exam data");
         exam.setStatus(ExamStatus.DONE);
         exam.setSubmissionDate(new Date());
         exam = this.examRepository.saveAndFlush(exam);
+        logger.info("Persist updated exam");
+        logger.info("Returning the result");
         return new ResponseEntity<Exam>(HttpStatus.OK);
     }
 
     public Exam saveExam(ExamDto examDto) {
-        logger.info(Thread.currentThread().getId() + ":" + "saveExam" + "(" + examDto + ")");
+        logger.info("Creating new exam");
         Exam exam = new Exam(examDto);
         exam.setExamDate(new Date());
         exam.setConfigurationName(qmsService.getConfigName(Integer.toUnsignedLong(examDto.getConfigurationId())));
@@ -92,12 +100,14 @@ public class ExamService {
         if (examDto.getId() != null) {
             exam.setId(examDto.getId());
         }
+        logger.info("Persisting exam to database");
+        logger.info("retunring persisted exam");
 
         return this.examRepository.saveAndFlush(exam);
     }
 
     public ResponseEntity<List<QuestionEmsDto>> takeExam(Integer id) {
-        logger.info(Thread.currentThread().getId() + ":" + "takeExam" + "(" + id + ")");
+        logger.info("Perform database query to find exam by id");
         Optional<Exam> optionalExam = this.findById(id);
         if (!optionalExam.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -105,6 +115,9 @@ public class ExamService {
         Exam exam = optionalExam.get();
         //ToDo: Check if exam.getExaminee() == currentlyLoggedUser
         ExamStatus examStatus = exam.getStatus();
+        logger.info("Checking exam validity");
+        logger.info("Updating exam status");
+        logger.info("Returning the result");
         if (examStatus.equals(ExamStatus.INIT)) {
             return handleExamInit(exam);
         } else if (examStatus.equals(ExamStatus.PROGRESS)) {
@@ -117,7 +130,6 @@ public class ExamService {
     }
 
     private ResponseEntity<List<QuestionEmsDto>> handleExamProgress(Exam exam) {
-        logger.info(Thread.currentThread().getId() + ":" + "handleExamProgress" + "(" + exam + ")");
         // IN PROGRESS
         Date currentDate = new Date();
         if (currentDate.before(exam.getExamDate()) || currentDate.equals(exam.getExamDate())) {
@@ -140,8 +152,6 @@ public class ExamService {
 
 
     private ResponseEntity<List<QuestionEmsDto>> handleExamInit(Exam exam) {
-
-        logger.info(Thread.currentThread().getId() + ":" + "handleExamInit" + "(" + exam + ")");
         // QMS get questions / choices
         List<QuestionQmsDto> questionQmsDtos = this.qmsService.getQuestions(exam.getConfigurationId());
 
@@ -159,12 +169,13 @@ public class ExamService {
     }
 
     private Exam setExamDate(Exam exam) {
-        logger.info(Thread.currentThread().getId() + ":" + "setExamDate" + "(" + exam + ")");
+        logger.info("Service Setting the exam date");
         long ONE_MINUTE_IN_MILLIS = 60000;
         Calendar date = Calendar.getInstance();
         long t = date.getTimeInMillis();
         Date afterAdding = new Date(t + (30 * ONE_MINUTE_IN_MILLIS));
         exam.setExamDate(afterAdding);
+        logger.info("Returning updated exam");
         return exam;
     }
 
@@ -175,19 +186,22 @@ public class ExamService {
 
 
     public ResponseEntity<Object> finishExam(Integer id) {
-        logger.info(Thread.currentThread().getId() + ":" + "finishExam" + "(" + id + ")");
+        logger.info("Perform database query to find exam by id");
         Optional<Exam> optionalExam = this.findById(id);
         if (optionalExam.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Exam exam = optionalExam.get();
         Date currentDate = new Date();
+        logger.info("Updating the data of found exam");
         if (currentDate.before(exam.getExamDate()) || currentDate.equals(exam.getExamDate())) {
+            logger.info("Setting exam status as done");
             exam.setStatus(ExamStatus.DONE);
             exam.setSubmissionDate(currentDate);
             List<Question> questions = this.questionService.getAllByExam(exam.getId());
             exam.setSum(questions.size());
             Integer correct = 0;
+            logger.info("Checking the validity of exam questions");
             for (Question q : questions
             ) {
                 boolean same = true;
@@ -202,8 +216,11 @@ public class ExamService {
                     correct = correct + 1;
                 }
             }
+            logger.info("Updating the exam as correct");
             exam.setCorrect(correct);
+            logger.info("Performing persist operation on updated exam");
             examRepository.saveAndFlush(exam);
+            logger.info("Returning the result");
             return new ResponseEntity<>(HttpStatus.OK);
         } else {
             // BAD REQUEST
@@ -213,7 +230,7 @@ public class ExamService {
     }
 
     public ExamReviewDto reviewExam(Integer id) {
-        logger.info(Thread.currentThread().getId() + ":" + "reviewExam" + "(" + id + ")");
+        logger.info("Perform database query to find exam by id");
         Optional<Exam> optionalExam = this.findById(id);
         if (!optionalExam.isPresent()) {
             throw new IllegalArgumentException("Exam id doesn't exist!");
@@ -221,6 +238,7 @@ public class ExamService {
         Exam exam = optionalExam.get();
         List<Question> questions = this.questionService.getAllByExam(exam.getId());
 
+        logger.info("Create new review");
         ExamReviewDto examReview = new ExamReviewDto();
         examReview.setConfigurationName(exam.getConfigurationName());
         examReview.setExaminee(exam.getExaminee());
@@ -230,6 +248,8 @@ public class ExamService {
         examReview.setQuestions(questions);
         examReview.setExamDateFrom(exam.getExamDateFrom());
         examReview.setExamDateTo(exam.getExamDateTo());
+        logger.info("Set all required data in created review");
+        logger.info("returning the review");
 
         return examReview;
     }
