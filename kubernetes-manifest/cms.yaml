@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cms
+spec:
+  selector:
+    app: cms
+  ports:
+    - targetPort: 9081
+      port: 80
+      name: http-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms
+  labels:
+    app: cms
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: cms
+      labels:
+        app: cms
+    spec:
+      hostAliases:
+        - ip: "192.168.64.7"
+          hostnames:
+            - "tcs.ecs.baylor.edu"
+      containers:
+        - name: cms
+          image: cloudhubs2/tms-cms
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9081
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: cms
+

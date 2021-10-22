@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ums
+spec:
+  selector:
+    app: ums
+  ports:
+    - targetPort: 10001
+      port: 80
+      name: http-web
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ums
+  labels:
+    app: ums
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: ums
+      labels:
+        app: ums
+    spec:
+      hostAliases:
+        - ip: "192.168.64.7"
+          hostnames:
+            - "tcs.ecs.baylor.edu"
+      containers:
+        - name: ums
+          image: cloudhubs2/tms-ums
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 10001
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: ums
+---
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: ums
+#spec:
+#  rules:
+#    - host: ums.test
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: ums
+#                port:
+#                  number: 80

@@ -1,0 +1,130 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: details-svc
+  namespace: test
+spec:
+  hosts:
+    - tcs.ecs.baylor.edu
+  location: MESH_INTERNAL
+  ports:
+    - number: 80
+      name: http
+      protocol: HTTP
+  resolution: STATIC
+  workloadSelector:
+    labels:
+      app: keycloak
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: tmsgateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default ingress gateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: mkcert # must be the same as secret
+      hosts:
+        - tcs.ecs.baylor.edu
+#    - port:
+#        number: 80
+#        name: http
+#        protocol: HTTP
+#      hosts:
+#        - tcs.ecs.baylor.edu
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: tmshttpbin
+spec:
+  hosts:
+    - "tcs.ecs.baylor.edu"
+  gateways:
+    - tmsgateway
+  http:
+    - match:
+        - uri:
+            prefix: /auth
+      route:
+        - destination:
+            host: keycloak
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /cms
+      timeout: 2s
+      route:
+        - destination:
+            host: cms
+            port:
+              number: 80
+          headers:
+            response:
+              remove:
+                - "transfer-encoding"
+    - match:
+        - uri:
+            prefix: /ems
+      route:
+        - destination:
+            host: ems
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /qms
+      route:
+        - destination:
+            host: qms
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /ums
+      route:
+        - destination:
+            host: ums
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /config
+      route:
+        - destination:
+            host: cms-client
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /exams
+      route:
+        - destination:
+            host: ems-client
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /questions
+      route:
+        - destination:
+            host: qms-client
+            port:
+              number: 80
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: ums-client
+            port:
+              number: 80

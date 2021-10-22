@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cms-client
+spec:
+  selector:
+    app: cms-client
+  ports:
+    - port: 80
+      name: http-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cms-client
+  labels:
+    app: cms-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: cms-client
+      labels:
+        app: cms-client
+    spec:
+      hostAliases:
+        - ip: "192.168.64.7"
+          hostnames:
+            - "tcs.ecs.baylor.edu"
+      containers:
+        - name: cms-client
+          image: cloudhubs2/tms-cms-client
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: cms-client
+---
+#---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: cms-client
+#
+#spec:
+#  rules:
+#    - host: cms-client.test
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: cms-client
+#                port:
+#                  number: 80

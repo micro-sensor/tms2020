@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ems
+spec:
+  selector:
+    app: ems
+  ports:
+    - port: 80
+      targetPort: 9001
+      name: http-web
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ems
+  labels:
+    app: ems
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: ems
+      labels:
+        app: ems
+    spec:
+      hostAliases:
+        - ip: "192.168.64.7"
+          hostnames:
+            - "tcs.ecs.baylor.edu"
+      containers:
+        - name: ems
+          image: cloudhubs2/tms-ems
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9001
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: ems
+---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: ems
+#
+#spec:
+#  rules:
+#    - host: ems.test
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: ems
+#                port:
+#                  number: 80

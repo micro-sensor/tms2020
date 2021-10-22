@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak
+spec:
+  selector:
+    app: keycloak
+  ports:
+    - port: 80
+      targetPort: 80
+      name: http-web
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: keycloak
+      labels:
+        app: keycloak
+    spec:
+      hostAliases:
+        - ip: "192.168.64.7"
+          hostnames:
+            - "tcs.ecs.baylor.edu"
+      containers:
+        - name: keycloak
+          image: cloudhubs2/tms-keycloak
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            - name: "DB_VENDOR"
+              value: "POSTGRES"
+            - name: "DB_ADDR"
+              value: "postgres"
+            - name: "DB_DATABASE"
+              value: "keycloak"
+            - name: "DB_USER"
+              value: "pguser"
+            - name: "DB_SCHEMA"
+              value: "public"
+            - name: "DB_PASSWORD"
+              value: "pgpass"
+            - name: "KEYCLOAK_USER"
+              value: "admin"
+            - name: "KEYCLOAK_PASSWORD"
+              value: "password"
+      restartPolicy: Always
+  selector:
+    matchLabels:
+      app: keycloak
+---
+#apiVersion: networking.k8s.io/v1
+#kind: Ingress
+#metadata:
+#  name: keycloak
+##  annotations:
+##    nginx.ingress.kubernetes.io/rewrite-target: /$1
+#spec:
+#  rules:
+#    - host: keycloak.test
+#      http:
+#        paths:
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: keycloak
+#                port:
+#                  number: 80
+#          - path: /
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: keycloak
+#                port:
+#                  number: 80

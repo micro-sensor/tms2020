@@ -16,7 +16,7 @@ services:
     networks:
       - app-internal
     extra_hosts:
-      - "tcs.ecs.baylor.edu:10.1.20.143"
+      - "tcs.ecs.baylor.edu:172.18.0.1"
   
   ems:
     image: cloudhubs2/tms-ems
@@ -32,7 +32,7 @@ services:
     networks:
       - app-internal
     extra_hosts:
-      - "tcs.ecs.baylor.edu:10.1.20.143"
+      - "tcs.ecs.baylor.edu:172.18.0.1"
   
   qms:
     image: cloudhubs2/tms-qms
@@ -48,7 +48,7 @@ services:
     networks:
       - app-internal
     extra_hosts:
-      - "tcs.ecs.baylor.edu:10.1.20.143"
+      - "tcs.ecs.baylor.edu:172.18.0.1"
 
   ums:
     image: cloudhubs2/tms-ums
@@ -64,7 +64,7 @@ services:
     networks:
       - app-internal
     extra_hosts:
-      - "tcs.ecs.baylor.edu:10.1.20.143"
+      - "tcs.ecs.baylor.edu:172.18.0.1"
 
   cms-client:
     image: cloudhubs2/tms-cms-client
@@ -146,6 +146,7 @@ services:
       build: 
         context: postgres
         dockerfile: Dockerfile
+      restart: always
       volumes:
         - postgres_data:/var/lib/postgresql/data
       expose:
@@ -166,6 +167,7 @@ services:
       build: 
         context: keycloak
         dockerfile: Dockerfile
+      restart: always
       environment:
         DB_VENDOR: POSTGRES
         DB_ADDR: postgres
@@ -187,7 +189,7 @@ volumes:
 
 networks:
   app-internal:
-    # ipam:
-    #   driver: default
-    #   config:
-    #     - subnet: 172.18.0.0/16
+    ipam:
+       driver: default
+       config:
+         - subnet: 172.18.0.0/16

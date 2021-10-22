@@ -26,16 +26,16 @@ hibernate.temp:
   use_jdbc_metadata_defaults: false
 
 qms:
-  ip: 'http://qms:12345/qms/'
+  ip: 'http://qms.test/qms/'
   categoryinfo: 'categoryinfo'
   configuration: 'configuration'
 
 ems:
-  ip: 'http://ems:9001/ems/'
+  ip: 'http://ems.test/ems/'
   exam: 'exam'
 
 ums:
-  ip: 'http://ums:10001/ums/'
+  ip: 'http://ums.test/ums/'
   id: 'email'
   email: 'userinfo/emailInUse/'
 
