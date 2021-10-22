@@ -33,7 +33,8 @@ public class QmsService {
         String categoryInfoPath = qmsIp + categoryInfoContext;
         logger.info("Rest API called to obtain iformaiton");
         logger.info("Returning the result");
-        return restTemplate.getForEntity(categoryInfoPath, Object[].class);
+        ResponseEntity<Object[]> response = restTemplate.getForEntity(qmsIp + categoryInfoContext, Object[].class);
+        return ResponseEntity.ok(response.getBody());
     }
 
     public ResponseEntity<Object> createConfiguration(Object object) {
@@ -56,14 +57,16 @@ public class QmsService {
         logger.info("Service called for getting all existing configurations");
         logger.info("Rest API called for finding all existing configurations");
         logger.info("Returning the result");
-        return restTemplate.getForEntity(qmsIp + configurationContext, Object[].class);
+        ResponseEntity<Object[]> response = restTemplate.getForEntity(qmsIp + configurationContext, Object[].class);
+        return ResponseEntity.ok(Objects.requireNonNull(response.getBody()));
     }
 
     public ResponseEntity<Object> getConfiguration(Long configurationId) {
         logger.info("Service called for getting specific configuration");
         logger.info("Rest API called for finding specific configuration");
         logger.info("Returning the result");
-        return restTemplate.getForEntity(qmsIp + configurationContext + "/" + configurationId.toString(), Object.class);
+        ResponseEntity<Object> response = restTemplate.getForEntity(qmsIp + configurationContext + "/" + configurationId.toString(), Object.class);
+        return ResponseEntity.ok(response.getBody());
     }
 
     public ResponseEntity<?> deleteConfiguration(Long configurationId) {

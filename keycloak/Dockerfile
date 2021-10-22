@@ -4,4 +4,5 @@ COPY tmstheme /opt/jboss/keycloak/themes/tmstheme
 ENV KEYCLOAK_IMPORT=/tmp/realm-export.json
 ENV PROXY_ADDRESS_FORWARDING=true
 ENTRYPOINT [ "/opt/jboss/tools/docker-entrypoint.sh" ]
-CMD ["-b", "0.0.0.0", "-Dkeycloak.profile.feature.upload_scripts=enabled"]
+EXPOSE 80
+CMD ["-b", "0.0.0.0", "-Dkeycloak.profile.feature.upload_scripts=enabled","-Djboss.http.port=80"]
