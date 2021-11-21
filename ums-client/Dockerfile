@@ -1,7 +1,7 @@
 # build the react project
-FROM node:13.8.0-alpine as builder
+FROM node:12.20.2-alpine3.12 as builder
 COPY package.json package-lock.json ./
-RUN apk update && apk add python g++ make
+RUN apk update && apk add python3 g++ make
 RUN npm ci && mkdir /app && mv ./node_modules ./app/
 WORKDIR /app
 COPY . .

@@ -1,5 +1,5 @@
-FROM node:13.8.0-alpine as builder
-RUN apk update && apk add python g++ make
+FROM node:12.20.2-alpine3.12 as builder
+RUN apk update && apk add python3 g++ make
 RUN npm install -g @angular/cli
 WORKDIR /app
 COPY package.json package-lock.json ./

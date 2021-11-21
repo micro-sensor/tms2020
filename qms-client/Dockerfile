@@ -1,5 +1,5 @@
-FROM node:12.16.1-alpine as build
-RUN apk update && apk add python g++ make
+FROM node:12.20.2-alpine3.12 as build
+RUN apk update && apk add python3 g++ make
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
