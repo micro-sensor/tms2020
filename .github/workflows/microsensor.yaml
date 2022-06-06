@@ -12,7 +12,7 @@ jobs:
       # Run the analysis on the specified directory.
       - name: Perform the smells analysis.
         id: analysis
-        uses: edson-a-soares/microsensor@development
+        uses: edson-a-soares/microsensor@Fix/ENOENT_no_such_file_or_directory
 
       # Collect the analysis output.
       - name: Get the analysis output (e.g., report)
