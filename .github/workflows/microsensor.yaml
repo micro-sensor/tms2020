@@ -12,4 +12,3 @@ jobs:
       # Run the analysis on the specified directory.
       - name: Perform the smells analysis.
         uses: edson-a-soares/microsensor@development
-
